@@ -135,7 +135,11 @@
     "webpack-dev-server": "^3.11.2",
     "webpack-merge": "^5.7.3",
     "webpack-node-externals": "^3.0.0",
-    "zip-webpack-plugin": "^4.0.1"
+    "zip-webpack-plugin": "^4.0.1",
+    "@nrwl/workspace": "latest",
+    "@nrwl/cli": "latest",
+    "@nrwl/tao": "latest",
+    "@nrwl/nx-cloud": "latest"
   },
   "resolutions": {
     "react-dropzone": "^11.4.2",

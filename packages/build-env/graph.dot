@@ -11,6 +11,7 @@ digraph G {
   "@kie-tooling-core/vscode-extension" [ color = "purple", fontcolor = "purple", style = "rounded" ];
   "@kogito-tooling-examples/ping-pong-view" [ color = "orange", fontcolor = "orange", style = "dashed, rounded" ];
   "@kie-tooling-core/envelope" [ color = "purple", fontcolor = "purple", style = "rounded" ];
+  "ping-pong-view-angular" [ color = "black", fontcolor = "black", style = "dashed, rounded" ];
   "@kogito-tooling-examples/ping-pong-view-react" [ color = "orange", fontcolor = "orange", style = "dashed, rounded" ];
   "@kogito-tooling-examples/todo-list-view" [ color = "orange", fontcolor = "orange", style = "dashed, rounded" ];
   "kogito-tooling-examples-todo-list-view-vscode-extension" [ color = "orange", fontcolor = "orange", style = "dashed, rounded" ];
@@ -65,6 +66,7 @@ digraph G {
   "kogito-tooling-examples-base64png-editor-vscode-extension" -> "@kie-tooling-core/vscode-extension" [ style = "solid", color = "orange" ];
   "kogito-tooling-examples-base64png-editor-vscode-extension" -> "@kogito-tooling-examples/base64png-editor" [ style = "solid", color = "orange" ];
   "@kogito-tooling-examples/ping-pong-view" -> "@kie-tooling-core/envelope" [ style = "solid", color = "orange" ];
+  "ping-pong-view-angular" -> "kiegroup/kogito-tooling";
   "@kogito-tooling-examples/ping-pong-view-react" -> "@kogito-tooling-examples/ping-pong-view" [ style = "solid", color = "orange" ];
   "@kogito-tooling-examples/todo-list-view" -> "@kie-tooling-core/envelope" [ style = "solid", color = "orange" ];
   "kogito-tooling-examples-todo-list-view-vscode-extension" -> "@kie-tooling-core/vscode-extension" [ style = "solid", color = "orange" ];

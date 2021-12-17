@@ -1,0 +1,16 @@
+{
+  "root": "packages/online-editor/",
+  "sourceRoot": "packages/online-editor/src",
+  "projectType": "application",
+  "targets": {
+    "build:dev": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "lerna run --scope=@kogito-tooling/online-editor build:dev --stream"
+      },
+      "outputs": ["packages/online-editor/dist"]
+    }
+  },
+  "tags": [],
+  "implicitDependencies": []
+}

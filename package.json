@@ -139,7 +139,8 @@
     "@nrwl/workspace": "latest",
     "@nrwl/cli": "latest",
     "@nrwl/tao": "latest",
-    "@nrwl/nx-cloud": "latest"
+    "@nrwl/nx-cloud": "latest",
+    "@nrwl/web": "latest"
   },
   "resolutions": {
     "react-dropzone": "^11.4.2",

@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "online-editor": "packages/online-editor"
+  }
+}

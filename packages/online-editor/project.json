@@ -6,7 +6,8 @@
     "build:dev": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "lerna run --scope=@kogito-tooling/online-editor build:dev --stream"
+        "command": "yarn build:dev",
+        "cwd": "packages/online-editor"
       },
       "outputs": ["packages/online-editor/dist"]
     }

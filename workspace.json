@@ -1,5 +1,5 @@
 {
   "projects": {
-    "online-editor": "packages/online-editor"
+    "@kogito-tooling/online-editor": "packages/online-editor"
   }
 }

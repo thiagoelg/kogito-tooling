@@ -105,13 +105,13 @@ describe("startInitPolling", () => {
     expect(envelopeServer.initPollingTimeout).toBeFalsy();
 
     //more than the timeout
-    await delay(300);
+    await delay(250);
 
     expect(envelopeServer.initPolling).toBeTruthy();
     expect(envelopeServer.initPollingTimeout).toBeTruthy();
 
     //more than the timeout
-    await delay(300);
+    await delay(250);
 
     expect(envelopeServer.stopInitPolling).toHaveBeenCalled();
     expect(envelopeServer.initialPollingSetting).toBeFalsy();

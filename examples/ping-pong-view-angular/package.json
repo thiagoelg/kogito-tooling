@@ -12,11 +12,9 @@
     "url": "git+https://github.com/thiagoelg/kogito-tooling.git"
   },
   "scripts": {
-    "build:dev": "rimraf dist && yarn run build:app:dev && yarn run build:wc && yarn run build:wc-lib",
-    "build:prod": "rimraf dist && yarn run build:app:prod && yarn run build:wc && yarn run build:wc-lib",
+    "build:dev": "yarn run run-script-if --bool $(build-env global.build.examples) --then \"rimraf dist && yarn run build:app && yarn run build:wc && yarn run build:wc-lib\"",
+    "build:prod": "yarn run run-script-if --bool $(build-env global.build.examples) --then \"rimraf dist && yarn run build:app --configuration production && yarn run build:wc && yarn run build:wc-lib\"",
     "build:app": "ng build ping-pong-view-angular",
-    "build:app:dev": "yarn run run-script-if --bool $(build-env global.build.examples) --then \"yarn run build:app\"",
-    "build:app:prod": "yarn run run-script-if --bool $(build-env global.build.examples) --then \"yarn run build:app --configuration production\"",
     "build:wc": "ng build ping-pong-view-wc && yarn run build:wc:concat",
     "build:wc:concat": "cat dist/wc/polyfills.js dist/wc/runtime.js dist/wc/main.js > dist/wc/index.js",
     "build:wc-lib": "tsc --project tsconfig.lib.json"
@@ -33,6 +31,7 @@
     "@angular/router": "^13.1.1",
     "@kie-tooling-core/envelope-bus": "0.0.0",
     "@kogito-tooling-examples/ping-pong-view": "0.0.0",
+    "@kie-tooling-core/envelope": "0.0.0",
     "rxjs": "^7.4.0",
     "zone.js": "^0.11.4"
   },

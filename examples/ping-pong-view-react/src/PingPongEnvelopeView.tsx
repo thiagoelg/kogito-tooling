@@ -16,10 +16,10 @@
 
 import * as React from "react";
 import { useEffect, useState } from "react";
-import * as PingPongViewEnvelope from "@kogito-tooling-examples/ping-pong-view/dist/envelope";
+import * as PingPongViewEnvelope from "@kie-tools-examples/ping-pong-view/dist/envelope";
 import { PingPongReactImplFactory } from ".";
 import "./styles.css";
-import { EnvelopeDivConfig, EnvelopeIFrameConfig } from "@kie-tooling-core/envelope";
+import { EnvelopeDivConfig, EnvelopeIFrameConfig } from "@kie-tools-core/envelope";
 
 export const PingPongEnvelopeView = (props: { envelopeConfig: EnvelopeDivConfig | EnvelopeIFrameConfig }) => {
   const [view, setView] = useState<React.ReactElement>();

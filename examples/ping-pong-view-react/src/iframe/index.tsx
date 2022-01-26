@@ -16,7 +16,7 @@
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { ContainerType } from "@kie-tooling-core/envelope/dist/api";
+import { ContainerType } from "@kie-tools-core/envelope/dist/api";
 import { PingPongEnvelopeView } from "..";
 
 export const pingPongEnvelopViewRender = (container: HTMLElement) =>

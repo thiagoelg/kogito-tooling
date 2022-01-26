@@ -15,7 +15,7 @@
  */
 
 import { Component, Input } from "@angular/core";
-import { ContainerType } from "@kie-tooling-core/envelope/dist/api";
+import { ContainerType } from "@kie-tools-core/envelope/dist/api";
 
 @Component({
   selector: "ping-pong-wc",

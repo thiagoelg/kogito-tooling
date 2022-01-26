@@ -15,8 +15,8 @@
  */
 
 import { NgElement, WithProperties } from "@angular/elements";
-import { ContainerType } from "@kie-tooling-core/envelope/dist/api";
-import "@kogito-tooling-examples/ping-pong-view-angular/dist/wc";
+import { ContainerType } from "@kie-tools-core/envelope/dist/api";
+import "@kie-tools-examples/ping-pong-view-angular/dist/wc";
 
 export const pingPongEnvelopViewRenderDiv = (container: HTMLElement, envelopeId: string) => {
   const element = document.createElement("ping-pong-angular");

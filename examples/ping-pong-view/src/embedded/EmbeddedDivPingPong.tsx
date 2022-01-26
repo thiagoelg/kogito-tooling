@@ -17,13 +17,13 @@
 import * as React from "react";
 import { useCallback, useRef } from "react";
 import { PingPongApi, PingPongChannelApi, PingPongEnvelopeApi } from "../api";
-import { EnvelopeServer } from "@kie-tooling-core/envelope-bus/dist/channel";
-import { ContainerType } from "@kie-tooling-core/envelope/dist/api";
+import { EnvelopeServer } from "@kie-tools-core/envelope-bus/dist/channel";
+import { ContainerType } from "@kie-tools-core/envelope/dist/api";
 import {
   EmbeddedEnvelopeProps,
   EnvelopeDivConfig,
   RefForwardingEmbeddedEnvelope,
-} from "@kie-tooling-core/envelope/dist/embedded";
+} from "@kie-tools-core/envelope/dist/embedded";
 
 export type EmbeddedDivPingPongProps = {
   apiImpl: PingPongChannelApi;

@@ -16,8 +16,8 @@
 
 import { PingPongApiService, LogEntry } from "./ping-pong-api.service";
 import { Component, Input, OnInit } from "@angular/core";
-import * as PingPongViewEnvelope from "@kogito-tooling-examples/ping-pong-view/dist/envelope";
-import { ContainerType } from "@kie-tooling-core/envelope/dist/api";
+import * as PingPongViewEnvelope from "@kie-tools-examples/ping-pong-view/dist/envelope";
+import { ContainerType } from "@kie-tools-core/envelope/dist/api";
 import { Observable, scan } from "rxjs";
 
 @Component({

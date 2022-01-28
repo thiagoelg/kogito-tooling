@@ -1,5 +1,7 @@
 name: "CI :: Daily cleanup (kogito-online-ci)"
 
+runs-on: self-hosted
+
 on:
   schedule:
     - cron: "0 1 * * *"

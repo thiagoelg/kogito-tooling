@@ -1,4 +1,7 @@
 name: "Sonar :: stunner-editors"
+
+runs-on: self-hosted
+
 on:
   push:
     branches:

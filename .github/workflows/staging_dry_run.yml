@@ -1,5 +1,7 @@
 name: "Staging :: Dry Run"
 
+runs-on: self-hosted
+
 on:
   workflow_dispatch:
   schedule:

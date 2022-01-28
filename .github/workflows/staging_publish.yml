@@ -1,5 +1,7 @@
 name: "Staging :: Publish"
 
+runs-on: self-hosted
+
 on:
   push:
     branches: ["**-prerelease"]

@@ -18,8 +18,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-    runs-on: [self-hosted]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: "Support longpaths"
         if: matrix.os == 'windows-latest'
@@ -54,7 +54,7 @@ jobs:
           DISPLAY: ":99.0"
           START_SERVER_AND_TEST_INSECURE: "true"
         run: |
-          lerna run build:prod --stream --concurrency 1
+          lerna run build:prod --stream
 
       - name: "Check generated resources (you should commit those!)"
         shell: bash

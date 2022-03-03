@@ -1,0 +1,1 @@
+{"version":3,"file":"IsolatedEditorContext.d.ts","sourceRoot":"","sources":["IsolatedEditorContext.ts"],"names":[],"mappings":"AAgBA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAC/B,OAAO,EAAE,QAAQ,EAAE,MAAM,YAAY,CAAC;AAEtC,eAAO,MAAM,qBAAqB;cACtB,OAAO;gBACL,OAAO;cACT,QAAQ;2BACI,IAAI;EACf,CAAC"}

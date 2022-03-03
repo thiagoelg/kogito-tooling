@@ -1,0 +1,40 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.names = void 0;
+exports.names = {
+  app: "App",
+  bpmn: "BPMN",
+  businessModeler: {
+    name: "Business Modeler",
+    desktop: "Business Modeler Desktop Preview",
+    hub: "Business Modeler Hub Preview",
+    online: "KIE Sandbox",
+  },
+  chrome: "Chrome",
+  chromeExtensionName: "BPMN, DMN & Test Scenario Editor for GitHub",
+  chromeStore: "Chrome Store",
+  desktop: "Desktop",
+  devSandbox: "Developer Sandbox for Red Hat OpenShift",
+  dmn: "DMN",
+  dmnDevSandbox: "DMN Developer Sandbox",
+  dmnRunner: "DMN Runner",
+  kieSandboxExtendedServices: "KIE Sandbox Extended Services",
+  fedora: "Fedora",
+  pmml: "PMML",
+  dropbox: "Dropbox",
+  github: "GitHub",
+  kogito: "Kogito",
+  linux: "Linux",
+  macos: "macOS",
+  oauth: "OAuth",
+  redHat: "Red Hat",
+  shortDevSandbox: "Developer Sandbox",
+  svg: "SVG",
+  swaggerUI: "Swagger UI",
+  testScenario: "Test Scenario",
+  ubuntu: "Ubuntu",
+  url: "URL",
+  vscode: "VS Code",
+  windows: "Windows",
+};
+//# sourceMappingURL=names.js.map

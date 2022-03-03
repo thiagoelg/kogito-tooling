@@ -1,0 +1,1 @@
+{"version":3,"file":"DmnSideBar.d.ts","sourceRoot":"","sources":["DmnSideBar.ts"],"names":[],"mappings":"AAiBA,OAAO,iBAAiB,MAAM,qBAAqB,CAAC;AAEpD,OAAO,OAAO,MAAM,YAAY,CAAC;AAGjC,MAAM,CAAC,OAAO,OAAO,UAAW,SAAQ,OAAO;IAC7C,OAAO,CAAC,MAAM,CAAC,QAAQ,CAAC,wBAAwB,CAAqE;IAExG,qBAAqB,IAAI,OAAO,CAAC,iBAAiB,CAAC;CAOjE"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"openRepoInExternalEditorApp.d.ts","sourceRoot":"","sources":["openRepoInExternalEditorApp.tsx"],"names":[],"mappings":"AAkBA,OAAO,EAAE,OAAO,EAAQ,MAAM,gBAAgB,CAAC;AAG/C,OAAO,EAAE,cAAc,EAAE,MAAM,6BAA6B,CAAC;AAQ7D,wBAAgB,iCAAiC,CAC/C,IAAI,EAAE,OAAO,GAAG;IAAE,SAAS,EAAE,MAAM,CAAC;IAAC,QAAQ,EAAE,cAAc,CAAC;IAAC,SAAS,EAAE,MAAM,WAAW,CAAA;CAAE,QAyB9F"}

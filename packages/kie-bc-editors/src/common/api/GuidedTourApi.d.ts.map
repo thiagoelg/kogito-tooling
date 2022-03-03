@@ -1,0 +1,1 @@
+{"version":3,"file":"GuidedTourApi.d.ts","sourceRoot":"","sources":["GuidedTourApi.ts"],"names":[],"mappings":"AAeA,OAAO,EAAE,QAAQ,EAAE,eAAe,EAAE,MAAM,sCAAsC,CAAC;AAKjF,MAAM,WAAW,aAAa;IAC5B,OAAO,CAAC,eAAe,EAAE,eAAe,GAAG,IAAI,CAAC;IAChD,gBAAgB,CAAC,QAAQ,EAAE,QAAQ,GAAG,IAAI,CAAC;IAC3C,SAAS,IAAI,OAAO,CAAC;CACtB"}

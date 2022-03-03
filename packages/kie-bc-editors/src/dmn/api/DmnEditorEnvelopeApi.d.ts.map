@@ -1,0 +1,1 @@
+{"version":3,"file":"DmnEditorEnvelopeApi.d.ts","sourceRoot":"","sources":["DmnEditorEnvelopeApi.ts"],"names":[],"mappings":"AAgBA,OAAO,EAAE,uBAAuB,EAAE,MAAM,iCAAiC,CAAC;AAC1E,OAAO,EAAE,iBAAiB,EAAE,MAAM,0BAA0B,CAAC;AAE7D,MAAM,WAAW,oBAAqB,SAAQ,uBAAuB,EAAE,iBAAiB;IACtF,mBAAmB,IAAI,OAAO,CAAC,MAAM,CAAC,CAAC;CACxC"}

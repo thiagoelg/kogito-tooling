@@ -1,0 +1,1 @@
+{"version":3,"file":"StateControlApi.d.ts","sourceRoot":"","sources":["StateControlApi.ts"],"names":[],"mappings":"AAgBA,OAAO,EAAE,qBAAqB,EAAE,MAAM,oBAAoB,CAAC;AAQ3D,MAAM,WAAW,eAAe;IAC9B,QAAQ,EAAE,qBAAqB,CAAC,GAAG,CAAC,CAAC;IACrC,cAAc,CAAC,WAAW,EAAE,MAAM,IAAI,GAAG,IAAI,CAAC;IAC9C,cAAc,CAAC,WAAW,EAAE,MAAM,IAAI,GAAG,IAAI,CAAC;CAC/C"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"FunctionResponse.d.ts","sourceRoot":"","sources":["FunctionResponse.ts"],"names":[],"mappings":"AAgBA,OAAO,EAAE,mBAAmB,EAAE,MAAM,uBAAuB,CAAC;AAC5D,OAAO,EAAE,kBAAkB,EAAE,MAAM,sBAAsB,CAAC;AAE1D,MAAM,WAAW,gBAAgB;IAC/B,OAAO,EAAE,mBAAmB,CAAC;IAE7B,UAAU,EAAE,kBAAkB,CAAC;IAE/B,OAAO,EAAE,MAAM,CAAC;IAEhB,MAAM,EAAE,GAAG,CAAC;CACb"}

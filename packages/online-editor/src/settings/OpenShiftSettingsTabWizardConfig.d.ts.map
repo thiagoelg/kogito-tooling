@@ -1,0 +1,1 @@
+{"version":3,"file":"OpenShiftSettingsTabWizardConfig.d.ts","sourceRoot":"","sources":["OpenShiftSettingsTabWizardConfig.tsx"],"names":[],"mappings":"AA4BA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAe/B,OAAO,EAAE,wBAAwB,EAAE,MAAM,wBAAwB,CAAC;AASlE,wBAAgB,gCAAgC,CAAC,KAAK,EAAE;IACtD,OAAO,EAAE,KAAK,CAAC,QAAQ,CAAC,KAAK,CAAC,cAAc,CAAC,wBAAwB,CAAC,CAAC,CAAC;CACzE,eAqYA"}

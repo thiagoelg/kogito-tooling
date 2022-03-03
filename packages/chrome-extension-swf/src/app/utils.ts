@@ -23,6 +23,8 @@ export function runScriptOnPage(scriptString: string) {
   scriptTag.innerText = scriptString;
   document.body.appendChild(scriptTag);
   scriptTag.remove();
+
+  console.log("test aa aa");
 }
 
 let lastUri = window.location.pathname + window.location.search;

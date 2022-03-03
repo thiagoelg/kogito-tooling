@@ -1,0 +1,1 @@
+{"version":3,"file":"ChannelKeyboardEvent.d.ts","sourceRoot":"","sources":["ChannelKeyboardEvent.ts"],"names":[],"mappings":"AAgBA,MAAM,WAAW,oBAAoB;IACnC,MAAM,EAAE,OAAO,CAAC;IAChB,OAAO,EAAE,OAAO,CAAC;IACjB,QAAQ,EAAE,OAAO,CAAC;IAClB,OAAO,EAAE,OAAO,CAAC;IACjB,IAAI,EAAE,MAAM,CAAC;IACb,IAAI,EAAE,MAAM,CAAC;IACb,4BAA4B,CAAC,EAAE,MAAM,CAAC;CACvC"}

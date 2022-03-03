@@ -1,0 +1,1 @@
+{"version":3,"file":"SceSimEditor.d.ts","sourceRoot":"","sources":["SceSimEditor.ts"],"names":[],"mappings":"AAgBA,OAAO,EAAE,gBAAgB,EAAE,MAAM,cAAc,CAAC;AAEhD,MAAM,WAAW,YAAa,SAAQ,gBAAgB;IACpD,cAAc,IAAI,MAAM,CAAC;CAC1B;AAED,qBAAa,gBAAiB,SAAQ,gBAAiB,YAAW,YAAY;IACrE,cAAc;CAGtB"}

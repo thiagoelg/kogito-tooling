@@ -1,0 +1,1 @@
+{"version":3,"file":"BpmnEditorEnvelopeApi.d.ts","sourceRoot":"","sources":["BpmnEditorEnvelopeApi.ts"],"names":[],"mappings":"AAgBA,OAAO,EAAE,uBAAuB,EAAE,MAAM,iCAAiC,CAAC;AAC1E,OAAO,EAAE,iBAAiB,EAAE,MAAM,0BAA0B,CAAC;AAE7D,MAAM,WAAW,qBAAsB,SAAQ,uBAAuB,EAAE,iBAAiB;IACvF,oBAAoB,IAAI,OAAO,CAAC,MAAM,CAAC,CAAC;CACzC"}

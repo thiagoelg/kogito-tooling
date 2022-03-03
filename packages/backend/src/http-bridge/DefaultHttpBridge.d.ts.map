@@ -1,0 +1,1 @@
+{"version":3,"file":"DefaultHttpBridge.d.ts","sourceRoot":"","sources":["DefaultHttpBridge.ts"],"names":[],"mappings":"AAiBA,OAAO,EAAE,UAAU,EAAE,WAAW,EAAE,YAAY,EAAE,MAAM,QAAQ,CAAC;AAK/D,qBAAa,iBAAkB,YAAW,UAAU;IACrC,OAAO,CAAC,OAAO,EAAE,WAAW,GAAG,OAAO,CAAC,YAAY,CAAC;CAiBlE"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"GlobalContext.d.ts","sourceRoot":"","sources":["GlobalContext.ts"],"names":[],"mappings":"AAgBA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAC/B,OAAO,EAAE,kBAAkB,EAAE,MAAM,qCAAqC,CAAC;AACzE,OAAO,EAAE,qBAAqB,EAAE,MAAM,iCAAiC,CAAC;AAExE,MAAM,WAAW,iBAAiB;IAChC,IAAI,EAAE,kBAAkB,CAAC;IACzB,qBAAqB,EAAE,qBAAqB,CAAC;CAC9C;AAED,eAAO,MAAM,aAAa,kCAAoD,CAAC"}

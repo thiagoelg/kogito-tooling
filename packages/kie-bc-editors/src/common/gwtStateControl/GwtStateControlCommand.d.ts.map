@@ -1,0 +1,1 @@
+{"version":3,"file":"GwtStateControlCommand.d.ts","sourceRoot":"","sources":["GwtStateControlCommand.ts"],"names":[],"mappings":"AAqBA,qBAAa,sBAAsB,CAAC,CAAC;IACnC,OAAO,CAAC,QAAQ,CAAC,EAAE,CAAS;IAC5B,OAAO,CAAC,QAAQ,CAAC,UAAU,CAAI;gBAEnB,EAAE,EAAE,MAAM,EAAE,UAAU,EAAE,CAAC;IAK9B,KAAK,IAAI,MAAM;IAIf,GAAG,IAAI,CAAC;CAGhB"}

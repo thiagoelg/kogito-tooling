@@ -1,0 +1,1 @@
+{"version":3,"file":"WorkspaceDescriptor.d.ts","sourceRoot":"","sources":["WorkspaceDescriptor.tsx"],"names":[],"mappings":"AAgBA,OAAO,EAAE,eAAe,EAAE,MAAM,mBAAmB,CAAC;AAEpD,MAAM,WAAW,mBAAmB;IAClC,WAAW,EAAE,MAAM,CAAC;IACpB,IAAI,EAAE,MAAM,CAAC;IACb,MAAM,EAAE,eAAe,CAAC;IACxB,cAAc,EAAE,MAAM,CAAC;IACvB,kBAAkB,EAAE,MAAM,CAAC;CAC5B"}

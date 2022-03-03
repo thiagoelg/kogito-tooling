@@ -1,0 +1,1 @@
+{"version":3,"file":"DmnDevSandboxRuntimeApi.d.ts","sourceRoot":"","sources":["DmnDevSandboxRuntimeApi.tsx"],"names":[],"mappings":"AAgBA,OAAO,EAAE,cAAc,EAAE,MAAM,0BAA0B,CAAC;AAG1D,MAAM,WAAW,kBAAkB;IACjC,SAAS,EAAE,MAAM,CAAC;IAClB,MAAM,EAAE,GAAG,CAAC;CACb;AAED,wBAAsB,cAAc,CAAC,IAAI,EAAE,kBAAkB,GAAG,OAAO,CAAC,cAAc,EAAE,CAAC,CAWxF"}

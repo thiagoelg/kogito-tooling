@@ -1,0 +1,1 @@
+{"version":3,"file":"ResizerSupervisor.d.ts","sourceRoot":"","sources":["ResizerSupervisor.tsx"],"names":[],"mappings":"AAgBA,OAAO,KAAK,KAAK,MAAM,OAAO,CAAC;AAI/B,OAAO,yBAAyB,CAAC;AAEjC,MAAM,WAAW,sBAAsB;IACrC,QAAQ,CAAC,EAAE,KAAK,CAAC,YAAY,CAAC;IAC9B,aAAa,EAAE,OAAO,CAAC;CACxB;AAED,eAAO,MAAM,iBAAiB,EAAE,KAAK,CAAC,iBAAiB,CAAC,sBAAsB,CAc7E,CAAC"}

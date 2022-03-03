@@ -1,0 +1,1 @@
+{"version":3,"file":"AppContext.d.ts","sourceRoot":"","sources":["AppContext.tsx"],"names":[],"mappings":";AAiBA,OAAO,EAAE,OAAO,EAAE,MAAM,2BAA2B,CAAC;AAEpD,MAAM,WAAW,cAAc;IAC7B,SAAS,EAAE,OAAO,CAAC;IACnB,IAAI,CAAC,EAAE,OAAO,CAAC;CAChB;AAED,eAAO,MAAM,UAAU,yCAA2C,CAAC;AAEnE,wBAAgB,MAAM,mBAErB"}

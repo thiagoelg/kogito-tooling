@@ -1,0 +1,1 @@
+{"version":3,"file":"ElectronFile.d.ts","sourceRoot":"","sources":["ElectronFile.ts"],"names":[],"mappings":"AAgBA,eAAO,MAAM,iBAAiB,iBAAiB,CAAC;AAChD,eAAO,MAAM,MAAM,WAAW,CAAC;AAE/B,MAAM,WAAW,YAAY;IAC3B,QAAQ,EAAE,MAAM,CAAC;IACjB,QAAQ,EAAE,MAAM,CAAC;IACjB,WAAW,EAAE,MAAM,CAAC;CACrB;AAED,oBAAY,eAAe;IACzB,IAAI,IAAA;IACJ,OAAO,IAAA;CACR"}

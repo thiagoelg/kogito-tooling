@@ -15,7 +15,6 @@
  */
 
 import * as monaco from "monaco-editor";
-import * as jsonService from "vscode-json-languageservice";
 import { TextDocument } from "vscode-languageserver-types";
 import { MonacoLanguage } from "../MonacoLanguage";
 import {
@@ -59,15 +58,13 @@ monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
   ],
 });
 
-const jsonLangService = jsonService.getLanguageService({});
-
 export function lookupJSONLanguage(): MonacoLanguage {
   return {
     languageId: "json",
 
     parser: {
       parseContent(content: TextDocument): ASTDocument {
-        return jsonLangService.parseJSONDocument(content) as ASTDocument;
+        throw new Error("Method not implemented.");
       },
     },
 

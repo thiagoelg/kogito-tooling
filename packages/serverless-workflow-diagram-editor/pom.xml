@@ -257,11 +257,7 @@
     <version.zanata.plugin>2.3.0</version.zanata.plugin>
 
     <!-- Third party Libraries -->
-<<<<<<< HEAD
     <version.ch.qos.logback>1.2.11</version.ch.qos.logback>
-=======
-    <version.ch.qos.logback>1.2.11</version.ch.qos.logback> <!-- Newer version in kie-parent causes ServiceLoader error -->
->>>>>>> aa4faf479a (Update ch.qos.logback)
     <version.com.google.elemental2>1.1.0</version.com.google.elemental2>
     <version.com.google.guava>30.1-jre</version.com.google.guava>
     <version.com.google.gwt>2.9.0</version.com.google.gwt>

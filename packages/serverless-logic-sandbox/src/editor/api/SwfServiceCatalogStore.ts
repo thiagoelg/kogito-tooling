@@ -29,8 +29,12 @@ import { VirtualServiceRegistryContextType } from "../../workspace/services/virt
 import { ServiceAccountSettingsConfig } from "../../settings/serviceAccount/ServiceAccountConfig";
 import { ServiceRegistrySettingsConfig } from "../../settings/serviceRegistry/ServiceRegistryConfig";
 import { ExtendedServicesConfig } from "../../settings/SettingsContext";
-import { VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX } from "../../workspace/services/virtualServiceRegistry/models/VirtualServiceRegistry";
+import {
+  functionPathFromWorkspaceFilePath,
+  VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX,
+} from "../../workspace/services/virtualServiceRegistry/models/VirtualServiceRegistry";
 import { WorkspaceFile } from "../../workspace/WorkspacesContext";
+import { isSpec } from "../../extension";
 
 export const VIRTUAL_SERVICE_REGISTRY_NAME = "Sandbox";
 export const ARTIFACT_TAGS = {
@@ -66,9 +70,9 @@ export class SwfServiceCatalogStore {
 
   private readonly SAME_WORKSPACE_REGISTRY_API = {
     getArtifactContentUrl: (artifact: SearchedArtifact) =>
-      artifact.id.replace(`${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${artifact.groupId}`, ""),
+      artifact.id.replace(`${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${artifact.groupId}/`, ""),
     getServiceId: (artifact: SearchedArtifact) =>
-      artifact.id.replace(`${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${artifact.groupId}`, ""),
+      artifact.id.replace(`${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${artifact.groupId}/`, ""),
   };
 
   private storedServices: SwfServiceCatalogService[] = [];
@@ -161,11 +165,35 @@ export class SwfServiceCatalogStore {
         })
       );
 
+      const isFromCurrentFile = (metadata: SearchedArtifact) => {
+        return (
+          metadata.id ===
+          functionPathFromWorkspaceFilePath(
+            { groupId: this.currentFile?.workspaceId },
+            this.currentFile?.relativePath,
+            true
+          )
+        );
+      };
+
+      const isForeignWorkflow = (metadata: SearchedArtifact) => {
+        return !isSpec(metadata.id) && metadata.groupId !== this.currentFile?.workspaceId;
+      };
+
+      const isLocalSpec = (metadata: SearchedArtifact) => {
+        return isSpec(metadata.id) && metadata.groupId === this.currentFile?.workspaceId;
+      };
+
+      // The list should:
+      // - Show workflows from other workspaces
+      // - Show specs from same workspace
+      // - Hide current file workflow
+      // - Hide specs from other workspaces
       virtualRegistry = virtualServiceRegistryGroupsFilesWithContent.flat().filter((file) => {
         return (
           file.content &&
-          `${file.metadata.id}` !==
-            `${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${this.currentFile?.workspaceId}/${this.currentFile?.relativePath}`
+          !isFromCurrentFile(file.metadata) &&
+          (isForeignWorkflow(file.metadata) || isLocalSpec(file.metadata))
         );
       });
     }

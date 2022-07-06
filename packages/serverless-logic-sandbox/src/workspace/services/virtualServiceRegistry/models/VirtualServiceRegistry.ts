@@ -20,11 +20,13 @@ import { generateOpenApiSpec } from "./BaseOpenApiSpec";
 import { ServiceRegistryFile } from "./ServiceRegistryFile";
 import { DescriptorBase } from "../../../commonServices/DescriptorService";
 import * as yaml from "yaml";
-import { decoder, encoder } from "../../../commonServices/BaseFile";
+import { decoder } from "../../../commonServices/BaseFile";
 
 export const VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX = "sandbox::";
 
-export type GroupPath = `/${typeof VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${VirtualServiceRegistryGroup["groupId"]}`;
+export type GroupPath = `${
+  | "/"
+  | ""}${typeof VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${VirtualServiceRegistryGroup["groupId"]}`;
 
 export type FunctionPath = `${GroupPath}/${VirtualServiceRegistryFunction["name"]}`;
 
@@ -72,22 +74,29 @@ export interface VirtualServiceRegistryGroup extends DescriptorBase {
   lastUpdatedDateISO: string;
 }
 
-export function groupPath(virtualServiceRegistryGroup: {
-  groupId?: VirtualServiceRegistryGroup["groupId"];
-}): GroupPath {
-  return `/${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${virtualServiceRegistryGroup.groupId}`;
+export function groupPath(
+  virtualServiceRegistryGroup: {
+    groupId?: VirtualServiceRegistryGroup["groupId"];
+  },
+  excludePrefixSlash = false
+): GroupPath {
+  return `${excludePrefixSlash ? "" : "/"}${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${
+    virtualServiceRegistryGroup.groupId
+  }`;
 }
 
 export function functionPath(
   virtualServiceRegistryGroup: { groupId: VirtualServiceRegistryGroup["groupId"] },
-  serviceFunction: VirtualServiceRegistryFunction
+  serviceFunction: VirtualServiceRegistryFunction,
+  excludePrefixSlash = false
 ): FunctionPath {
-  return `${groupPath(virtualServiceRegistryGroup)}/${serviceFunction.name}`;
+  return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${serviceFunction.name}`;
 }
 
 export function functionPathFromWorkspaceFilePath(
   virtualServiceRegistryGroup: { groupId?: VirtualServiceRegistryGroup["groupId"] },
-  relativePath?: WorkspaceFile["relativePath"]
+  relativePath?: WorkspaceFile["relativePath"],
+  excludePrefixSlash = false
 ) {
-  return `${groupPath(virtualServiceRegistryGroup)}/${relativePath}`;
+  return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${relativePath}`;
 }

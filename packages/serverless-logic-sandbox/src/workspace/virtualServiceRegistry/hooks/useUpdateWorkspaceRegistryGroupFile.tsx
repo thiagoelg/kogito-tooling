@@ -15,9 +15,9 @@
  */
 
 import { useEffect } from "react";
-import { isServerlessWorkflow, isSpec, resolveExtension } from "../../../../extension";
-import { encoder } from "../../../commonServices/BaseFile";
-import { useWorkspaces, WorkspaceFile } from "../../../WorkspacesContext";
+import { isServerlessWorkflow, isSpec, resolveExtension } from "../../../extension";
+import { encoder } from "../../commonServices/BaseFile";
+import { useWorkspaces, WorkspaceFile } from "../../WorkspacesContext";
 import {
   functionPath,
   functionPathFromWorkspaceFilePath,
@@ -48,45 +48,43 @@ export function useUpdateWorkspaceRegistryGroupFile(args: { workspaceFile: Works
         groupId: workspaceId,
         relativePath: functionPathFromWorkspaceFilePath(vsrGroup, data.relativePath || data.oldRelativePath),
       });
-      if (currentFile) {
-        if (data.type === "DELETE") {
+      if (data.type === "DELETE") {
+        if (currentFile) {
           virtualServiceRegistry.deleteFile({
             fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
             file: currentFile,
           });
         }
-        if (data.type === "RENAME_FILE") {
-          if (currentFile) {
-            virtualServiceRegistry.renameFile({
-              fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-              file: currentFile,
-              newFileNameWithoutExtension: data.newRelativePath.replace(
-                `.${resolveExtension(data.newRelativePath)}`,
-                ""
-              ),
-            });
-          } else if (file) {
-            const vsrFunction = new VirtualServiceRegistryFunction(file);
-            await virtualServiceRegistry.addFile({
-              fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-              groupId: workspaceId,
-              name: vsrFunction.name,
-              destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
-              content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
-              extension: vsrFunction.file.extension,
-            });
-          }
+      }
+      if (data.type === "RENAME_FILE") {
+        if (currentFile) {
+          virtualServiceRegistry.renameFile({
+            fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
+            file: currentFile,
+            newFileNameWithoutExtension: data.newRelativePath.replace(`.${resolveExtension(data.newRelativePath)}`, ""),
+          });
+        } else if (file) {
+          const vsrFunction = new VirtualServiceRegistryFunction(file);
+          await virtualServiceRegistry.addFile({
+            fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
+            groupId: workspaceId,
+            name: vsrFunction.name,
+            destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
+            content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
+            extension: vsrFunction.file.extension,
+          });
         }
-        if (data.type === "UPDATE_FILE") {
+      }
+      if (data.type === "UPDATE_FILE") {
+        if (file) {
+          const vsrFunction = new VirtualServiceRegistryFunction(file);
           if (currentFile) {
-            const vsrFunction = new VirtualServiceRegistryFunction(currentFile);
             await virtualServiceRegistry.updateFile({
               fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
               file: currentFile,
               getNewContents: () => vsrFunction.getOpenApiSpec(),
             });
-          } else if (file) {
-            const vsrFunction = new VirtualServiceRegistryFunction(file);
+          } else {
             await virtualServiceRegistry.addFile({
               fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
               groupId: workspaceId,
@@ -97,18 +95,18 @@ export function useUpdateWorkspaceRegistryGroupFile(args: { workspaceFile: Works
             });
           }
         }
-        if (data.type === "ADD_FILE") {
-          if ((isServerlessWorkflow(data.relativePath) || isSpec(data.relativePath)) && file) {
-            const vsrFunction = new VirtualServiceRegistryFunction(file);
-            await virtualServiceRegistry.addFile({
-              fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-              groupId: workspaceId,
-              name: vsrFunction.name,
-              destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
-              content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
-              extension: vsrFunction.file.extension,
-            });
-          }
+      }
+      if (data.type === "ADD_FILE") {
+        if ((isServerlessWorkflow(data.relativePath) || isSpec(data.relativePath)) && file) {
+          const vsrFunction = new VirtualServiceRegistryFunction(file);
+          await virtualServiceRegistry.addFile({
+            fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
+            groupId: workspaceId,
+            name: vsrFunction.name,
+            destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
+            content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
+            extension: vsrFunction.file.extension,
+          });
         }
       }
     };

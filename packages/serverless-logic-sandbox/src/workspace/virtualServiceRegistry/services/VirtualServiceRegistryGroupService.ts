@@ -15,10 +15,10 @@
  */
 
 import KieSandboxFs from "@kie-tools/kie-sandbox-fs";
-import { StorageService } from "../../../commonServices/StorageService";
+import { StorageService } from "../../commonServices/StorageService";
 import { groupPath, VirtualServiceRegistryGroup } from "../models/VirtualServiceRegistry";
-import { WorkspaceDescriptor } from "../../../model/WorkspaceDescriptor";
-import { DescriptorService } from "../../../commonServices/DescriptorService";
+import { WorkspaceDescriptor } from "../../model/WorkspaceDescriptor";
+import { DescriptorService } from "../../commonServices/DescriptorService";
 
 const VIRTUAL_SERVICE_REGISTRY_GROUP_FS_NAME = "registryGroup";
 

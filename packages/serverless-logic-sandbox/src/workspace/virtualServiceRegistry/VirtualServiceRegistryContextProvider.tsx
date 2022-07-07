@@ -28,17 +28,17 @@ import { VirtualServiceRegistryContext } from "./VirtualServiceRegistryContext";
 import { VirtualServiceRegistryGroupService } from "./services/VirtualServiceRegistryGroupService";
 import { VirtualServiceRegistryFsService } from "./services/VirtualServiceRegistryFsService";
 import { VirtualServiceRegistryService } from "./services/VirtualServiceRegistryService";
-import { StorageFile, StorageService } from "../../commonServices/StorageService";
+import { StorageFile, StorageService } from "../commonServices/StorageService";
 import {
   functionPath,
   VirtualServiceRegistryFunction,
   VirtualServiceRegistryGroup,
 } from "./models/VirtualServiceRegistry";
 import { ServiceRegistryFile } from "./models/ServiceRegistryFile";
-import { WorkspaceDescriptor } from "../../model/WorkspaceDescriptor";
-import { useWorkspaces } from "../../WorkspacesContext";
-import { isServerlessWorkflow, isSpec } from "../../../extension";
-import { decoder, encoder } from "../../commonServices/BaseFile";
+import { WorkspaceDescriptor } from "../model/WorkspaceDescriptor";
+import { useWorkspaces } from "../WorkspacesContext";
+import { isServerlessWorkflow, isSpec } from "../../extension";
+import { decoder, encoder } from "../commonServices/BaseFile";
 
 type SupportedFileExtensions = ".yaml" | ".json";
 const MAX_NEW_FILE_INDEX_ATTEMPTS = 10;

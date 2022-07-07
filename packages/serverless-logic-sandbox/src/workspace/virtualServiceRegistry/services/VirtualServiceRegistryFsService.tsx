@@ -16,7 +16,7 @@
 
 import { groupPath } from "../models/VirtualServiceRegistry";
 import { VirtualServiceRegistryGroupService } from "./VirtualServiceRegistryGroupService";
-import { FsService } from "../../../commonServices/FsService";
+import { FsService } from "../../commonServices/FsService";
 
 export class VirtualServiceRegistryFsService extends FsService<VirtualServiceRegistryGroupService> {
   getDbName(id: string): string {

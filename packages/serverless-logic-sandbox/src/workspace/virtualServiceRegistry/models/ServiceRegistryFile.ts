@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BaseFile, BaseFileProps } from "../../../commonServices/BaseFile";
+import { BaseFile, BaseFileProps } from "../../commonServices/BaseFile";
 
 export interface ServiceRegistryFileProps extends BaseFileProps {
   groupId: string;

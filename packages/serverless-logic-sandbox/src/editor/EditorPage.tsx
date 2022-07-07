@@ -49,8 +49,8 @@ import { SwfServiceCatalogChannelApiImpl } from "./api/SwfServiceCatalogChannelA
 import { EditorPageDockDrawer, EditorPageDockDrawerRef } from "./EditorPageDockDrawer";
 import { EditorPageErrorPage } from "./EditorPageErrorPage";
 import { EditorToolbar } from "./EditorToolbar";
-import { useUpdateWorkspaceRegistryGroupFile } from "../workspace/services/virtualServiceRegistry/hooks/useUpdateWorkspaceRegistryGroupFile";
-import { useVirtualServiceRegistry } from "../workspace/services/virtualServiceRegistry/VirtualServiceRegistryContext";
+import { useUpdateWorkspaceRegistryGroupFile } from "../workspace/virtualServiceRegistry/hooks/useUpdateWorkspaceRegistryGroupFile";
+import { useVirtualServiceRegistry } from "../workspace/virtualServiceRegistry/VirtualServiceRegistryContext";
 import { DiagnosticSeverity } from "vscode-languageserver-types";
 import { useSwfFeatureToggle } from "./hooks/useSwfFeatureToggle";
 

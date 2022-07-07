@@ -25,14 +25,15 @@ import { SearchedArtifact } from "@rhoas/registry-instance-sdk";
 import axios from "axios";
 import { OpenAPIV3 } from "openapi-types";
 import * as yaml from "yaml";
-import { VirtualServiceRegistryContextType } from "../../workspace/services/virtualServiceRegistry/VirtualServiceRegistryContext";
+import { VirtualServiceRegistryContextType } from "../../workspace/virtualServiceRegistry/VirtualServiceRegistryContext";
 import { ServiceAccountSettingsConfig } from "../../settings/serviceAccount/ServiceAccountConfig";
 import { ServiceRegistrySettingsConfig } from "../../settings/serviceRegistry/ServiceRegistryConfig";
 import { ExtendedServicesConfig } from "../../settings/SettingsContext";
 import {
   functionPathFromWorkspaceFilePath,
+  hasVirtualServiceRegistryDependency,
   VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX,
-} from "../../workspace/services/virtualServiceRegistry/models/VirtualServiceRegistry";
+} from "../../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 import { WorkspaceFile } from "../../workspace/WorkspacesContext";
 import { isSpec } from "../../extension";
 
@@ -190,6 +191,7 @@ export class SwfServiceCatalogStore {
       // - Hide current file workflow
       // - Hide specs from other workspaces
       virtualRegistry = virtualServiceRegistryGroupsFilesWithContent.flat().filter((file) => {
+        hasVirtualServiceRegistryDependency(file.content);
         return (
           file.content &&
           !isFromCurrentFile(file.metadata) &&

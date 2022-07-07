@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { isJson, isSpec } from "../../../../extension";
-import { WorkspaceFile } from "../../../WorkspacesContext";
+import { isJson, isSpec } from "../../../extension";
+import { WorkspaceFile } from "../../WorkspacesContext";
 import { generateOpenApiSpec } from "./BaseOpenApiSpec";
 import { ServiceRegistryFile } from "./ServiceRegistryFile";
-import { DescriptorBase } from "../../../commonServices/DescriptorService";
+import { DescriptorBase } from "../../commonServices/DescriptorService";
 import * as yaml from "yaml";
-import { decoder } from "../../../commonServices/BaseFile";
+import { decoder } from "../../commonServices/BaseFile";
+import { OpenAPIV3 } from "openapi-types";
 
 export const VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX = "sandbox::";
 
@@ -99,4 +100,8 @@ export function functionPathFromWorkspaceFilePath(
   excludePrefixSlash = false
 ) {
   return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${relativePath}`;
+}
+
+export function hasVirtualServiceRegistryDependency(content: OpenAPIV3.Document) {
+  console.log(content);
 }

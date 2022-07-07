@@ -26,9 +26,9 @@ import KieSandboxFs from "@kie-tools/kie-sandbox-fs";
 import { VirtualServiceRegistryService } from "./services/VirtualServiceRegistryService";
 import { VirtualServiceRegistryGroupService } from "./services/VirtualServiceRegistryGroupService";
 import { VirtualServiceRegistryFsService } from "./services/VirtualServiceRegistryFsService";
-import { StorageService } from "../../commonServices/StorageService";
+import { StorageService } from "../commonServices/StorageService";
 import { VirtualServiceRegistryGroup } from "./models/VirtualServiceRegistry";
-import { WorkspaceDescriptor } from "../../model/WorkspaceDescriptor";
+import { WorkspaceDescriptor } from "../model/WorkspaceDescriptor";
 import { ServiceRegistryFile } from "./models/ServiceRegistryFile";
 
 export interface LocalFile {

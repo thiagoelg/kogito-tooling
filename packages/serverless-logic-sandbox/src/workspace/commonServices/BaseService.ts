@@ -300,7 +300,7 @@ export abstract class BaseService<
     );
   }
 
-  private toStorageFile(file: F): StorageFile {
+  public toStorageFile(file: F): StorageFile {
     return new StorageFile({
       path: this.getAbsolutePath({ descriptorId: file.parentId, relativePath: file.relativePath }),
       getFileContents: file.getFileContents,

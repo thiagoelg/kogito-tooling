@@ -17,6 +17,7 @@ import { VirtualServiceRegistryGroup } from "../models/VirtualServiceRegistry";
 import { ServiceRegistryFile } from "../models/ServiceRegistryFile";
 import { WorkspaceDescriptor } from "../../model/WorkspaceDescriptor";
 import { BaseService, BaseServiceCreateProps, BaseServiceEvents } from "../../commonServices/BaseService";
+import KieSandboxFs from "@kie-tools/kie-sandbox-fs";
 
 export const VIRTUAL_SERVICE_REGISTRY_BROADCAST_CHANNEL = "virtualServiceRegistry";
 export const VIRTUAL_SERVICE_REGISTRY_GROUP_BROADCAST_CHANNEL = (groupId: string) =>
@@ -36,12 +37,18 @@ export class VirtualServiceRegistryService extends BaseService<
     return;
   }
 
-  protected newFile(id: string, relativePath: string, getFileContents: () => Promise<Uint8Array>): ServiceRegistryFile {
+  public newFile(id: string, relativePath: string, getFileContents: () => Promise<Uint8Array>): ServiceRegistryFile {
     return new ServiceRegistryFile({
       groupId: id,
       relativePath,
       getFileContents,
-      needsWorkspaceDeploy: true,
     });
+  }
+
+  public async addFiles(fs: KieSandboxFs, files: ServiceRegistryFile[]) {
+    await this.storageService.createFiles(
+      fs,
+      files.map((file) => this.toStorageFile(file))
+    );
   }
 }

@@ -37,11 +37,12 @@ export class VirtualServiceRegistryFunction {
   public isFromServiceRegistryFile = false;
 
   constructor(public file: WorkspaceFile | ServiceRegistryFile) {
-    if (this.file instanceof WorkspaceFile) {
+    if (file instanceof WorkspaceFile) {
       this.name = file.relativePath;
       this.isSpec = isSpec(file.relativePath);
     } else {
-      (this.name = file.name), (this.isSpec = isSpec(file.relativeDirPath));
+      this.name = file.name;
+      this.isSpec = isSpec(file.relativeDirPath);
       this.isFromServiceRegistryFile = true;
     }
   }
@@ -58,9 +59,26 @@ export class VirtualServiceRegistryFunction {
         throw new Error("No workflow ID!");
       }
       return await generateOpenApiSpec(parsedContent["id"]);
-    } catch (_e) {
+    } catch (e) {
+      console.error(e);
       return "";
     }
+  }
+
+  public async hasVirtualServiceRegistryDependency() {
+    if (!(this.isSpec || this.isFromServiceRegistryFile) && this.file instanceof WorkspaceFile) {
+      const content = await this.file.getFileContentsAsString();
+      const parsedContent = isJson(this.file.relativePath) ? JSON.parse(content) : yaml.parse(content);
+      const workflowFunctions = parsedContent["functions"] as Array<{ operation?: string }> | undefined;
+      if (
+        workflowFunctions?.some((workflowFunction) =>
+          workflowFunction.operation?.includes(VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX)
+        )
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   get extension() {
@@ -100,8 +118,4 @@ export function functionPathFromWorkspaceFilePath(
   excludePrefixSlash = false
 ) {
   return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${relativePath}`;
-}
-
-export function hasVirtualServiceRegistryDependency(content: OpenAPIV3.Document) {
-  console.log(content);
 }

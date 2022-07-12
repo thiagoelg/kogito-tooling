@@ -102,21 +102,31 @@ export function VirtualServiceRegistryContextProvider(props: Props) {
             (file) => isServerlessWorkflow(file.relativePath) || isSpec(file.relativePath)
           );
 
-          const filesSpecs = workflowFiles.map((file) => {
-            const vsrFunction = new VirtualServiceRegistryFunction(file);
-            return new StorageFile({
-              path: functionPath(vsrGroup, vsrFunction),
-              getFileContents: () => vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
-            });
+          const vsrFunctions = workflowFiles.map((file) => {
+            return new VirtualServiceRegistryFunction(file);
           });
 
-          await storageService.createFiles(fs, filesSpecs);
+          const independentVsrFunctions = (
+            await Promise.all(
+              vsrFunctions.map(async (vsrFunction) =>
+                (await vsrFunction.hasVirtualServiceRegistryDependency()) ? false : vsrFunction
+              )
+            )
+          ).filter((vsrFunction): vsrFunction is VirtualServiceRegistryFunction => Boolean(vsrFunction));
+
+          const filesSpecs = independentVsrFunctions.map((vsrFunction) => {
+            return vsrService.newFile(vsrGroup.groupId, functionPath(vsrGroup, vsrFunction), () =>
+              vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content))
+            );
+          });
+
+          await vsrService.addFiles(fs, filesSpecs);
 
           return vsrService.getFilesWithLazyContent(fs, vsrGroup.groupId);
         },
       });
     },
-    [createServiceRegistryGroup, workspaces, storageService, vsrService]
+    [createServiceRegistryGroup, workspaces, vsrService]
   );
 
   const renameFile = useCallback(
@@ -187,7 +197,6 @@ export function VirtualServiceRegistryContextProvider(props: Props) {
           groupId: args.groupId,
           getFileContents: () => Promise.resolve(args.content!),
           relativePath: args.destinationDirRelativePath,
-          needsWorkspaceDeploy: true,
         });
         await vsrService.createOrOverwriteFile(args.fs, newFile, { broadcast: true });
         return newFile;

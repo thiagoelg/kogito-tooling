@@ -18,7 +18,6 @@ import { BaseFile, BaseFileProps } from "../../commonServices/BaseFile";
 
 export interface ServiceRegistryFileProps extends BaseFileProps {
   groupId: string;
-  needsWorkspaceDeploy: boolean;
 }
 
 export class ServiceRegistryFile extends BaseFile {
@@ -32,10 +31,6 @@ export class ServiceRegistryFile extends BaseFile {
 
   get relatedWorkspaceId() {
     return this.args.groupId;
-  }
-
-  get needsWorkspaceDeploy() {
-    return this.args.needsWorkspaceDeploy;
   }
 
   get parentId() {

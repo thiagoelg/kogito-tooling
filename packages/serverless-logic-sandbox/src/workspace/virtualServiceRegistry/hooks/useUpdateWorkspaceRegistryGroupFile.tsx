@@ -48,12 +48,28 @@ export function useUpdateWorkspaceRegistryGroupFile(args: { workspaceFile: Works
         groupId: workspaceId,
         relativePath: functionPathFromWorkspaceFilePath(vsrGroup, data.relativePath || data.oldRelativePath),
       });
+
+      const addFile = async (vsrFunction: VirtualServiceRegistryFunction) => {
+        return await virtualServiceRegistry.addFile({
+          fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
+          groupId: workspaceId,
+          name: vsrFunction.name,
+          destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
+          content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
+          extension: vsrFunction.file.extension,
+        });
+      };
+
+      const deleteFile = async () =>
+        currentFile &&
+        virtualServiceRegistry.deleteFile({
+          fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
+          file: currentFile,
+        });
+
       if (data.type === "DELETE") {
         if (currentFile) {
-          virtualServiceRegistry.deleteFile({
-            fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-            file: currentFile,
-          });
+          await deleteFile();
         }
       }
       if (data.type === "RENAME_FILE") {
@@ -65,48 +81,33 @@ export function useUpdateWorkspaceRegistryGroupFile(args: { workspaceFile: Works
           });
         } else if (file) {
           const vsrFunction = new VirtualServiceRegistryFunction(file);
-          await virtualServiceRegistry.addFile({
-            fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-            groupId: workspaceId,
-            name: vsrFunction.name,
-            destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
-            content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
-            extension: vsrFunction.file.extension,
-          });
+          await addFile(vsrFunction);
         }
       }
       if (data.type === "UPDATE_FILE") {
         if (file) {
           const vsrFunction = new VirtualServiceRegistryFunction(file);
-          if (currentFile) {
+          const hasVirtualServiceRegistryDependency = await vsrFunction.hasVirtualServiceRegistryDependency();
+          if (hasVirtualServiceRegistryDependency) {
+            deleteFile();
+          } else if (currentFile) {
             await virtualServiceRegistry.updateFile({
               fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
               file: currentFile,
               getNewContents: () => vsrFunction.getOpenApiSpec(),
             });
           } else {
-            await virtualServiceRegistry.addFile({
-              fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-              groupId: workspaceId,
-              name: vsrFunction.name,
-              destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
-              content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
-              extension: vsrFunction.file.extension,
-            });
+            await addFile(vsrFunction);
           }
         }
       }
       if (data.type === "ADD_FILE") {
         if ((isServerlessWorkflow(data.relativePath) || isSpec(data.relativePath)) && file) {
           const vsrFunction = new VirtualServiceRegistryFunction(file);
-          await virtualServiceRegistry.addFile({
-            fs: await virtualServiceRegistry.vsrFsService.getFs(workspaceId),
-            groupId: workspaceId,
-            name: vsrFunction.name,
-            destinationDirRelativePath: functionPath({ groupId: workspaceId }, vsrFunction),
-            content: await vsrFunction.getOpenApiSpec().then((content) => encoder.encode(content)),
-            extension: vsrFunction.file.extension,
-          });
+          const hasVirtualServiceRegistryDependency = await vsrFunction.hasVirtualServiceRegistryDependency();
+          if (!hasVirtualServiceRegistryDependency) {
+            await addFile(vsrFunction);
+          }
         }
       }
     };

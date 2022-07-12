@@ -31,7 +31,6 @@ import { ServiceRegistrySettingsConfig } from "../../settings/serviceRegistry/Se
 import { ExtendedServicesConfig } from "../../settings/SettingsContext";
 import {
   functionPathFromWorkspaceFilePath,
-  hasVirtualServiceRegistryDependency,
   VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX,
 } from "../../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 import { WorkspaceFile } from "../../workspace/WorkspacesContext";
@@ -191,7 +190,6 @@ export class SwfServiceCatalogStore {
       // - Hide current file workflow
       // - Hide specs from other workspaces
       virtualRegistry = virtualServiceRegistryGroupsFilesWithContent.flat().filter((file) => {
-        hasVirtualServiceRegistryDependency(file.content);
         return (
           file.content &&
           !isFromCurrentFile(file.metadata) &&

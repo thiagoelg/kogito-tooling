@@ -168,11 +168,7 @@ export class SwfServiceCatalogStore {
       const isFromCurrentFile = (metadata: SearchedArtifact) => {
         return (
           metadata.id ===
-          functionPathFromWorkspaceFilePath(
-            { groupId: this.currentFile?.workspaceId },
-            this.currentFile?.relativePath,
-            true
-          )
+          functionPathFromWorkspaceFilePath({ groupId: this.currentFile?.workspaceId }, this.currentFile?.relativePath)
         );
       };
 
@@ -221,6 +217,8 @@ export class SwfServiceCatalogStore {
         registry,
         serviceId,
       });
+
+      console.log(url);
 
       return {
         name: artifact.metadata.id,

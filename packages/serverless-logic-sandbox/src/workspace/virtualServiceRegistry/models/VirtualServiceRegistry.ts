@@ -60,7 +60,7 @@ export class VirtualServiceRegistryFunction {
       }
       return await generateOpenApiSpec(parsedContent["id"]);
     } catch (e) {
-      console.error(e);
+      console.log(e);
       return "";
     }
   }
@@ -68,7 +68,13 @@ export class VirtualServiceRegistryFunction {
   public async hasVirtualServiceRegistryDependency() {
     if (!(this.isSpec || this.isFromServiceRegistryFile) && this.file instanceof WorkspaceFile) {
       const content = await this.file.getFileContentsAsString();
-      const parsedContent = isJson(this.file.relativePath) ? JSON.parse(content) : yaml.parse(content);
+      let parsedContent: Record<string, unknown>;
+      try {
+        parsedContent = isJson(this.file.relativePath) ? JSON.parse(content) : yaml.parse(content);
+      } catch (e) {
+        // Invalid file.
+        return false;
+      }
       const workflowFunctions = parsedContent["functions"] as Array<{ operation?: string }> | undefined;
       if (
         workflowFunctions?.some((workflowFunction) =>
@@ -97,7 +103,7 @@ export function groupPath(
   virtualServiceRegistryGroup: {
     groupId?: VirtualServiceRegistryGroup["groupId"];
   },
-  excludePrefixSlash = false
+  excludePrefixSlash = true
 ): GroupPath {
   return `${excludePrefixSlash ? "" : "/"}${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}${
     virtualServiceRegistryGroup.groupId
@@ -107,7 +113,7 @@ export function groupPath(
 export function functionPath(
   virtualServiceRegistryGroup: { groupId: VirtualServiceRegistryGroup["groupId"] },
   serviceFunction: VirtualServiceRegistryFunction,
-  excludePrefixSlash = false
+  excludePrefixSlash = true
 ): FunctionPath {
   return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${serviceFunction.name}`;
 }
@@ -115,7 +121,7 @@ export function functionPath(
 export function functionPathFromWorkspaceFilePath(
   virtualServiceRegistryGroup: { groupId?: VirtualServiceRegistryGroup["groupId"] },
   relativePath?: WorkspaceFile["relativePath"],
-  excludePrefixSlash = false
+  excludePrefixSlash = true
 ) {
   return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${relativePath}`;
 }

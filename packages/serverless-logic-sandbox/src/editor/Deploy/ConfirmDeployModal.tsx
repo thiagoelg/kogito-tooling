@@ -33,6 +33,7 @@ import { WorkspaceFile } from "../../workspace/WorkspacesContext";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
 import { isSingleModuleProject } from "../../project";
+import { useVirtualServiceRegistryDependencies } from "./useVirtualServiceRegistryDependencies";
 
 const FETCH_OPEN_API_POLLING_TIME = 5000;
 
@@ -69,6 +70,17 @@ export function ConfirmDeployModal(props: ConfirmDeployModalProps) {
   useEffect(() => {
     setShouldDeployAsProject(canDeployAsProject);
   }, [canDeployAsProject]);
+
+  const depsDeployments = useVirtualServiceRegistryDependencies({
+    workspace: props.workspace,
+    workspaceFile: props.workspaceFile,
+    deployAsProject: shouldDeployAsProject,
+    canUploadOpenApi,
+  });
+
+  useEffect(() => {
+    console.log(depsDeployments);
+  }, [depsDeployments]);
 
   const setDeployStartedError = useAlert(
     props.alerts,

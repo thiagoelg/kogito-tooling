@@ -67,22 +67,7 @@ export class VirtualServiceRegistryFunction {
 
   public async hasVirtualServiceRegistryDependency() {
     if (!(this.isSpec || this.isFromServiceRegistryFile) && this.file instanceof WorkspaceFile) {
-      const content = await this.file.getFileContentsAsString();
-      let parsedContent: Record<string, unknown>;
-      try {
-        parsedContent = isJson(this.file.relativePath) ? JSON.parse(content) : yaml.parse(content);
-      } catch (e) {
-        // Invalid file.
-        return false;
-      }
-      const workflowFunctions = parsedContent["functions"] as Array<{ operation?: string }> | undefined;
-      if (
-        workflowFunctions?.some((workflowFunction) =>
-          workflowFunction.operation?.includes(VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX)
-        )
-      ) {
-        return true;
-      }
+      return hasVirtualServiceRegistryDependency(this.file);
     }
     return false;
   }
@@ -90,6 +75,31 @@ export class VirtualServiceRegistryFunction {
   get extension() {
     return this.isSpec ? this.file.extension : "yaml";
   }
+}
+
+export async function hasVirtualServiceRegistryDependency(file: WorkspaceFile) {
+  return (await getVirtualServiceRegistryDependencies(file)).length > 0;
+}
+
+export async function getVirtualServiceRegistryDependencies(file: WorkspaceFile) {
+  const content = await file.getFileContentsAsString();
+  let parsedContent: Record<string, unknown>;
+  try {
+    parsedContent = isJson(file.relativePath) ? JSON.parse(content) : yaml.parse(content);
+  } catch (e) {
+    // Invalid file.
+    return [];
+  }
+  const workflowFunctions = parsedContent["functions"] as Array<{ operation?: string }> | undefined;
+
+  const dependencies: Array<string> = [];
+  workflowFunctions?.forEach((workflowFunction) => {
+    if (workflowFunction.operation?.includes(VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX)) {
+      const workspaceId = workspaceIdFromFunctionPath(workflowFunction.operation);
+      workspaceId && dependencies.push(workspaceId);
+    }
+  });
+  return dependencies;
 }
 
 export interface VirtualServiceRegistryGroup extends DescriptorBase {
@@ -124,4 +134,10 @@ export function functionPathFromWorkspaceFilePath(
   excludePrefixSlash = true
 ) {
   return `${groupPath(virtualServiceRegistryGroup, excludePrefixSlash)}/${relativePath}`;
+}
+
+export function workspaceIdFromFunctionPath(functionPath: string) {
+  const regex = new RegExp(`${VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX}(.*)/`, "g");
+  const result = regex.exec(functionPath);
+  return result?.[1];
 }

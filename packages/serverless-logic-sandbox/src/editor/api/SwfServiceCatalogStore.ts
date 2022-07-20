@@ -133,6 +133,8 @@ export class SwfServiceCatalogStore {
       );
     }
 
+    console.log({ artifactsWithContent });
+
     let virtualRegistry: ArtifactWithContent[] = [];
 
     if (this.virtualServiceRegistry && this.currentFile) {
@@ -217,8 +219,6 @@ export class SwfServiceCatalogStore {
         registry,
         serviceId,
       });
-
-      console.log(url);
 
       return {
         name: artifact.metadata.id,

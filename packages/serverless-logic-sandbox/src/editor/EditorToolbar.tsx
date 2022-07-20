@@ -54,6 +54,7 @@ import { SaveIcon } from "@patternfly/react-icons/dist/js/icons/save-icon";
 import { SyncAltIcon } from "@patternfly/react-icons/dist/js/icons/sync-alt-icon";
 import { SyncIcon } from "@patternfly/react-icons/dist/js/icons/sync-icon";
 import { TrashIcon } from "@patternfly/react-icons/dist/js/icons/trash-icon";
+import { RegistryIcon } from "@patternfly/react-icons/dist/js/icons/registry-icon";
 import { Location } from "history";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -91,6 +92,7 @@ import { KieSandboxExtendedServicesButtons } from "./KieSandboxExtendedServices/
 import { KieSandboxExtendedServicesDropdownGroup } from "./KieSandboxExtendedServices/KieSandboxExtendedServicesDropdownGroup";
 import { NewFileDropdownMenu } from "./NewFileDropdownMenu";
 import { ConfirmDeployModal } from "./Deploy/ConfirmDeployModal";
+import { hasVirtualServiceRegistryDependency } from "../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 
 export interface Props {
   alerts: AlertsController | undefined;
@@ -147,10 +149,15 @@ export function EditorToolbar(props: Props) {
   const [gitHubGist, setGitHubGist] =
     useState<OctokitRestEndpointMethodTypes["gists"]["get"]["response"]["data"] | undefined>(undefined);
   const workspaceImportableUrl = useImportableUrl(workspacePromise.data?.descriptor.origin.url?.toString());
+  const [hasVirtualServiceRegistryDependencies, setHasVirtualServiceRegistryDependencies] = useState<boolean>(false);
 
   const githubAuthInfo = useGitHubAuthInfo();
   const canPushToGitRepository = useMemo(() => !!githubAuthInfo, [githubAuthInfo]);
   const navigationBlockersBypass = useNavigationBlockersBypass();
+
+  useEffect(() => {
+    hasVirtualServiceRegistryDependency(props.workspaceFile).then(setHasVirtualServiceRegistryDependencies);
+  }, [props.workspaceFile, setHasVirtualServiceRegistryDependencies]);
 
   const canBeDeployed = useMemo(
     () => isServerlessWorkflow(props.workspaceFile.relativePath),
@@ -1399,6 +1406,16 @@ If you are, it means that creating this Gist failed and it can safely be deleted
                     <FlexItem>
                       <FileSwitcher workspace={workspace} workspaceFile={props.workspaceFile} />
                     </FlexItem>
+                    {hasVirtualServiceRegistryDependencies && (
+                      <FlexItem>
+                        <Tooltip
+                          content={"This model requires deployments from other workspaces in this Sandbox."}
+                          position="bottom"
+                        >
+                          <RegistryIcon color="var(--pf-global--warning-color--100)" />
+                        </Tooltip>
+                      </FlexItem>
+                    )}
                     <FlexItem>
                       {(isEdited && (
                         <Tooltip content={"Saving file..."} position={"bottom"}>

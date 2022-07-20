@@ -17,10 +17,14 @@
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
 import { Divider } from "@patternfly/react-core/dist/js/components/Divider";
 import { DropdownItem } from "@patternfly/react-core/dist/js/components/Dropdown";
+import { Text } from "@patternfly/react-core/dist/js/components/Text";
+import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/js/layouts/Flex";
 import { OpenshiftIcon } from "@patternfly/react-icons/dist/js/icons/openshift-icon";
+import { RegistryIcon } from "@patternfly/react-icons/dist/js/icons/registry-icon";
 import * as React from "react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
+import { isServerlessWorkflow } from "../../extension";
 import { FeatureDependentOnKieSandboxExtendedServices } from "../../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
 import {
   DependentFeature,
@@ -33,12 +37,24 @@ import { useSettings, useSettingsDispatch } from "../../settings/SettingsContext
 import { SettingsTabs } from "../../settings/SettingsModalBody";
 import { FileLabel } from "../../workspace/components/FileLabel";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
+import { hasVirtualServiceRegistryDependency } from "../../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 
-export function useDeployDropdownItems(props: { workspace: ActiveWorkspace | undefined }) {
+export function useDeployDropdownItems(props: { workspace?: ActiveWorkspace }) {
   const settings = useSettings();
   const settingsDispatch = useSettingsDispatch();
   const kieSandboxExtendedServices = useKieSandboxExtendedServices();
   const openshift = useOpenShift();
+  const [hasVirtualServiceRegistryDependencies, setHasVirtualServiceRegistryDependencies] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (props.workspace?.files) {
+      Promise.all(
+        props.workspace.files.map(
+          (file) => isServerlessWorkflow(file.relativePath) && hasVirtualServiceRegistryDependency(file)
+        )
+      ).then((hasDependenciesList) => setHasVirtualServiceRegistryDependencies(hasDependenciesList.some(Boolean)));
+    }
+  }, [props.workspace?.files]);
 
   const isKieSandboxExtendedServicesRunning = useMemo(
     () => kieSandboxExtendedServices.status === KieSandboxExtendedServicesStatus.RUNNING,
@@ -97,6 +113,25 @@ export function useDeployDropdownItems(props: { workspace: ActiveWorkspace | und
                 </Flex>
               )}
             </DropdownItem>
+            {hasVirtualServiceRegistryDependencies && (
+              <>
+                <Divider />
+                <Tooltip
+                  content={"Models in this workspace may depend on deployments from other workspaces in this Sandbox."}
+                  position="bottom"
+                >
+                  <DropdownItem icon={<RegistryIcon color="var(--pf-global--warning-color--100)" />} isDisabled>
+                    <Flex flexWrap={{ default: "nowrap" }}>
+                      <FlexItem>
+                        <Text component="small" style={{ color: "var(--pf-global--warning-color--200)" }}>
+                          Has foreign workspace dependencies!
+                        </Text>
+                      </FlexItem>
+                    </Flex>
+                  </DropdownItem>
+                </Tooltip>
+              </>
+            )}
           </FeatureDependentOnKieSandboxExtendedServices>
         )}
         {!isOpenShiftConnected && isKieSandboxExtendedServicesRunning && (
@@ -116,5 +151,12 @@ export function useDeployDropdownItems(props: { workspace: ActiveWorkspace | und
         )}
       </React.Fragment>,
     ];
-  }, [props.workspace, onDeploy, isKieSandboxExtendedServicesRunning, isOpenShiftConnected, onSetup]);
+  }, [
+    hasVirtualServiceRegistryDependencies,
+    props.workspace,
+    onDeploy,
+    isKieSandboxExtendedServicesRunning,
+    isOpenShiftConnected,
+    onSetup,
+  ]);
 }

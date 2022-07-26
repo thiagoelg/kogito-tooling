@@ -1,7 +1,7 @@
+import "./KaotoEditor.css";
 import { AlertProvider, MASLoading } from "./components/components";
 import { AppLayout } from "./components/layouts/AppLayout";
 import { AppRoutes } from "./components/routes";
-import "./KaotoEditor.css";
 import { Suspense } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 

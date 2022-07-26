@@ -17,6 +17,12 @@
 const patternflyBase = require("@kie-tools-core/patternfly-base");
 const { merge } = require("webpack-merge");
 const common = require("@kie-tools-core/webpack-base/webpack.common.config");
+const path = require("path");
+const BG_IMAGES_DIRNAME = "bgimages";
+
+function posixPath(pathStr) {
+  return pathStr.split(path.sep).join(path.posix.sep);
+}
 
 const commonConfig = (env) =>
   merge(common(env), {
@@ -33,9 +39,15 @@ const commonConfig = (env) =>
 
 module.exports = async (env) => [
   merge(commonConfig(env), {
-    target: "web",
+    target: "node",
     entry: {
       "extension/extension": "./src/extension/extension.ts",
+    },
+  }),
+  merge(commonConfig(env), {
+    target: "webworker",
+    entry: {
+      "extension/extensionWeb": "./src/extension/extension.ts",
     },
   }),
   merge(commonConfig(env), {
@@ -54,10 +66,98 @@ module.exports = async (env) => [
     module: {
       rules: [
         {
-          test: /\.ttf$/,
-          use: ["file-loader"],
+          test: /\.s[ac]ss$/i,
+          use: ["style-loader", "css-loader", "sass-loader"],
         },
-        ...patternflyBase.webpackModuleRules,
+        {
+          test: /\.css$/,
+          use: ["style-loader", "css-loader"],
+        },
+        {
+          test: /\.(svg|ttf|eot|woff|woff2)$/,
+          use: {
+            loader: "file-loader",
+            options: {
+              // Limit at 50k. larger files emitted into separate files
+              limit: 5000,
+              outputPath: "fonts",
+              name: "[name].[ext]",
+            },
+          },
+        },
+        {
+          test: /\.svg$/,
+          include: (input) => input.indexOf("background-filter.svg") > 1,
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                limit: 5000,
+                outputPath: "svgs",
+                name: "[name].[ext]",
+              },
+            },
+          ],
+        },
+        {
+          test: /\.svg$/,
+          // only process SVG modules with this loader if they live under a 'bgimages' directory
+          // this is primarily useful when applying a CSS background using an SVG
+          include: (input) => input.indexOf(BG_IMAGES_DIRNAME) > -1,
+          use: {
+            loader: "svg-url-loader",
+            options: {},
+          },
+        },
+        {
+          test: /\.svg$/,
+          // only process SVG modules with this loader when they don't live under a 'bgimages',
+          // 'fonts', or 'pficon' directory, those are handled with other loaders
+          include: (input) =>
+            input.indexOf(BG_IMAGES_DIRNAME) === -1 &&
+            input.indexOf("fonts") === -1 &&
+            input.indexOf("background-filter") === -1 &&
+            input.indexOf("pficon") === -1,
+          use: {
+            loader: "raw-loader",
+            options: {},
+          },
+        },
+        {
+          test: /\.(jpg|jpeg|png|gif)$/i,
+          include: [
+            {
+              or: [
+                (input) => posixPath(input).includes("src"),
+                (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/images"),
+                (input) => posixPath(input).includes("node_modules/@patternfly/react-styles/css/assets/images"),
+                (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/images"),
+                (input) =>
+                  posixPath(input).includes(
+                    "node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images"
+                  ),
+                (input) =>
+                  posixPath(input).includes(
+                    "node_modules/@patternfly/react-table/node_modules/@patternfly/react-styles/css/assets/images"
+                  ),
+                (input) =>
+                  posixPath(input).includes(
+                    "node_modules/@patternfly/react-inline-edit-extension/node_modules/@patternfly/react-styles/css/assets/images"
+                  ),
+              ],
+            },
+          ],
+          use: [
+            {
+              loader: "url-loader",
+              options: {
+                limit: 5000,
+                outputPath: "images",
+                name: "[name].[ext]",
+              },
+            },
+          ],
+        },
       ],
     },
     ignoreWarnings: [/Failed to parse source map/],

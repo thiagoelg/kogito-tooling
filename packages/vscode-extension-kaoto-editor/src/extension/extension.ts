@@ -42,8 +42,8 @@ export function activate(context: vscode.ExtensionContext) {
       new EnvelopeMapping(
         "kaoto",
         "**/*.kaoto.+(yml|yaml)",
-        "dist/webview/KaotoEditorEnvelopeApp.js",
-        "dist/webview/editors/kaoto"
+        "dist/webview/editors/kaoto",
+        "dist/webview/KaotoEditorEnvelopeApp.js"
       ),
     ]),
     backendProxy: backendProxy,

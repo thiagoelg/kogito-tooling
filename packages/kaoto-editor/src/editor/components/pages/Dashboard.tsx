@@ -51,7 +51,7 @@ const Dashboard = () => {
         isExpanded={expanded.console}
         position="bottom"
         onExpand={onExpand}
-        style={{ maxHeight: window.innerHeight - 105 }}
+        // style={{ maxHeight: window.innerHeight - 105 }}
       >
         <DrawerContent
           panelContent={
@@ -83,17 +83,20 @@ const Dashboard = () => {
                   <PageSection padding={{ default: "noPadding" }}>
                     <KaotoToolbar expanded={expanded} handleExpanded={handleExpanded} />
                     <Grid>
-                      {expanded.codeEditor ? (
-                        <GridItem span={3} rowSpan={2}>
-                          {/* SOURCE CODE EDITOR */}
-                          <SourceCodeEditor
-                            handleUpdateViews={(newViews: IViewProps[]) => {
-                              if (newViews === views) return;
-                              setViews(newViews);
-                            }}
-                          />
-                        </GridItem>
-                      ) : expanded.catalog ? (
+                      <GridItem
+                        span={3}
+                        rowSpan={2}
+                        style={expanded.codeEditor && !expanded.catalog ? {} : { display: "none" }}
+                      >
+                        {/* SOURCE CODE EDITOR */}
+                        <SourceCodeEditor
+                          handleUpdateViews={(newViews: IViewProps[]) => {
+                            if (newViews === views) return;
+                            setViews(newViews);
+                          }}
+                        />
+                      </GridItem>
+                      {expanded.catalog ? (
                         <GridItem span={3} rowSpan={2}>
                           {/* STEP CATALOG */}
                           <Catalog />

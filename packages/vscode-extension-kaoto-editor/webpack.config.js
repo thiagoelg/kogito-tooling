@@ -18,6 +18,7 @@ const patternflyBase = require("@kie-tools-core/patternfly-base");
 const { merge } = require("webpack-merge");
 const common = require("@kie-tools-core/webpack-base/webpack.common.config");
 const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
 const BG_IMAGES_DIRNAME = "bgimages";
 
 function posixPath(pathStr) {
@@ -63,6 +64,13 @@ module.exports = async (env) => [
         "monaco-editor/esm/vs/editor/editor.api": require.resolve("@kie-tools-core/monaco-editor"),
       },
     },
+    // plugins: [
+    //   new CopyPlugin({
+    //     patterns: [
+    //       { from: "../kaoto-editor/dist/editor", to: "./webview/editors/kaoto" },
+    //     ],
+    //   }),
+    // ],
     module: {
       rules: [
         {
@@ -75,6 +83,20 @@ module.exports = async (env) => [
         },
         {
           test: /\.(svg|ttf|eot|woff|woff2)$/,
+          include: [
+            {
+              or: [
+                (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/fonts"),
+                (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/pficon"),
+                (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/fonts"),
+                (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/pficon"),
+                (input) =>
+                  posixPath(input).includes("node_modules/monaco-editor/esm/vs/base/browser/ui/codicons/codicon"),
+                (input) =>
+                  posixPath(input).includes("node_modules/monaco-editor/dev/vs/base/browser/ui/codicons/codicon"),
+              ],
+            },
+          ],
           use: {
             loader: "file-loader",
             options: {
@@ -129,7 +151,7 @@ module.exports = async (env) => [
             {
               or: [
                 (input) => posixPath(input).includes("src"),
-                (input) => posixPath(input).includes("packages/kaoto-editor/dist/editor/images"),
+                (input) => posixPath(input).includes("dist/webview/editors/kaoto/images"),
                 (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/images"),
                 (input) => posixPath(input).includes("node_modules/@patternfly/react-styles/css/assets/images"),
                 (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/images"),
@@ -162,5 +184,9 @@ module.exports = async (env) => [
       ],
     },
     ignoreWarnings: [/Failed to parse source map/],
+    stats: {
+      errorDetails: true,
+      children: true,
+    },
   }),
 ];

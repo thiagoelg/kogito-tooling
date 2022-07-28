@@ -29,11 +29,6 @@ export function activate(context: vscode.ExtensionContext) {
   const backendI18n = new I18n(backendI18nDefaults, backendI18nDictionaries, vscode.env.language);
   backendProxy = new VsCodeBackendProxy(context, backendI18n);
 
-  const kaotoEnvelope = {
-    envelopePath: "dist/webview/KaotoEditorEnvelopeApp.js",
-    resourcesPathPrefix: "dist/webview/editors/kaoto",
-  };
-
   KogitoVsCode.startExtension({
     extensionName: "kie-group.vscode-extension-kaoto-editor",
     context: context,
@@ -42,8 +37,8 @@ export function activate(context: vscode.ExtensionContext) {
       new EnvelopeMapping(
         "kaoto",
         "**/*.kaoto.+(yml|yaml)",
-        "dist/webview/editors/kaoto",
-        "dist/webview/KaotoEditorEnvelopeApp.js"
+        "dist/webview/KaotoEditorEnvelopeApp.js",
+        "dist/webview/editors/kaoto"
       ),
     ]),
     backendProxy: backendProxy,

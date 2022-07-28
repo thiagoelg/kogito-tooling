@@ -10,9 +10,10 @@ import { usePrevious } from "../utils";
 import { StepErrorBoundary } from "./StepErrorBoundary";
 import { CodeEditor, CodeEditorControl, Language } from "@patternfly/react-code-editor";
 import { RedoIcon, UndoIcon } from "@patternfly/react-icons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import EditorDidMount from "react-monaco-editor";
 import { useDebouncedCallback } from "use-debounce";
+import { useKogitoEditorIntegration } from "../../kogito-editor-integration/KogitoEditorIntegrationProvider";
 
 interface ISourceCodeEditor {
   handleUpdateViews: (newViews: any) => void;
@@ -29,9 +30,11 @@ const SourceCodeEditor = (props: ISourceCodeEditor) => {
   const [settings] = useSettingsContext();
   const previousName = usePrevious(settings.name);
 
+  const { setUndoRedoCallbacks } = useKogitoEditorIntegration();
+
   useEffect(() => {
     if (previousName === settings.name) return;
-    let tmpInt = integrationJson;
+    const tmpInt = integrationJson;
     tmpInt.metadata = { ...integrationJson.metadata, ...settings };
 
     fetchIntegrationSourceCode(tmpInt, settings.namespace).then((newSrc) => {
@@ -50,7 +53,7 @@ const SourceCodeEditor = (props: ISourceCodeEditor) => {
       // update integration JSON state with changes
       fetchIntegrationJson(incomingData, settings.dsl)
         .then((res: IIntegration) => {
-          let tmpInt = res;
+          const tmpInt = res;
           tmpInt.metadata = { ...res.metadata, ...settings };
           dispatch({ type: "UPDATE_INTEGRATION", payload: tmpInt });
         })
@@ -77,9 +80,15 @@ const SourceCodeEditor = (props: ISourceCodeEditor) => {
   const undoAction = () => {
     (editorRef.current?.getModel() as any)?.undo();
   };
+
   const redoAction = () => {
     (editorRef.current?.getModel() as any)?.redo();
   };
+
+  useEffect(() => {
+    console.log("useEffect setUndoRedoCallbacks");
+    setUndoRedoCallbacks?.(undoAction, redoAction);
+  }, []);
 
   const UndoButton = (
     <CodeEditorControl

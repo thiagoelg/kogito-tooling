@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 import * as React from "react";
-import { Editor, KogitoEditorChannelApi, KogitoEditorEnvelopeContextType } from "@kie-tools-core/editor/dist/api";
+import {
+  Editor,
+  EditorInitArgs,
+  KogitoEditorChannelApi,
+  KogitoEditorEnvelopeContextType,
+} from "@kie-tools-core/editor/dist/api";
 import { DEFAULT_RECT } from "@kie-tools-core/guided-tour/dist/api";
 import { Notification } from "@kie-tools-core/notifications/dist/api";
 import { KaotoEditor } from "./KaotoEditor";
@@ -25,7 +30,12 @@ export class KaotoEditorView implements Editor {
   public af_componentId: "kaoto-editor";
   public af_componentTitle: "Kaoto Editor";
 
-  constructor(private readonly envelopeContext: KogitoEditorEnvelopeContextType<KogitoEditorChannelApi>) {}
+  constructor(
+    private readonly envelopeContext: KogitoEditorEnvelopeContextType<KogitoEditorChannelApi>,
+    private readonly initArgs: EditorInitArgs
+  ) {
+    console.log({ initArgs });
+  }
 
   public async getElementPosition() {
     return DEFAULT_RECT;
@@ -52,6 +62,7 @@ export class KaotoEditorView implements Editor {
         setNotifications={(path, notifications) =>
           this.envelopeContext.channelApi.notifications.kogitoNotifications_setNotifications.send(path, notifications)
         }
+        resourcesPathPrefix={this.initArgs.resourcesPathPrefix}
       />
     );
   }

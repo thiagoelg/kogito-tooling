@@ -39,9 +39,7 @@ const AppLayout = ({ children }: IAppLayout) => {
       <IntegrationSourceProvider initialState={""}>
         <SettingsProvider>
           <DeploymentProvider>
-            <Page mainContainerId={pageId} header={Header} skipToContent={PageSkipToContent}>
-              {children}
-            </Page>
+            <Page mainContainerId={pageId}>{children}</Page>
           </DeploymentProvider>
         </SettingsProvider>
       </IntegrationSourceProvider>

@@ -29,6 +29,6 @@ export class KaotoEditorFactory implements EditorFactory<Editor, KogitoEditorCha
     envelopeContext: KogitoEditorEnvelopeContextType<KogitoEditorChannelApi>,
     initArgs: EditorInitArgs
   ): Promise<Editor> {
-    return Promise.resolve(new KaotoEditorView(envelopeContext));
+    return Promise.resolve(new KaotoEditorView(envelopeContext, initArgs));
   }
 }

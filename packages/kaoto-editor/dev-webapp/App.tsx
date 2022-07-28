@@ -15,6 +15,8 @@
  */
 
 import "@patternfly/react-core/dist/styles/base.css";
+// import '@patternfly/patternfly/patternfly.css';
+// import '@patternfly/patternfly/patternfly-theme-dark.css';
 import { KaotoEditor } from "../src";
 import * as React from "react";
 import { useRef } from "react";
@@ -72,6 +74,7 @@ export const App = () => {
             setNotifications={() => {
               /*NOP*/
             }}
+            resourcesPathPrefix={""}
           />
         </div>
       </div>

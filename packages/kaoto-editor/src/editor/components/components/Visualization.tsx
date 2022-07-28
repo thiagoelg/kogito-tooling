@@ -6,7 +6,15 @@ import {
   useSettingsContext,
   fetchIntegrationJson,
 } from "../api";
-import { IStepProps, IViewData, IVizStepNodeData, IVizStepPropsNode, IVizStepPropsEdge, IViewProps } from "../types";
+import {
+  IStepProps,
+  IViewData,
+  IVizStepNodeData,
+  IVizStepPropsNode,
+  IVizStepPropsEdge,
+  IViewProps,
+  IIntegration,
+} from "../types";
 import { findStepIdxWithUUID, truncateString, usePrevious } from "../utils";
 import "../utils";
 import { canStepBeReplaced } from "../utils/validationService";
@@ -29,6 +37,7 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import "react-flow-renderer/dist/style.css";
 import "react-flow-renderer/dist/theme-default.css";
+import { useKogitoEditorIntegration } from "../../kogito-editor-integration/KogitoEditorIntegrationProvider";
 
 interface IVisualization {
   handleUpdateViews: (newViews: IViewProps[]) => void;
@@ -55,6 +64,24 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
   const shouldUpdateCodeEditor = useRef(true);
   const [settings] = useSettingsContext();
   const previousSettings = usePrevious(settings);
+
+  const { content: kogitoEditorContent, updateContent: kogitoEditorUpdateContent } = useKogitoEditorIntegration();
+
+  useEffect(() => {
+    console.log({ kogitoEditorContentOnInit: kogitoEditorContent });
+    setSourceCode(kogitoEditorContent);
+
+    // update integration JSON state with changes
+    fetchIntegrationJson(kogitoEditorContent, settings.dsl)
+      .then((res: IIntegration) => {
+        const tmpInt = res;
+        tmpInt.metadata = { ...res.metadata, ...settings };
+        dispatch({ type: "UPDATE_INTEGRATION", payload: tmpInt });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, [kogitoEditorContent, dispatch, setSourceCode, settings]);
 
   const { addAlert } = useAlert() || {};
 
@@ -85,7 +112,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
     if (settings === previousSettings) return;
     fetchIntegrationJson(source, settings.dsl)
       .then((newIntegration) => {
-        let tmpInt = newIntegration;
+        const tmpInt = newIntegration;
         tmpInt.metadata = { ...newIntegration.metadata, ...settings };
         dispatch({ type: "UPDATE_INTEGRATION", payload: tmpInt });
       })
@@ -103,7 +130,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
   const updateCodeEditor = (integrationJsonSteps: IStepProps[]) => {
     // Remove all "Add Step" placeholders before updating the API
     const filteredSteps = integrationJsonSteps.filter((step) => step.type);
-    let tempInt = integrationJson;
+    const tempInt = integrationJson;
     tempInt.steps = filteredSteps;
     tempInt.metadata = { ...integrationJson.metadata, ...settings };
 
@@ -111,6 +138,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
       .then((value) => {
         if (typeof value === "string") {
           setSourceCode(value);
+          kogitoEditorUpdateContent?.(value);
         } else {
           setSourceCode("");
         }
@@ -179,6 +207,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
     // but it isn't a source,
     // create a dummy placeholder step
     if (steps.length === 0 || (steps.length > 0 && steps[0].type && steps[0].type !== "START")) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       steps.unshift({ name: "ADD A STEP" });
     }
@@ -186,7 +215,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
     steps.map((step, index) => {
       // Grab the previous step to use for determining position and drawing edges
       const previousStep = stepsAsNodes[index - 1];
-      let stepEdge: IVizStepPropsEdge = { id: "" };
+      const stepEdge: IVizStepPropsEdge = { id: "" };
 
       const vizStepData: IVizStepNodeData = {
         connectorType: step.type,
@@ -202,7 +231,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
       };
 
       // Build the default parameters
-      let inputStep: IVizStepPropsNode = {
+      const inputStep: IVizStepPropsNode = {
         data: vizStepData,
         id: getId(),
         position: { x: 0, y: 250 },
@@ -335,7 +364,7 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
    * @param newValues
    */
   const saveConfig = (newValues: { [s: string]: unknown } | ArrayLike<unknown>) => {
-    let newStep: IStepProps = selectedStep;
+    const newStep: IStepProps = selectedStep;
     const newStepParameters = newStep.parameters;
 
     if (newStepParameters && newStepParameters.length > 0) {

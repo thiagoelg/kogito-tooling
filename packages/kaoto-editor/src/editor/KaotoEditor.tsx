@@ -3,11 +3,12 @@ import { AlertProvider, MASLoading } from "./components/components";
 import { AppLayout } from "./components/layouts/AppLayout";
 import { AppRoutes } from "./components/routes";
 import { Suspense } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter as Router } from "react-router-dom";
 
 import * as React from "react";
 import { KogitoEdit } from "@kie-tools-core/workspace/dist/api";
 import { Notification } from "@kie-tools-core/notifications/dist/api";
+import { KogitoEditorIntegrationProvider } from "./kogito-editor-integration/KogitoEditorIntegrationProvider";
 
 interface Props {
   /**
@@ -38,12 +39,16 @@ interface Props {
    * @param notifications List of Notifications
    */
   setNotifications: (path: string, notifications: Notification[]) => void;
+
+  resourcesPathPrefix: string;
 }
 
 export interface State {
   path: string;
   content: string;
   originalContent: string;
+  undoCallback?: () => void;
+  redoCallback?: () => void;
 }
 
 export class KaotoEditor extends React.Component<Props, State> {
@@ -55,6 +60,8 @@ export class KaotoEditor extends React.Component<Props, State> {
       content: "",
       originalContent: "",
     };
+
+    console.log({ resourcesPathPrefix: this.props.resourcesPathPrefix });
   }
 
   public componentDidMount(): void {
@@ -62,6 +69,7 @@ export class KaotoEditor extends React.Component<Props, State> {
   }
 
   public setContent(path: string, content: string): Promise<void> {
+    console.log("Setting content from VSCode!");
     try {
       this.doSetContent(path, content);
       return Promise.resolve();
@@ -76,6 +84,8 @@ export class KaotoEditor extends React.Component<Props, State> {
   }
 
   public getContent(): Promise<string> {
+    console.log("Getting code for VSCode!");
+    console.log({ resourcesPathPrefix: this.props.resourcesPathPrefix });
     return Promise.resolve(this.doGetContent());
   }
 
@@ -83,33 +93,45 @@ export class KaotoEditor extends React.Component<Props, State> {
     return this.state.content;
   }
 
-  public async undo(): Promise<void> {
-    return Promise.resolve(this.doUndo());
+  public updateContent(content: string): void {
+    this.setState({ content: content });
+    this.props.newEdit(new KogitoEdit(content));
   }
 
-  private doUndo(): void {}
+  public async undo(): Promise<void> {
+    return Promise.resolve(this.state.undoCallback?.());
+  }
 
   public async redo(): Promise<void> {
-    return Promise.resolve(this.doRedo());
+    return Promise.resolve(this.state.redoCallback?.());
   }
-
-  private doRedo(): void {}
 
   public validate(): Notification[] {
     return [];
   }
 
+  public setUndoRedoCallbacks(undoCallback: () => void, redoCallback: () => void): void {
+    console.log("here");
+    this.setState({ undoCallback, redoCallback });
+  }
+
   public render() {
     return (
-      <AlertProvider>
-        <Router>
-          <Suspense fallback={<MASLoading />}>
-            <AppLayout>
-              <AppRoutes />
-            </AppLayout>
-          </Suspense>
-        </Router>
-      </AlertProvider>
+      <KogitoEditorIntegrationProvider
+        content={this.state.content}
+        updateContent={(content: string) => this.updateContent(content)}
+        setUndoRedoCallbacks={(undoCallback, redoCallback) => this.setUndoRedoCallbacks(undoCallback, redoCallback)}
+      >
+        <AlertProvider>
+          <Router>
+            <Suspense fallback={<MASLoading />}>
+              <AppLayout>
+                <AppRoutes />
+              </AppLayout>
+            </Suspense>
+          </Router>
+        </AlertProvider>
+      </KogitoEditorIntegrationProvider>
     );
   }
 }

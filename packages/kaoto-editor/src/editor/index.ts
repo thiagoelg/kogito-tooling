@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+import "@patternfly/react-core/dist/styles/base.css";
+import "@patternfly/patternfly/patternfly.css";
+import "@patternfly/patternfly/patternfly-theme-dark.css";
+
 export * from "./KaotoEditor";
 export * from "./KaotoEditorFactory";
 export * from "./KaotoEditorView";

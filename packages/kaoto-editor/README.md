@@ -1,6 +1,6 @@
 ## **THIS IS A WORK IN PROGRESS**
 
-The code within this package is for a PMML Scorecard editor.
+The code within this package is for a Kaoto editor.
 
 It is considered a prototype.
 

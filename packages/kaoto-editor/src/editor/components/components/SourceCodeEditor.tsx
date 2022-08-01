@@ -86,7 +86,6 @@ const SourceCodeEditor = (props: ISourceCodeEditor) => {
   };
 
   useEffect(() => {
-    console.log("useEffect setUndoRedoCallbacks");
     setUndoRedoCallbacks?.(undoAction, redoAction);
   }, []);
 

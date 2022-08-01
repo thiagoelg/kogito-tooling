@@ -68,7 +68,6 @@ const Visualization = ({ handleUpdateViews, toggleCatalog, views }: IVisualizati
   const { content: kogitoEditorContent, updateContent: kogitoEditorUpdateContent } = useKogitoEditorIntegration();
 
   useEffect(() => {
-    console.log({ kogitoEditorContentOnInit: kogitoEditorContent });
     setSourceCode(kogitoEditorContent);
 
     // update integration JSON state with changes

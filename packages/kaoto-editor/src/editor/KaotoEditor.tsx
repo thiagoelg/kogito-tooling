@@ -60,8 +60,6 @@ export class KaotoEditor extends React.Component<Props, State> {
       content: "",
       originalContent: "",
     };
-
-    console.log({ resourcesPathPrefix: this.props.resourcesPathPrefix });
   }
 
   public componentDidMount(): void {
@@ -85,7 +83,6 @@ export class KaotoEditor extends React.Component<Props, State> {
 
   public getContent(): Promise<string> {
     console.log("Getting code for VSCode!");
-    console.log({ resourcesPathPrefix: this.props.resourcesPathPrefix });
     return Promise.resolve(this.doGetContent());
   }
 
@@ -111,7 +108,6 @@ export class KaotoEditor extends React.Component<Props, State> {
   }
 
   public setUndoRedoCallbacks(undoCallback: () => void, redoCallback: () => void): void {
-    console.log("here");
     this.setState({ undoCallback, redoCallback });
   }
 

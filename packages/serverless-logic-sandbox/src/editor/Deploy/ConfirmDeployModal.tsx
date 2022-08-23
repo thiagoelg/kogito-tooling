@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+import * as React from "react";
 import { Alert, AlertActionCloseButton } from "@patternfly/react-core/dist/js/components/Alert";
 import { Button } from "@patternfly/react-core/dist/js/components/Button";
 import { Checkbox } from "@patternfly/react-core/dist/js/components/Checkbox";
 import { ExpandableSection } from "@patternfly/react-core/dist/js/components/ExpandableSection";
 import { Modal, ModalVariant } from "@patternfly/react-core/dist/js/components/Modal";
 import { Spinner } from "@patternfly/react-core/dist/js/components/Spinner";
-import * as React from "react";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { AlertsController, useAlert } from "../../alerts/Alerts";
 import { useAppI18n } from "../../i18n";
@@ -33,7 +33,7 @@ import { WorkspaceFile } from "../../workspace/WorkspacesContext";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
 import { isSingleModuleProject } from "../../project";
-import { useVirtualServiceRegistryDependencies } from "./useVirtualServiceRegistryDependencies";
+import { useVirtualServiceRegistryDependencies } from "../../workspace/virtualServiceRegistry/hooks/useVirtualServiceRegistryDependencies";
 
 const FETCH_OPEN_API_POLLING_TIME = 5000;
 

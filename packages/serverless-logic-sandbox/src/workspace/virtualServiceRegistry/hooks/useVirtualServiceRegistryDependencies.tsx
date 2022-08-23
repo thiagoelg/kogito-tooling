@@ -1,11 +1,9 @@
-import { constants } from "crypto";
 import * as React from "react";
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { isServerlessWorkflow } from "../../extension";
-import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
-import { WorkspaceDescriptor } from "../../workspace/model/WorkspaceDescriptor";
-import { getVirtualServiceRegistryDependencies } from "../../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
-import { useWorkspaces, WorkspaceFile } from "../../workspace/WorkspacesContext";
+import { isServerlessWorkflow } from "../../../extension";
+import { ActiveWorkspace } from "../../model/ActiveWorkspace";
+import { getVirtualServiceRegistryDependencies } from "../models/VirtualServiceRegistry";
+import { useWorkspaces, WorkspaceFile } from "../../WorkspacesContext";
 
 export enum DEPLOYMENT_STATUS {
   STANDBY = "STANDBY",

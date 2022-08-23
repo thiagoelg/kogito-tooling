@@ -71,7 +71,13 @@
           }
         }
       ],
-      "@babel/react"
+      "@babel/react",
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic"
+        }
+      ]
     ]
   }
 }

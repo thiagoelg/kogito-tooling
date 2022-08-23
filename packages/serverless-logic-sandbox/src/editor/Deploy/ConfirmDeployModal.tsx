@@ -20,7 +20,6 @@ import { Checkbox } from "@patternfly/react-core/dist/js/components/Checkbox";
 import { ExpandableSection } from "@patternfly/react-core/dist/js/components/ExpandableSection";
 import { Modal, ModalVariant } from "@patternfly/react-core/dist/js/components/Modal";
 import { Spinner } from "@patternfly/react-core/dist/js/components/Spinner";
-import * as React from "react";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { AlertsController, useAlert } from "../../alerts/Alerts";
 import { useAppI18n } from "../../i18n";

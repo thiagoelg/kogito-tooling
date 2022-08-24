@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 export function NoMatchPage() {
   return <div>404</div>;
 }

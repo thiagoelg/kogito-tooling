@@ -15,7 +15,6 @@
  */
 
 import { DropdownGroup } from "@patternfly/react-core/dist/js/components/Dropdown";
-import * as React from "react";
 import { KieSandboxExtendedServicesIcon } from "../../kieSandboxExtendedServices/KieSandboxExtendedServicesIcon";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
 import { useDeployDropdownItems } from "../Deploy/DeployDropdownItems";

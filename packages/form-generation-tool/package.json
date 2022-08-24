@@ -42,5 +42,24 @@
     "@types/inquirer": "^7.3.2",
     "@types/lodash": "^4.14.168",
     "pkg": "^5.5.2"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/react",
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic"
+        }
+      ]
+    ]
   }
 }

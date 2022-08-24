@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FileLoader, UploadedFile } from "./FileLoader";
 import { ContentType } from "@kie-tools-core/workspace/dist/api";

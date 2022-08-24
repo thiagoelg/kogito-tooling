@@ -16,7 +16,6 @@
 import { Editor, KogitoEditorChannelApi, KogitoEditorEnvelopeContextType } from "@kie-tools-core/editor/dist/api";
 import { DEFAULT_RECT } from "@kie-tools-core/guided-tour/dist/api";
 import { Notification } from "@kie-tools-core/notifications/dist/api";
-import * as React from "react";
 import { PMMLEditor } from "./PMMLEditor";
 
 export class PMMLEditorInterface implements Editor {

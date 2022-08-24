@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { ColumnType, ComponentController, DataSet } from "@kie-tools/dashbuilder-component-api";
 import { useState, useEffect, useMemo } from "react";
 import { Alert, FilteredTable } from "./FilteredTable";

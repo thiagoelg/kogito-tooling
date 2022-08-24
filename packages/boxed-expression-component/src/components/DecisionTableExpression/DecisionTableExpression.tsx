@@ -15,7 +15,6 @@
  */
 
 import * as _ from "lodash";
-import * as React from "react";
 import { PropsWithChildren, useCallback, useMemo, useRef } from "react";
 import { ColumnInstance, DataRecord } from "react-table";
 import {

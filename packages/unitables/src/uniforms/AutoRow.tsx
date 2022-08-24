@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { AutoForm, QuickForm, ValidatedForm } from "uniforms/esm";
 import { BaseRow } from "./BaseRow";
 

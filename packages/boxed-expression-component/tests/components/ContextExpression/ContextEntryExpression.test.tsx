@@ -19,7 +19,6 @@ import { render } from "@testing-library/react";
 import { usingTestingBoxedExpressionI18nContext } from "../test-utils";
 import { ContextEntryExpression } from "@kie-tools/boxed-expression-component/dist/components/ContextExpression";
 import * as _ from "lodash";
-import * as React from "react";
 
 describe("ContextEntryExpression tests", () => {
   const name = "Expression Name";

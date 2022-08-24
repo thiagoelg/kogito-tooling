@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { fireEvent, render } from "@testing-library/react";
-import * as React from "react";
 import { Operation, OperationContext } from "../../../../../../src/editor/components/EditorScorecard";
 import OutputFieldsTable from "../../../../../../src/editor/components/Outputs/organisms/OutputFieldsTable";
 import { FieldName, OutputField } from "@kie-tools/pmml-editor-marshaller";

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
 import * as monaco from "@kie-tools-core/monaco-editor";
 import CompletionItemKind = monaco.languages.CompletionItemKind;
 import CompletionItemInsertTextRule = monaco.languages.CompletionItemInsertTextRule;

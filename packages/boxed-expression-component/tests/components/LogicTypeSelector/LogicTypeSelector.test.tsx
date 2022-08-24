@@ -23,7 +23,6 @@ import {
   usingTestingBoxedExpressionProviderContext,
 } from "../test-utils";
 import { act } from "react-dom/test-utils";
-import * as React from "react";
 import { LogicTypeSelector } from "@kie-tools/boxed-expression-component/dist/components/LogicTypeSelector";
 import * as _ from "lodash";
 

@@ -15,7 +15,7 @@
  */
 
 import { EnvelopeBus } from "@kie-tools-core/envelope-bus/dist/api";
-import * as React from "react";
+import { createRef } from "react";
 import * as ReactDOM from "react-dom";
 import { TodoListEnvelopeContext } from "./TodoListEnvelopeContext";
 import { TodoListEnvelopeApiImpl } from "./TodoListEnvelopeApiImpl";
@@ -48,7 +48,7 @@ export function init(args: { container: HTMLElement; bus: EnvelopeBus }) {
    * Returns a Promise<() => TodoListEnvelopeViewApi> that can be used in TodoListEnvelopeApiImpl.
    */
   const envelopeViewDelegate = async () => {
-    const ref = React.createRef<TodoListEnvelopeViewApi>();
+    const ref = createRef<TodoListEnvelopeViewApi>();
     return new Promise<() => TodoListEnvelopeViewApi>((res) => {
       ReactDOM.render(<TodoListEnvelopeView ref={ref} channelApi={envelope.channelApi} />, args.container, () =>
         res(() => ref.current!)

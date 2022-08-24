@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { RadioField } from "../uniforms";
 import { renderField } from "./_render";
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { fireEvent, render } from "@testing-library/react";
-import * as React from "react";
 import { CoreProperties, CorePropertiesTable } from "../../../../../src/editor/components/EditorScorecard/organisms";
 import { Operation, OperationContext } from "../../../../../src/editor/components/EditorScorecard";
 

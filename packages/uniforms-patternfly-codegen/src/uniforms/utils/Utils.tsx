@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { DataType, FormElement, FormInput, InputReference, InputsContainer } from "../../api";
 import { OBJECT } from "./dataTypes";
 

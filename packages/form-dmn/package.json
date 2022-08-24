@@ -46,5 +46,24 @@
     "@kie-tools-core/webpack-base": "workspace:*",
     "@kie-tools/build-env": "workspace:*",
     "@types/lodash": "^4.14.168"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      "@babel/react",
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic"
+        }
+      ]
+    ]
   }
 }

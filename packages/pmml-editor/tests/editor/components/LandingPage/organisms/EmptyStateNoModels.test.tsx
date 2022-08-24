@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { render } from "@testing-library/react";
-import * as React from "react";
 import { EmptyStateNoModels } from "@kie-tools/pmml-editor/dist/editor/components/LandingPage/organisms";
 
 const createModel = jest.fn(() => {

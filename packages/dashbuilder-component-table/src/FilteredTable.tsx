@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
 import { TableComposable, Thead, Tbody, Tr, Th, Td, selectable } from "@patternfly/react-table";
 
 import { useState, useCallback, useMemo } from "react";

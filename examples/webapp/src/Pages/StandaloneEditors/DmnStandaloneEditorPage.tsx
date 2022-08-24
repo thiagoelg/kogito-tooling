@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useEffect, useRef } from "react";
 import { Page } from "@patternfly/react-core";
 import * as DmnEditor from "@kie-tools/kie-editors-standalone/dist/dmn";

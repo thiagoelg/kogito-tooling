@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { DefaultKeyboardShortcutsService } from "@kie-tools-core/keyboard-shortcuts/dist/envelope";
 import { OperatingSystem } from "@kie-tools-core/operating-system";
 import { fireEvent, render } from "@testing-library/react";

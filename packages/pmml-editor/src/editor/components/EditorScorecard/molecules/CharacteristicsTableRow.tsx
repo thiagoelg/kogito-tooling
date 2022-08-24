@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
 import { BaseSyntheticEvent, useCallback } from "react";
 import { Split, SplitItem } from "@patternfly/react-core/dist/js/layouts/Split";
 import {

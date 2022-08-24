@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { createContext, useContext } from "react";
+import { createContext, FC, useContext } from "react";
 
 import { Bridge, context, Context, randomIds } from "uniforms/cjs";
 
@@ -45,7 +45,7 @@ export interface ProviderProps {
   children: JSX.Element;
 }
 
-export const CodeGenContextProvider: React.FC<ProviderProps> = (props) => {
+export const CodeGenContextProvider: FC<ProviderProps> = (props) => {
   const ctx: Context<any> = props.uniformsCtx || {
     changed: false,
     changedMap: {},

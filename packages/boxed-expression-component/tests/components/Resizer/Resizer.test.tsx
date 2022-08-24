@@ -16,7 +16,6 @@
 
 import "../../__mocks__/ReactWithSupervisor";
 import { fireEvent, render, waitFor } from "@testing-library/react";
-import * as React from "react";
 import { Resizer } from "@kie-tools/boxed-expression-component/dist/components/Resizer";
 import { wrapComponentInContext } from "../test-utils";
 

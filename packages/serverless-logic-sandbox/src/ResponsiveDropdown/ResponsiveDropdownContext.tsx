@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import React, { useContext } from "react";
+import { createContext, useContext } from "react";
 
-export const ResponsiveDropdownContext = React.createContext({ isModal: false });
+export const ResponsiveDropdownContext = createContext({ isModal: false });
 
 export function useResponsiveDropdownContext() {
   return useContext(ResponsiveDropdownContext);

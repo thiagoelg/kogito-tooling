@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
 import { I18nContextType } from "@kie-tools-core/i18n/dist/react-components";
 import { en } from "./locales";
 import { ChromeExtensionI18n } from "./ChromeExtensionI18n";
@@ -27,7 +27,7 @@ export const chromeExtensionI18nDefaults: I18nDefaults<ChromeExtensionI18n> = {
 };
 
 export const chromeExtensionI18nDictionaries: I18nDictionaries<ChromeExtensionI18n> = new Map([["en", en]]);
-export const ChromeExtensionI18nContext = React.createContext<I18nContextType<ChromeExtensionI18n>>({} as any);
+export const ChromeExtensionI18nContext = createContext<I18nContextType<ChromeExtensionI18n>>({} as any);
 
 export function useChromeExtensionI18n() {
   return useContext(ChromeExtensionI18nContext);

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Modal, ModalVariant } from "@patternfly/react-core/dist/js/components/Modal";
 
 export type ResponsiveDropdownModalProps = {

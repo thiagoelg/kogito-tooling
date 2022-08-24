@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { render } from "@testing-library/react";
 import { BoxedExpressionEditor } from "@kie-tools/boxed-expression-component/dist/components";
 import { DataType, ExpressionProps } from "@kie-tools/boxed-expression-component";

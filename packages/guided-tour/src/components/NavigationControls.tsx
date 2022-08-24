@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useContext, useMemo } from "react";
 import { Button } from "@patternfly/react-core/dist/js/components/Button";
 import { AngleLeftIcon } from "@patternfly/react-icons/dist/js/icons/angle-left-icon";

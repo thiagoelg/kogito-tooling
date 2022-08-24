@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import { EditorPage } from "../../../webview/editor/EditorPage";
 import { usingTestingDesktopI18nContext, usingTestingGlobalContext } from "../../testing_utils";

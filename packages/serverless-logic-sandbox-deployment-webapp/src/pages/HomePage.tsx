@@ -18,7 +18,6 @@ import { List, ListItem } from "@patternfly/react-core/dist/js/components/List";
 import { PageSection } from "@patternfly/react-core/dist/js/components/Page";
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/js/components/Text";
 import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/js/icons/external-link-alt-icon";
-import * as React from "react";
 import { routes } from "../routes";
 import { BasePage } from "./BasePage";
 

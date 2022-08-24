@@ -15,7 +15,6 @@
  */
 
 import "@patternfly/react-core/dist/styles/base.css";
-import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { DmnFormApp } from "./DmnFormApp";
 import "../static/resources/style.css";

@@ -16,14 +16,13 @@
 
 import { I18nDefaults, I18nDictionaries } from "@kie-tools-core/i18n/dist/core";
 import { I18nContextType } from "@kie-tools-core/i18n/dist/react-components";
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
 import { AppI18n } from "./AppI18n";
 import { en } from "./locales";
 
 export const appI18nDefaults: I18nDefaults<AppI18n> = { locale: "en", dictionary: en };
 export const appI18nDictionaries: I18nDictionaries<AppI18n> = new Map([["en", en]]);
-export const AppI18nContext = React.createContext<I18nContextType<AppI18n>>({} as any);
+export const AppI18nContext = createContext<I18nContextType<AppI18n>>({} as any);
 
 export function useAppI18n() {
   return useContext(AppI18nContext);

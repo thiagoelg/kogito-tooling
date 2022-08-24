@@ -20,7 +20,6 @@ import { GithubIcon } from "@patternfly/react-icons/dist/js/icons/github-icon";
 import { GitlabIcon } from "@patternfly/react-icons/dist/js/icons/gitlab-icon";
 import { CodeBranchIcon } from "@patternfly/react-icons/dist/js/icons/code-branch-icon";
 import { PendingIcon } from "@patternfly/react-icons/dist/js/icons/pending-icon";
-import * as React from "react";
 import { useMemo } from "react";
 import { WorkspaceDescriptor } from "../model/WorkspaceDescriptor";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { BasePage } from "./BasePage";
 
 export function NoMatchPage() {

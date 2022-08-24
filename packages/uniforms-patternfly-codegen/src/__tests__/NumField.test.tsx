@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import SimpleSchema from "simpl-schema";
 import { InputReference } from "../api";
 import NumField from "../uniforms/NumField";

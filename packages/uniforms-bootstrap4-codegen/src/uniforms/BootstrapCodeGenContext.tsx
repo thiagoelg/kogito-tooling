@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import React, { createContext, useContext } from "react";
+import { createContext, useContext } from "react";
+
+import * as React from "react";
 
 import { Bridge, context, Context, randomIds } from "uniforms/cjs";
 

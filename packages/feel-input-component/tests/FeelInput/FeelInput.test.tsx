@@ -15,7 +15,6 @@
  */
 
 import { render } from "@testing-library/react";
-import * as React from "react";
 import { RefObject } from "react";
 import { FeelInput, FeelInputRef, FeelEditorService } from "@kie-tools/feel-input-component";
 

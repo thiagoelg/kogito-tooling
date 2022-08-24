@@ -25,7 +25,6 @@ import {
 import * as ReactDOM from "react-dom";
 import { Globals, Main } from "../common/Main";
 import { SingleEditorApp } from "./SingleEditorApp";
-import * as React from "react";
 import { useCallback } from "react";
 import { KOGITO_IFRAME_CONTAINER_CLASS, KOGITO_TOOLBAR_CONTAINER_CLASS } from "../../constants";
 import { fetchFile } from "../../github/api";

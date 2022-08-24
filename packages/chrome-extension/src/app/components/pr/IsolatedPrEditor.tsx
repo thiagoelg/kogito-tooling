@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { FileStatusOnPr } from "./FileStatusOnPr";
 import { useInitialAsyncCallEffect, useIsolatedEditorTogglingEffect } from "../common/customEffects";

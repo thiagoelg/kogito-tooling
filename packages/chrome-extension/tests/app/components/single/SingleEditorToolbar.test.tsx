@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { fireEvent, render, waitForElementToBeRemoved } from "@testing-library/react";
 import { SingleEditorToolbar } from "@kie-tools-core/chrome-extension/dist/app/components/single/SingleEditorToolbar";
 import {

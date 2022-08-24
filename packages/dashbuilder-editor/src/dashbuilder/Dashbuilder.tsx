@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useRef, useState, useEffect, useCallback } from "react";
 
 interface Props {

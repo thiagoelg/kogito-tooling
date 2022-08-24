@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useEffect, createRef, useState } from "react";
 import * as heatmap from "heatmap.js";
 

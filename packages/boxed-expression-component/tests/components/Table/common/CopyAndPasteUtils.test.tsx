@@ -15,7 +15,6 @@
  */
 
 import { render } from "@testing-library/react";
-import * as React from "react";
 import { act } from "react-dom/test-utils";
 import { DataRecord } from "react-table";
 import { iterableValue, paste, pasteOnTable } from "@kie-tools/boxed-expression-component/dist/components/Table/common";

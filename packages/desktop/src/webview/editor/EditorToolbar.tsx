@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useContext, useMemo } from "react";
 import { GlobalContext } from "../common/GlobalContext";
 import { Button } from "@patternfly/react-core/dist/js/components/Button";

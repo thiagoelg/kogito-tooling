@@ -18,8 +18,7 @@ import { Button } from "@patternfly/react-core/dist/js/components/Button";
 import { Modal, ModalVariant } from "@patternfly/react-core/dist/js/components/Modal";
 import { Switch } from "@patternfly/react-core/dist/js/components/Switch";
 import { Split, SplitItem } from "@patternfly/react-core/dist/js/layouts/Split";
-import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import "./HistoryButtons.scss";
 
 export enum Theme {
@@ -97,7 +96,7 @@ const ServerlessWorkflowModal = (props: { get: () => Promise<string> }) => {
   }, [isModalOpen, props]);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Button variant="secondary" onClick={handleModalToggle} ouiaId="serverless-workflow-button">
         Serverless Workflow
       </Button>
@@ -118,6 +117,6 @@ const ServerlessWorkflowModal = (props: { get: () => Promise<string> }) => {
           <div ref={textRef} />
         </pre>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 };

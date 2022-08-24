@@ -16,7 +16,6 @@
 
 import { render } from "@testing-library/react";
 import { usingTestingBoxedExpressionI18nContext } from "../test-utils";
-import * as React from "react";
 import { PopoverMenu } from "@kie-tools/boxed-expression-component/dist/components/PopoverMenu";
 import { act } from "react-dom/test-utils";
 

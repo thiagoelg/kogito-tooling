@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 export interface DevPaneProps {
   sendInit: () => void;
   sendDataSet: () => void;

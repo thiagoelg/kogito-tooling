@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Component } from "react";
 import { Editor, EditorTheme } from "@kie-tools-core/editor/dist/api";
 import { DEFAULT_RECT } from "@kie-tools-core/guided-tour/dist/api";
 import { Notification } from "@kie-tools-core/notifications/dist/api";
@@ -70,7 +70,7 @@ interface State {
   content: string;
 }
 
-class DummyEditorComponent extends React.Component<Props, State> {
+class DummyEditorComponent extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { content: "" };

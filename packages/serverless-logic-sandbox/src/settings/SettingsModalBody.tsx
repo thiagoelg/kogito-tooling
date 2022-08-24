@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { Tab, Tabs, TabTitleText } from "@patternfly/react-core/dist/js/components/Tabs";
 import { GitHubSettingsTab } from "./github/GitHubSettingsTab";
 import { useSettings, useSettingsDispatch } from "./SettingsContext";

@@ -15,7 +15,6 @@
  */
 
 import { render } from "@testing-library/react";
-import * as React from "react";
 import { DmnFormToolbar } from "../DmnFormToolbar";
 import { usingTestingAppContext, usingTestingDmnFormI18nContext } from "./testing_utils";
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";

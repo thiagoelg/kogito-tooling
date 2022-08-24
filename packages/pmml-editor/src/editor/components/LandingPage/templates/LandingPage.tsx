@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { PageSection, PageSectionVariants } from "@patternfly/react-core/dist/js/components/Page";
 import { Gallery, GalleryItem } from "@patternfly/react-core/dist/js/layouts/Gallery";

@@ -28,7 +28,6 @@ import {
   usingTestingBoxedExpressionProviderContext,
   wrapComponentInContext,
 } from "../test-utils";
-import * as React from "react";
 import { DecisionTableExpression } from "@kie-tools/boxed-expression-component/dist/components/DecisionTableExpression";
 import { openContextMenu } from "../Table/Table.test";
 import * as _ from "lodash";

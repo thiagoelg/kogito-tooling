@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { Page, PageSection, Text, TextContent } from "@patternfly/react-core";
 
 export function Home() {

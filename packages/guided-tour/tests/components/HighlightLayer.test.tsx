@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { act } from "react-dom/test-utils";
 import { useContextMock, renderedComponent, render, setupContainer, teardownContainer } from "../utils";
 

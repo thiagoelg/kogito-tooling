@@ -16,7 +16,7 @@
 
 import { ChannelType, EditorEnvelopeLocator, EnvelopeMapping } from "@kie-tools-core/editor/dist/api";
 import { WorkspaceEdit } from "@kie-tools-core/workspace/dist/api";
-import * as React from "react";
+import { createRef } from "react";
 import { EmbeddedEditorFile } from "@kie-tools-core/editor/dist/channel";
 import { EmbeddedEditor, EmbeddedEditorRef } from "@kie-tools-core/editor/dist/embedded";
 import { incomingMessage } from "./EmbeddedEditorTestUtils";
@@ -41,7 +41,7 @@ describe("EmbeddedEditor::ONLINE", () => {
   ]);
 
   const channelType = ChannelType.ONLINE;
-  const editorRef = React.createRef<EmbeddedEditorRef>();
+  const editorRef = createRef<EmbeddedEditorRef>();
 
   beforeEach(() => {
     jest.clearAllMocks();

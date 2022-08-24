@@ -17,7 +17,6 @@
 import { encoder, LocalFile, useWorkspaces } from "../WorkspacesContext";
 import { useRoutes } from "../../navigation/Hooks";
 import { useHistory } from "react-router";
-import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Bullseye } from "@patternfly/react-core/dist/js/layouts/Bullseye";
 import { Spinner } from "@patternfly/react-core/dist/js/components/Spinner";

@@ -14,35 +14,35 @@
  * limitations under the License.
  */
 
+import { Dispatch, SetStateAction, RefObject, ReactNode, PropsWithChildren } from "react";
 import { AutoGenerationErrorFormStatus, EmptyFormStatus, FormStatus, ValidatorErrorFormStatus } from "./FormStatus";
 import { ErrorBoundary } from "./ErrorBoundary";
 import AutoForm from "uniforms-patternfly/dist/es6/AutoForm";
-import * as React from "react";
 import { FormI18n } from "./i18n";
 import { FormJsonSchemaBridge } from "./uniforms/FormJsonSchemaBridge";
 
 export interface FormBaseProps {
   id?: string;
   i18n: FormI18n;
-  setFormError: React.Dispatch<React.SetStateAction<boolean>>;
-  formRef?: React.RefObject<HTMLFormElement>;
+  setFormError: Dispatch<SetStateAction<boolean>>;
+  formRef?: RefObject<HTMLFormElement>;
   showInlineError?: boolean;
   autoSave?: boolean;
   autoSaveDelay?: number;
   placeholder?: boolean;
   onSubmit?: (model: object) => void;
   onValidate?: (model: object, error: object) => void;
-  errorsField?: () => React.ReactNode;
-  submitField?: () => React.ReactNode;
+  errorsField?: () => ReactNode;
+  submitField?: () => ReactNode;
   formStatus: FormStatus;
   notificationsPanel: boolean;
   openValidationTab?: () => void;
-  errorBoundaryRef: React.RefObject<ErrorBoundary>;
+  errorBoundaryRef: RefObject<ErrorBoundary>;
   formModel?: object;
   jsonSchemaBridge?: FormJsonSchemaBridge;
 }
 
-export function FormBase(props: React.PropsWithChildren<FormBaseProps>) {
+export function FormBase(props: PropsWithChildren<FormBaseProps>) {
   return (
     <>
       {props.formStatus === FormStatus.VALIDATOR_ERROR && <ValidatorErrorFormStatus i18n={props.i18n} />}

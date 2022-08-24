@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { AppContext } from "./AppContext";
 import { AppData, fetchAppData } from "./DmnDevSandboxAppDataApi";
 

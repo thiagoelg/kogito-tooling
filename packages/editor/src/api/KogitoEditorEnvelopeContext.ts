@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
 import { ApiDefinition, MessageBusClientApi } from "@kie-tools-core/envelope-bus/dist/api";
 import { KogitoEditorChannelApi } from "./KogitoEditorChannelApi";
 import { I18nService } from "@kie-tools-core/i18n/dist/envelope";
@@ -33,7 +33,7 @@ export interface KogitoEditorEnvelopeContextType<
   };
 }
 
-export const KogitoEditorEnvelopeContext = React.createContext<KogitoEditorEnvelopeContextType<any>>({} as any);
+export const KogitoEditorEnvelopeContext = createContext<KogitoEditorEnvelopeContextType<any>>({} as any);
 
 export function useKogitoEditorEnvelopeContext<
   ChannelApi extends KogitoEditorChannelApi & ApiDefinition<ChannelApi> = KogitoEditorChannelApi

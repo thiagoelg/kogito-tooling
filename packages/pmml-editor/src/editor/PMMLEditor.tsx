@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-import { Reducer } from "react";
+import { Component, Reducer } from "react";
+
 import { enableAllPlugins } from "immer";
 import { createStore, Store } from "redux";
 import {
@@ -83,7 +83,7 @@ export interface State {
   activeOperation: Operation;
 }
 
-export class PMMLEditor extends React.Component<Props, State> {
+export class PMMLEditor extends Component<Props, State> {
   private store: Store<PMML, AllActions> | undefined;
   private readonly history: HistoryService = new HistoryService([
     (id: string) => {

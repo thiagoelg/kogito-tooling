@@ -15,7 +15,6 @@
  */
 
 import moment from "moment";
-import * as React from "react";
 import { useCallback, useState } from "react";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
 import { useCancelableEffect } from "../reactExt/Hooks";

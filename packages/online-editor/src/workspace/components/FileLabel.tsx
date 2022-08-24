@@ -15,7 +15,6 @@
  */
 
 import { Label, LabelProps } from "@patternfly/react-core/dist/js/components/Label";
-import * as React from "react";
 
 type LabelColorType = { color: LabelProps["color"]; label: string };
 

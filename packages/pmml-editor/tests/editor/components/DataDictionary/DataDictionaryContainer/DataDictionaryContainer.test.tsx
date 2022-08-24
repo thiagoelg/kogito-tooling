@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { fireEvent, render } from "@testing-library/react";
-import * as React from "react";
 import DataDictionaryContainer, {
   DDDataField,
 } from "../../../../../src/editor/components/DataDictionary/DataDictionaryContainer/DataDictionaryContainer";

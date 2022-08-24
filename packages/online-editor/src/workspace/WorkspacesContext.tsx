@@ -20,7 +20,6 @@ import {
   ResourceListOptions,
   ResourcesList,
 } from "@kie-tools-core/workspace/dist/api";
-import * as React from "react";
 import { createContext, useContext } from "react";
 import { WorkspaceDescriptor } from "./model/WorkspaceDescriptor";
 import { WorkspaceService } from "./services/WorkspaceService";

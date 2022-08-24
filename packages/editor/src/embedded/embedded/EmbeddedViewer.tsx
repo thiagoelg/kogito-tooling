@@ -15,7 +15,6 @@
  */
 
 import { EditorEnvelopeLocator, ChannelType } from "../../api";
-import * as React from "react";
 import { EmbeddedEditorFile } from "../../channel";
 import { EmbeddedEditor, Props as EmbeddedEditorProps } from "./EmbeddedEditor";
 

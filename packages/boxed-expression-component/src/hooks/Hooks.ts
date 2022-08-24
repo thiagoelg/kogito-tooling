@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import * as React from "react";
 import { useBoxedExpression } from "../context";
 
 export function useContextMenuHandler(domEventTarget: HTMLDivElement | Document = document): {

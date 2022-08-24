@@ -19,8 +19,7 @@ import { Divider } from "@patternfly/react-core/dist/js/components/Divider";
 import { DropdownItem } from "@patternfly/react-core/dist/js/components/Dropdown";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/js/layouts/Flex";
 import { OpenshiftIcon } from "@patternfly/react-icons/dist/js/icons/openshift-icon";
-import * as React from "react";
-import { useCallback, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { FeatureDependentOnKieSandboxExtendedServices } from "../../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
 import {
   DependentFeature,
@@ -65,7 +64,7 @@ export function useDeployDropdownItems(props: { workspace: ActiveWorkspace | und
 
   return useMemo(() => {
     return [
-      <React.Fragment key={"deploy-dropdown-items"}>
+      <Fragment key={"deploy-dropdown-items"}>
         {props.workspace && (
           <FeatureDependentOnKieSandboxExtendedServices isLight={false} position="left">
             <DropdownItem
@@ -114,7 +113,7 @@ export function useDeployDropdownItems(props: { workspace: ActiveWorkspace | und
             </DropdownItem>
           </>
         )}
-      </React.Fragment>,
+      </Fragment>,
     ];
   }, [props.workspace, onDeploy, isKieSandboxExtendedServicesRunning, isOpenShiftConnected, onSetup]);
 }

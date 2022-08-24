@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import "./ImportJavaClassesWizardFieldListTable.css";
 import { ExpandableRowContent, TableComposable, Tbody, Td, Tr } from "@patternfly/react-table";
 import { JavaClass } from "./model/JavaClass";

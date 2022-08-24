@@ -24,7 +24,7 @@ import {
 import { DefaultKeyboardShortcutsService } from "@kie-tools-core/keyboard-shortcuts/dist/envelope";
 import { EditorEnvelopeView, EditorEnvelopeViewApi } from "./EditorEnvelopeView";
 import * as ReactDOM from "react-dom";
-import * as React from "react";
+import { createRef } from "react";
 import { Envelope, EnvelopeApiFactory } from "@kie-tools-core/envelope";
 import { I18nService } from "@kie-tools-core/i18n/dist/envelope";
 import { EditorEnvelopeI18nContext, editorEnvelopeI18nDefaults, editorEnvelopeI18nDictionaries } from "./i18n";
@@ -68,7 +68,7 @@ export class KogitoEditorEnvelope<
   }
 
   private renderView(container: HTMLElement) {
-    const editorEnvelopeViewRef = React.createRef<EditorEnvelopeViewApi<E>>();
+    const editorEnvelopeViewRef = createRef<EditorEnvelopeViewApi<E>>();
 
     const app = (
       <KogitoEditorEnvelopeContext.Provider value={this.context}>

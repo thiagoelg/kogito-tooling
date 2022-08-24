@@ -18,7 +18,6 @@ import { ChannelType, EditorEnvelopeLocator, EditorTheme, EnvelopeMapping } from
 import { EmbeddedEditorFile } from "@kie-tools-core/editor/dist/channel";
 import { EmbeddedEditor, useEditorRef } from "@kie-tools-core/editor/dist/embedded";
 import { Page, PageSection } from "@patternfly/react-core/dist/js/components/Page";
-import * as React from "react";
 import { useMemo, useState, useEffect } from "react";
 import "./App.scss";
 

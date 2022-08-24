@@ -15,7 +15,6 @@
  */
 
 import { Tab, Tabs, TabTitleText } from "@patternfly/react-core/dist/js/components/Tabs";
-import * as React from "react";
 import { GitHubSettingsTab } from "./GitHubSettingsTab";
 import { useSettings, useSettingsDispatch } from "./SettingsContext";
 import { OpenShiftSettingsTab } from "./OpenShiftSettingsTab";

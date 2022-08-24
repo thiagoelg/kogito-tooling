@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
+
 import { Stack, StackItem } from "@patternfly/react-core/dist/js/layouts/Stack";
 import { Bullseye } from "@patternfly/react-core/dist/js/layouts/Bullseye";
 import { Alert } from "@patternfly/react-core/dist/js/components/Alert";
@@ -225,7 +225,7 @@ const MiningSchemaContainer = (props: MiningSchemaContainerProps) => {
 
 export default MiningSchemaContainer;
 
-export const MiningSchemaContext = React.createContext<number>(-1);
+export const MiningSchemaContext = createContext<number>(-1);
 
 const prepareFieldOptions = (dictionary: DataDictionary | undefined, miningSchema: MiningSchema | undefined) => {
   if (dictionary) {

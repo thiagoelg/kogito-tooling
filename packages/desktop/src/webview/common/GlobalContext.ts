@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext } from "react";
 import { EmbeddedEditorFile } from "@kie-tools-core/editor/dist/channel";
 import { EditorEnvelopeLocator } from "@kie-tools-core/editor/dist/api";
 
@@ -23,4 +23,4 @@ export interface GlobalContextType {
   editorEnvelopeLocator: EditorEnvelopeLocator;
 }
 
-export const GlobalContext = React.createContext<GlobalContextType>({} as any);
+export const GlobalContext = createContext<GlobalContextType>({} as any);

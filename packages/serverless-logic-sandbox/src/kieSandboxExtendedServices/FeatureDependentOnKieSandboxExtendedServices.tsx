@@ -15,7 +15,6 @@
  */
 
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
-import * as React from "react";
 import { useAppI18n } from "../i18n";
 import { useKieSandboxExtendedServices } from "./KieSandboxExtendedServicesContext";
 import { KieSandboxExtendedServicesStatus } from "./KieSandboxExtendedServicesStatus";

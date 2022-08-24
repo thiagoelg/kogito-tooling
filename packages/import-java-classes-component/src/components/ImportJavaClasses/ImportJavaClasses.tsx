@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import {
   importJavaClassesWizardI18nDictionaries,
   ImportJavaClassesWizardI18nContext,

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useMemo } from "react";
 import { Route, Switch } from "react-router-dom";
 import { EditorPage } from "../editor/EditorPage";

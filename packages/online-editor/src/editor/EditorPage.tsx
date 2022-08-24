@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { useRoutes } from "../navigation/Hooks";

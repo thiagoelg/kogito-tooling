@@ -16,7 +16,6 @@
 
 import { fireEvent, render } from "@testing-library/react";
 import * as _ from "lodash";
-import * as React from "react";
 import { act } from "react-dom/test-utils";
 import { ColumnInstance, DataRecord } from "react-table";
 import { PASTE_OPERATION } from "@kie-tools/boxed-expression-component/dist/components/Table/common";

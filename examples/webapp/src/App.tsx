@@ -15,7 +15,6 @@
  */
 
 import "@patternfly/react-core/dist/styles/base.css";
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { Brand, Nav, NavItem, NavList, Page, PageHeader } from "@patternfly/react-core";
 import { HashRouter as Router, Link, Route, Switch } from "react-router-dom";

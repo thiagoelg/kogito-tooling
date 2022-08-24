@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useState, useContext, useEffect, useMemo } from "react";
 
 import {

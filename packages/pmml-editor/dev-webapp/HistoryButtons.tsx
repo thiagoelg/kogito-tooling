@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+
 import { Button } from "@patternfly/react-core/dist/js/components/Button";
 import { Split, SplitItem } from "@patternfly/react-core/dist/js/layouts/Split";
 import { Modal, ModalVariant } from "@patternfly/react-core/dist/js/components/Modal";
@@ -97,7 +97,7 @@ const PMMLModal = (props: { get: () => Promise<string> }) => {
   }, [isModalOpen]);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Button variant="secondary" onClick={handleModalToggle} ouiaId="pmml-button">
         PMML
       </Button>
@@ -118,6 +118,6 @@ const PMMLModal = (props: { get: () => Promise<string> }) => {
           <div ref={textRef} />
         </pre>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 };

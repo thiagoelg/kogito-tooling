@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { getGuidedTourElementPosition, GwtEditor } from "./consumedInteropApi/GwtAppFormerConsumedInteropApi";
 import { Editor, EditorTheme, KogitoEditorChannelApi } from "@kie-tools-core/editor/dist/api";
 import { editors } from "./GwtEditorMapping";

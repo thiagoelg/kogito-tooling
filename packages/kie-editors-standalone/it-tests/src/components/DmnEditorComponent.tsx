@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import * as DmnEditor from "@kie-tools/kie-editors-standalone/dist/dmn";
 import { EditorComponent, Props } from "./EditorComponent";
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useEffect, useState } from "react";
 import * as PingPongViewEnvelope from "@kie-tools-examples/ping-pong-view/dist/envelope";
 import { PingPongReactImplFactory } from ".";

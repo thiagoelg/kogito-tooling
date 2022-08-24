@@ -17,7 +17,6 @@
 import { KogitoGuidedTour } from "@kie-tools-core/guided-tour/dist";
 import { Tutorial, UserInteraction } from "@kie-tools-core/guided-tour/dist/api";
 
-import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { GuidedTour } from "@kie-tools-core/guided-tour/dist/components";
 import { GuidedTourDomUtils, GuidedTourEventBus } from "@kie-tools-core/guided-tour/dist/core";

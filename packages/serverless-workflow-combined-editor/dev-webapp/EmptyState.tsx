@@ -24,7 +24,6 @@ import {
 } from "@patternfly/react-core/dist/js/components/EmptyState";
 import { Title } from "@patternfly/react-core/dist/js/components/Title";
 import { CubesIcon } from "@patternfly/react-icons/dist/js/icons/cubes-icon";
-import * as React from "react";
 import { ChangeEvent } from "react";
 import { ServerlessWorkflowType } from "./App";
 

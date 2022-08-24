@@ -15,7 +15,6 @@
  */
 
 import { PMMLEditor } from "../src";
-import * as React from "react";
 import { useRef, useState } from "react";
 import { PMMLEmptyState } from "./EmptyState";
 import type { Property } from "csstype";

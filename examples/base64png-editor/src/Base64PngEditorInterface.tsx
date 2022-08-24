@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import {
   Editor,
   EditorApi,
@@ -25,6 +24,7 @@ import {
 } from "@kie-tools-core/editor/dist/api";
 import { Rect } from "@kie-tools-core/guided-tour/dist/api";
 import { Notification } from "@kie-tools-core/notifications/dist/api";
+import { createRef, RefObject } from "react";
 import { Base64PngEditor } from "./Base64PngEditor";
 
 /**
@@ -51,7 +51,7 @@ import { Base64PngEditor } from "./Base64PngEditor";
  * @constructor initArgs.initialLocale The initial locale of the application. Useful in case the Editor implements i18n.
  */
 export class Base64PngEditorInterface implements Editor {
-  private editorRef: React.RefObject<EditorApi>;
+  private editorRef: RefObject<EditorApi>;
   public af_isReact = true;
   public af_componentId: "base64png-editor";
   public af_componentTitle: "Base64 PNG Editor";
@@ -60,7 +60,7 @@ export class Base64PngEditorInterface implements Editor {
     private readonly envelopeContext: KogitoEditorEnvelopeContextType<KogitoEditorChannelApi>,
     private readonly initArgs: EditorInitArgs
   ) {
-    this.editorRef = React.createRef<EditorApi>();
+    this.editorRef = createRef<EditorApi>();
   }
 
   /**

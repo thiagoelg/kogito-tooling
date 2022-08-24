@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useCallback, useImperativeHandle, useLayoutEffect, useMemo, useState } from "react";
+import { forwardRef, useCallback, useImperativeHandle, useLayoutEffect, useMemo, useState } from "react";
+
 import { PingPongApi, PingPongChannelApi, PingPongInitArgs } from "@kie-tools-examples/ping-pong-view/dist/api";
 import { MessageBusClientApi } from "@kie-tools-core/envelope-bus/dist/api";
 import { useSubscription } from "@kie-tools-core/envelope-bus/dist/hooks";
@@ -33,7 +33,7 @@ interface LogEntry {
 /**
  * This is a React implementation of a PingPongView.
  */
-export const PingPongReactImpl = React.forwardRef<PingPongApi, Props>((props, forwardedRef) => {
+export const PingPongReactImpl = forwardRef<PingPongApi, Props>((props, forwardedRef) => {
   // Create `log` state to display the messages exchanged by Ping-Pong Views
   const [log, setLog] = useState<LogEntry[]>([{ line: "Logs will show up here", time: 0 }]);
   const [lastPingTimestamp, setLastPingTimestamp] = useState<number>(0);

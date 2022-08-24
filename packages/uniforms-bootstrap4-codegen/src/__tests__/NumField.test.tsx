@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import SimpleSchema from "simpl-schema";
 import { renderField } from "./_render";
 import { NumField } from "../uniforms";

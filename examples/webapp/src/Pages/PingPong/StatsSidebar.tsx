@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useState, useEffect } from "react";
 import { Label, Nav, NavItem, NavList, Title } from "@patternfly/react-core";
 

@@ -16,7 +16,6 @@
 
 import { AutoField, AutoFields } from "uniforms-patternfly";
 import { DmnFeelContextField } from "./DmnFeelContextField";
-import * as React from "react";
 import { FEEL_CONTEXT } from "./DmnFormJsonSchemaBridge";
 
 export function DmnAutoFieldProvider() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext, useContext } from "react";
 import { EditorEnvelopeLocator } from "@kie-tools-core/editor/dist/api";
 import { Logger } from "../../../Logger";
 import { ExternalEditorManager } from "../../../ExternalEditorManager";
@@ -32,8 +32,8 @@ export interface GlobalContextType {
   externalEditorManager?: ExternalEditorManager;
 }
 
-export const GlobalContext = React.createContext<GlobalContextType>({} as any);
+export const GlobalContext = createContext<GlobalContextType>({} as any);
 
 export function useGlobals() {
-  return React.useContext(GlobalContext);
+  return useContext(GlobalContext);
 }

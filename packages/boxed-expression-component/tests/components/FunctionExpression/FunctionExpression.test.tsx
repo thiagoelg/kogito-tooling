@@ -27,7 +27,6 @@ import {
   DEFAULT_FIRST_PARAM_NAME,
   FunctionExpression,
 } from "@kie-tools/boxed-expression-component/dist/components/FunctionExpression";
-import * as React from "react";
 import {
   BoxedExpressionEditorGWTService,
   DataType,

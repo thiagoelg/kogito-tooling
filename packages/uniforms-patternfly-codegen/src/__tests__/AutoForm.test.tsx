@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { render } from "@testing-library/react";
 import { unescape } from "lodash";
 import AutoForm, { AutoFormProps } from "../uniforms/AutoForm";

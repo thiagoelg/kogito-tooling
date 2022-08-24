@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Globals, Main } from "../common/Main";
 import { createAndGetMainContainer, openRepoInExternalEditorContainer, removeAllChildren } from "../../utils";

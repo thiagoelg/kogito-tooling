@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useRef } from "react";
 import "./ExpressionContainer.css";
 import { ExpressionProps, LogicType } from "../../api";

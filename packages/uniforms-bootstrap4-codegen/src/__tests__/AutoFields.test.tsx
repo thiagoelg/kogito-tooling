@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { renderField, renderFields } from "./_render";
 import { AutoFields } from "../uniforms";
 import SimpleSchema from "simpl-schema";

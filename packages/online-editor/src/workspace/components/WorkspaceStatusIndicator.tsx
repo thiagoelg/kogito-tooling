@@ -16,7 +16,6 @@
 
 import { ActiveWorkspace } from "../model/ActiveWorkspace";
 import { useWorkspaceGitStatusPromise } from "../hooks/WorkspaceHooks";
-import * as React from "react";
 import { useCallback, useMemo } from "react";
 import { WorkspaceKind } from "../model/WorkspaceOrigin";
 import { PromiseStateWrapper } from "../hooks/PromiseState";

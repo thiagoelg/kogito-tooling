@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
 import { en } from "./locales";
 import { I18nContextType } from "@kie-tools-core/i18n/dist/react-components";
 import { DmnUnitablesI18n } from "./DmnUnitablesI18n";
@@ -26,7 +26,7 @@ export const dmnUnitablesI18nDefaults: I18nDefaults<DmnUnitablesI18n> = {
   dictionary: en,
 };
 export const dmnUnitablesDictionaries: I18nDictionaries<DmnUnitablesI18n> = new Map([["en", en]]);
-export const DmnUnitablesI18nContext = React.createContext<I18nContextType<DmnUnitablesI18n>>({} as never);
+export const DmnUnitablesI18nContext = createContext<I18nContextType<DmnUnitablesI18n>>({} as never);
 
 export function useDmnUnitablesI18n(): I18nContextType<DmnUnitablesI18n> {
   return useContext(DmnUnitablesI18nContext);

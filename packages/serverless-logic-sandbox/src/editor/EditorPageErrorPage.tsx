@@ -20,7 +20,6 @@ import { EmptyStateIcon } from "@patternfly/react-core";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/js/icons/exclamation-triangle-icon";
 import { Text, TextContent } from "@patternfly/react-core/dist/js/components/Text";
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
-import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useHistory } from "react-router";
 import { ClipboardCopy, ClipboardCopyVariant } from "@patternfly/react-core/dist/js/components/ClipboardCopy";

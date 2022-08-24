@@ -16,7 +16,6 @@
 
 import { fireEvent, render } from "@testing-library/react";
 import { usingTestingBoxedExpressionI18nContext, usingTestingBoxedExpressionProviderContext } from "../test-utils";
-import * as React from "react";
 import { EditExpressionMenu } from "@kie-tools/boxed-expression-component/dist/components/EditExpressionMenu";
 import { activatePopover } from "../PopoverMenu/PopoverMenu.test";
 import { DataType, ExpressionProps, LogicType } from "@kie-tools/boxed-expression-component";

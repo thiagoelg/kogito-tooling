@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { renderField } from "./_render";
 import { DATE_FUNCTIONS, TIME_FUNCTIONS } from "../uniforms/staticCode/staticCodeBlocks";
 import { DateField } from "../uniforms";

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ErrorBoundary } from "./ErrorBoundary";
 import { dataPathToFormFieldPath } from "./uniforms/utils";
 import { diff } from "deep-object-diff";
-import cloneDeep from "lodash/cloneDeep";
+import { cloneDeep } from "lodash";
 import { FormStatus } from "./FormStatus";
 import { FormJsonSchemaBridge } from "./uniforms/FormJsonSchemaBridge";
 import { Validator } from "./Validator";
@@ -28,9 +27,9 @@ import { FormI18n } from "./i18n";
 export interface FormHook<Input extends Record<string, any>, Schema extends Record<string, any>> {
   name?: string;
   formError: boolean;
-  setFormError: React.Dispatch<React.SetStateAction<boolean>>;
+  setFormError: Dispatch<SetStateAction<boolean>>;
   formInputs: Input;
-  setFormInputs: React.Dispatch<React.SetStateAction<Input>>;
+  setFormInputs: Dispatch<SetStateAction<Input>>;
   formSchema?: Schema;
   onSubmit?: (model: object) => void;
   onValidate?: (model: object, error: object) => void;

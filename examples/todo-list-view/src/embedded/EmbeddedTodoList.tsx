@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useCallback, useMemo } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
+
 import { EnvelopeServer } from "@kie-tools-core/envelope-bus/dist/channel";
 import { TodoListApi, TodoListChannelApi, TodoListEnvelopeApi } from "../api";
 import { ContainerType } from "@kie-tools-core/envelope/dist/api";
@@ -36,7 +36,7 @@ export type Props = {
  *
  * This is aimed to be used mostly by Web applications. It exposes a `ref` to give control to the parent component.
  */
-export const EmbeddedTodoList = React.forwardRef<EmbeddedTodoListRef, Props>((props, forwardedRef) => {
+export const EmbeddedTodoList = forwardRef<EmbeddedTodoListRef, Props>((props, forwardedRef) => {
   /*
    * This is the pollInit parameter. Used to connect the Envelope with this instance of EnvelopeServer.
    */
@@ -86,7 +86,6 @@ export const EmbeddedTodoList = React.forwardRef<EmbeddedTodoListRef, Props>((pr
 });
 
 const EmbeddedTodoListEnvelope =
-  React.forwardRef<
-    EmbeddedTodoListRef,
-    EmbeddedEnvelopeProps<TodoListChannelApi, TodoListEnvelopeApi, EmbeddedTodoListRef>
-  >(RefForwardingEmbeddedEnvelope);
+  forwardRef<EmbeddedTodoListRef, EmbeddedEnvelopeProps<TodoListChannelApi, TodoListEnvelopeApi, EmbeddedTodoListRef>>(
+    RefForwardingEmbeddedEnvelope
+  );

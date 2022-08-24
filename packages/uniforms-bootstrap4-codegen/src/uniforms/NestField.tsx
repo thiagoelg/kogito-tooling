@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import React, { useContext } from "react";
+import { useContext } from "react";
+
+import * as React from "react";
 import { connectField, context, HTMLFieldProps } from "uniforms/cjs";
 import { renderNestedInputFragmentWithContext } from "./rendering/RenderingUtils";
 import { FormElement, FormInput, FormInputContainer } from "../api";

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useMemo } from "react";
 import { DmnValidator } from "./DmnValidator";
 import { dmnFormI18n } from "./i18n";

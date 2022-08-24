@@ -17,7 +17,6 @@
 import { Spinner } from "@patternfly/react-core/dist/js/components/Spinner";
 import { Title } from "@patternfly/react-core/dist/js/components/Title";
 import { Bullseye } from "@patternfly/react-core/dist/js/layouts/Bullseye";
-import * as React from "react";
 
 export function LoadingSpinner() {
   return (

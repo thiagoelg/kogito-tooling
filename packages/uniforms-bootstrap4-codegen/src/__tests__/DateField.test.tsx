@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { renderField } from "./_render";
 import { DateField } from "../uniforms";
 

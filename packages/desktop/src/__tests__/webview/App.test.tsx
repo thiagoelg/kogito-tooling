@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as electron from "electron";
 import { render, screen, act, waitForElementToBeRemoved } from "@testing-library/react";
 import { App } from "../../webview/App";

@@ -23,7 +23,6 @@ import {
   usingTestingBoxedExpressionProviderContext,
 } from "../test-utils";
 import { DataType, LogicType } from "@kie-tools/boxed-expression-component";
-import * as React from "react";
 import { InvocationExpression } from "@kie-tools/boxed-expression-component/dist/components/InvocationExpression";
 
 describe("InvocationExpression tests", () => {

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
 import { DictionaryInterpolation, ReferenceDictionary } from "@kie-tools-core/i18n/dist/core/Dictionary";
 import { I18nContextType } from "@kie-tools-core/i18n/dist/react-components";
 
@@ -38,7 +38,7 @@ export const dummyDefault: DummyDictionary = {
   },
 };
 
-export const DummyContext = React.createContext<I18nContextType<DummyDictionary>>({} as any);
+export const DummyContext = createContext<I18nContextType<DummyDictionary>>({} as any);
 export function DummyComponent() {
   const { i18n } = useContext(DummyContext);
   return <p data-testid="dummy-component">{JSON.stringify(i18n)}</p>;

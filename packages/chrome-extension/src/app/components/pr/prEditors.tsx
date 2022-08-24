@@ -15,7 +15,6 @@
  */
 
 import * as ReactDOM from "react-dom";
-import * as React from "react";
 import { PrEditorsApp } from "./PrEditorsApp";
 import { createAndGetMainContainer, openRepoInExternalEditorContainer, removeAllChildren } from "../../utils";
 import { Globals, Main } from "../common/Main";

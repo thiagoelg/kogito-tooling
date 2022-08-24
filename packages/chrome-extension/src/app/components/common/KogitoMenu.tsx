@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGitHubApi } from "./GitHubContext";
 import { Octokit } from "@octokit/rest";

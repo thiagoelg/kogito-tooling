@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { ChannelType } from "@kie-tools-core/editor/dist/api";
 import { EmbeddedEditorFile, StateControl } from "@kie-tools-core/editor/dist/channel";
 import {

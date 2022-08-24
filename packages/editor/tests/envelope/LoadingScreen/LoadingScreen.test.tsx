@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import { LoadingScreen } from "@kie-tools-core/editor/dist/envelope/LoadingScreen";
 import { usingEditorEnvelopeI18nContext } from "../utils";

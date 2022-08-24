@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { LocalFile, useWorkspaces } from "../WorkspacesContext";
 import { useRoutes } from "../../navigation/Hooks";
 import { useHistory } from "react-router";

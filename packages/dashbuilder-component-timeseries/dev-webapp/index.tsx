@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ComponentDev } from "@kie-tools/dashbuilder-component-dev";
 import { ComponentApi } from "@kie-tools/dashbuilder-component-api";

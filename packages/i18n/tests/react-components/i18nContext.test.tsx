@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { I18nDictionariesProvider } from "@kie-tools-core/i18n/dist/react-components";
 import { immutableDeepMerge } from "@kie-tools-core/i18n/dist/core/immutableDeepMerge";
 import { TranslatedDictionary } from "@kie-tools-core/i18n/dist/core";

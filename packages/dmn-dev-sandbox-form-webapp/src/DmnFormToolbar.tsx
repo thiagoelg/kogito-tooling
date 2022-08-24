@@ -34,8 +34,7 @@ import { EllipsisVIcon } from "@patternfly/react-icons/dist/js/icons/ellipsis-v-
 import { ExternalLinkAltIcon } from "@patternfly/react-icons/dist/js/icons/external-link-alt-icon";
 import HelpIcon from "@patternfly/react-icons/dist/js/icons/help-icon";
 import { basename } from "path";
-import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useMemo, useState } from "react";
 import { useHistory } from "react-router";
 import { useApp } from "./AppContext";
 import { useDmnFormI18n } from "./i18n";
@@ -119,7 +118,7 @@ export function DmnFormToolbar(props: Props) {
 
   const dropdownItems = useCallback(
     (dropdownId: string) => [
-      <React.Fragment key={`dropdown-${dropdownId}-close`}>
+      <Fragment key={`dropdown-${dropdownId}-close`}>
         <DropdownItem
           id="dmn-dev-sandbox-form-toolbar-kebab-open-swagger-ui-button"
           key={`dropdown-${dropdownId}-swagger-ui`}
@@ -134,7 +133,7 @@ export function DmnFormToolbar(props: Props) {
             <ExternalLinkAltIcon className="pf-u-mx-sm" />
           </Text>
         </DropdownItem>
-      </React.Fragment>,
+      </Fragment>,
     ],
     [onOpenSwaggerUI, i18n]
   );

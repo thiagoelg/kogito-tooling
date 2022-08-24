@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
 import { en } from "./locales";
 import { I18nContextType } from "@kie-tools-core/i18n/dist/react-components";
 import { YardEditorI18n } from "./YardEditorI18n";
@@ -26,7 +26,7 @@ export const yardEditorI18nDefaults: I18nDefaults<YardEditorI18n> = {
   dictionary: en,
 };
 export const yardEditorDictionaries: I18nDictionaries<YardEditorI18n> = new Map([["en", en]]);
-export const YardEditorI18nContext = React.createContext<I18nContextType<YardEditorI18n>>({} as never);
+export const YardEditorI18nContext = createContext<I18nContextType<YardEditorI18n>>({} as never);
 
 export function useBoxedExpressionEditorI18n(): I18nContextType<YardEditorI18n> {
   return useContext(YardEditorI18nContext);

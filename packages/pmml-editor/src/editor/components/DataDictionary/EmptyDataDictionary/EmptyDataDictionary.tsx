@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { Title } from "@patternfly/react-core/dist/js/components/Title";
 import {
   EmptyState,

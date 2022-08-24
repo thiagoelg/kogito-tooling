@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useMemo } from "react";
 import { useGlobals } from "../common/GlobalContext";
 import { parsePrInfo } from "../pr/prEditors";

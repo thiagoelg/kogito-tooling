@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useChromeExtensionI18n } from "../../i18n";
 
 export function FullScreenToolbar(props: { onExitFullScreen: () => void }) {

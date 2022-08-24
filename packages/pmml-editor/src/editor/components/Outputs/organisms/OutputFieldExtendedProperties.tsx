@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { TextInput } from "@patternfly/react-core/dist/js/components/TextInput";
 import { Form, FormGroup } from "@patternfly/react-core/dist/js/components/Form";

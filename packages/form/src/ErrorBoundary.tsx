@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { ErrorInfo } from "react";
+import { ErrorInfo, ReactNode, Dispatch, Component } from "react";
 
 interface State {
   hasError: boolean;
 }
 
 interface Props {
-  children: React.ReactNode;
-  error: React.ReactNode;
-  setHasError: React.Dispatch<boolean>;
+  children: ReactNode;
+  error: ReactNode;
+  setHasError: Dispatch<boolean>;
 }
 
-export class ErrorBoundary extends React.Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = { hasError: false };

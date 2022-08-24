@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { TextContent, Text } from "@patternfly/react-core/dist/js/components/Text";
 import { Sample, SampleCard, SampleType } from "./SampleCard";
 import { ReactComponent as GreetingsSvg } from "../../static/samples/greetings/greetings.svg";

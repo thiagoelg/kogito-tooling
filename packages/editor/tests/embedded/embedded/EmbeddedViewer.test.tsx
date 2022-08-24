@@ -16,7 +16,6 @@
 
 import { EditorEnvelopeLocator, EnvelopeMapping, ChannelType } from "@kie-tools-core/editor/dist/api";
 import { EnvelopeServer } from "@kie-tools-core/envelope-bus/dist/channel";
-import * as React from "react";
 import { EmbeddedEditorFile } from "@kie-tools-core/editor/dist/channel";
 import { EmbeddedViewer } from "@kie-tools-core/editor/dist/embedded";
 import { incomingMessage } from "./EmbeddedEditorTestUtils";

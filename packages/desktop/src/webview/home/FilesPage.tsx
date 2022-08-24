@@ -30,7 +30,6 @@ import { TextInput } from "@patternfly/react-core/dist/js/components/TextInput";
 import { Title } from "@patternfly/react-core/dist/js/components/Title";
 import { SortAlphaDownIcon } from "@patternfly/react-icons/dist/js/icons/sort-alpha-down-icon";
 import * as electron from "electron";
-import * as React from "react";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { ElectronFile, UNSAVED_FILE_NAME } from "../../common/ElectronFile";
 import { RecentOpenedFile } from "../../common/RecentOpenedFile";

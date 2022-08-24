@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createRef } from "react";
 import { act, render } from "@testing-library/react";
 import { DmnForm, DmnSchema, InputRow } from "../src/";
 import { dmnFormI18n } from "../src/i18n";
@@ -62,7 +62,7 @@ describe("DmnForm tests", () => {
   });
 
   it("should submit the formData", async () => {
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const onSubmit = jest.fn();
     const formData = { name: "Kogito", lastName: "Tooling", daysAndTimeDuration: "P1D" };
 
@@ -78,7 +78,7 @@ describe("DmnForm tests", () => {
   });
 
   it("shouldn't submit the formData", async () => {
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const onSubmit = jest.fn();
     const formData = { daysAndTimeDuration: "p" };
 
@@ -94,7 +94,7 @@ describe("DmnForm tests", () => {
   });
 
   it("should validate the formData - success", async () => {
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const onValidate = jest.fn();
     const formData = { name: "Kogito", lastName: "Tooling", daysAndTimeDuration: "P1D" };
 
@@ -112,7 +112,7 @@ describe("DmnForm tests", () => {
   });
 
   it("should validate the formData - invalid", async () => {
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const onValidate = jest.fn();
     const formData = { name: "Kogito", lastName: "Tooling", daysAndTimeDuration: "p" };
 
@@ -142,7 +142,7 @@ describe("DmnForm tests", () => {
       },
     };
 
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const formData = {};
 
     const { getByText } = render(
@@ -165,7 +165,7 @@ describe("DmnForm tests", () => {
       },
     };
 
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const formData = {};
 
     const { getByText } = render(
@@ -189,7 +189,7 @@ describe("DmnForm tests", () => {
       },
     };
 
-    const formRef = React.createRef<HTMLFormElement>();
+    const formRef = createRef<HTMLFormElement>();
     const formData = {};
     const onSubmit = jest.fn();
 

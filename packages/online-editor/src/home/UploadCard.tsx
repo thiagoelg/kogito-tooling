@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useRef, useState } from "react";
 import { isAbsolute } from "path";
 import { LocalFile, useWorkspaces } from "../workspace/WorkspacesContext";

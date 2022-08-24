@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { FileStatusOnPr } from "./FileStatusOnPr";
 import { useChromeExtensionI18n } from "../../i18n";
 

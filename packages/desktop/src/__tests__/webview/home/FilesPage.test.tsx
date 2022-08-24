@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as electron from "electron";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { FilesPage } from "../../../webview/home/FilesPage";

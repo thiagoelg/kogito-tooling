@@ -18,7 +18,6 @@ import { Card, CardBody, CardFooter, CardTitle } from "@patternfly/react-core/di
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/js/components/Text";
 import { CodeIcon } from "@patternfly/react-icons/dist/js/icons/code-icon";
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
-import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useRoutes } from "../navigation/Hooks";
 import { useHistory } from "react-router";

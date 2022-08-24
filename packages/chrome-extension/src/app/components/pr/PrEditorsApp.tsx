@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { useGlobals } from "../common/GlobalContext";
 import { EditorEnvelopeLocator } from "@kie-tools-core/editor/dist/api";

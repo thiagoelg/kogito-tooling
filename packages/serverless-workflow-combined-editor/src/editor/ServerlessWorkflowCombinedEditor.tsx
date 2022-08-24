@@ -35,7 +35,6 @@ import {
   DrawerPanelContent,
 } from "@patternfly/react-core/dist/js/components/Drawer";
 import { basename, extname } from "path";
-import * as React from "react";
 import {
   forwardRef,
   ForwardRefRenderFunction,

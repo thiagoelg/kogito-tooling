@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
+
 import { en } from "./locales";
 import { I18nContextType } from "@kie-tools-core/i18n/dist/react-components";
 import { BoxedExpressionEditorI18n } from "./BoxedExpressionEditorI18n";
@@ -26,9 +26,7 @@ export const boxedExpressionEditorI18nDefaults: I18nDefaults<BoxedExpressionEdit
   dictionary: en,
 };
 export const boxedExpressionEditorDictionaries: I18nDictionaries<BoxedExpressionEditorI18n> = new Map([["en", en]]);
-export const BoxedExpressionEditorI18nContext = React.createContext<I18nContextType<BoxedExpressionEditorI18n>>(
-  {} as never
-);
+export const BoxedExpressionEditorI18nContext = createContext<I18nContextType<BoxedExpressionEditorI18n>>({} as never);
 
 export function useBoxedExpressionEditorI18n(): I18nContextType<BoxedExpressionEditorI18n> {
   return useContext(BoxedExpressionEditorI18nContext);

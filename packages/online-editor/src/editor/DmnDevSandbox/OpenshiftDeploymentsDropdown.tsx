@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useMemo } from "react";
 import { useSettings, useSettingsDispatch } from "../../settings/SettingsContext";
 import { useOnlineI18n } from "../../i18n";

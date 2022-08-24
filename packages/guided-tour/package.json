@@ -29,15 +29,23 @@
     "@kie-tools-core/run-script-if": "workspace:*",
     "@kie-tools/build-env": "workspace:*"
   },
-  "presets": [
-    [
-      "@babel/env",
-      {
-        "targets": {
-          "node": "current"
+  "babel": {
+    "presets": [
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "current"
+          }
         }
-      }
-    ],
-    "@babel/react"
-  ]
+      ],
+      "@babel/react",
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic"
+        }
+      ]
+    ]
+  }
 }

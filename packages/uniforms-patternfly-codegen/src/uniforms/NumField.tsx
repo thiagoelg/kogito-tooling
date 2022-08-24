@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import * as React from "react";
 import { connectField, HTMLFieldProps } from "uniforms/cjs";
 
 import { buildDefaultInputElement, getInputReference, renderField } from "./utils/Utils";

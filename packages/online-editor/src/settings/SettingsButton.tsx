@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
 import { CogIcon } from "@patternfly/react-icons/dist/js/icons/cog-icon";
 import { useSettingsDispatch } from "./SettingsContext";

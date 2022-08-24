@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
 import { DmnEditorComponent } from "./components/DmnEditorComponent";
 import { BpmnEditorComponent } from "./components/BpmnEditorComponent";

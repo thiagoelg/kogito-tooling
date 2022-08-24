@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback } from "react";
 import { Page, PageSection } from "@patternfly/react-core/dist/js/components/Page";
 import { useSettings, useSettingsDispatch } from "../SettingsContext";

@@ -16,7 +16,6 @@
 
 import { DropdownGroup, DropdownItem } from "@patternfly/react-core/dist/js/components/Dropdown";
 import { Text } from "@patternfly/react-core/dist/js/components/Text";
-import * as React from "react";
 import { useCallback, useMemo } from "react";
 import { useOnlineI18n } from "../../i18n";
 import { useDmnDevSandboxDropdownItems } from "../DmnDevSandbox/DmnDevSandboxDropdownItems";

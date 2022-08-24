@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { renderField } from "./_render";
 import { MULTIPLE_SELECT_FUNCTIONS, SELECT_FUNCTIONS } from "../uniforms/staticCode/staticCodeBlocks";
 import { SelectField } from "../uniforms";

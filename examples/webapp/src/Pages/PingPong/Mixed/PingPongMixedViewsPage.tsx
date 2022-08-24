@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useMemo, useRef } from "react";
 import { Page, PageSection } from "@patternfly/react-core";
 import { EmbeddedDivPingPong, EmbeddedIFramePingPong } from "@kie-tools-examples/ping-pong-view/dist/embedded";

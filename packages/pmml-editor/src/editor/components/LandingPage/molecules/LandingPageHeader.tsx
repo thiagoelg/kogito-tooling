@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { HeaderTitle } from "../../Header/atoms";
-import * as React from "react";
 import { Split, SplitItem } from "@patternfly/react-core/dist/js/layouts/Split";
 import DataDictionaryHandler from "../../DataDictionary/DataDictionaryHandler/DataDictionaryHandler";
 

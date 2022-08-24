@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { EChartsType, init } from "echarts";
 

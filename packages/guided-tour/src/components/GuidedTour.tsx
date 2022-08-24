@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useState } from "react";
 import { Dialog, HighlightLayer } from ".";
 import { UserInteraction, Tutorial, Rect } from "../api";

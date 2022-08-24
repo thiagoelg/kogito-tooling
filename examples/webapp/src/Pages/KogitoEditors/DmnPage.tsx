@@ -15,7 +15,6 @@
  */
 
 import { ChannelType } from "@kie-tools-core/editor/dist/api";
-import * as React from "react";
 import { EditorEnvelopeLocator, EnvelopeMapping } from "@kie-tools-core/editor/dist/api";
 import { useMemo, useState } from "react";
 import { Page } from "@patternfly/react-core";

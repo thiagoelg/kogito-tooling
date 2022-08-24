@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { render } from "@testing-library/react";
-import * as React from "react";
 import { Scorecard } from "@kie-tools/pmml-editor-marshaller";
 import { ModelCard } from "@kie-tools/pmml-editor/dist/editor/components/LandingPage/molecules";
 

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useContext } from "react";
+import { createContext, useContext } from "react";
 
 type EnvVarNames = "KIE_SANDBOX_EXTENDED_SERVICES_URL" | "CORS_PROXY_URL";
 
@@ -36,7 +35,7 @@ export interface EnvContextType {
   vars: EnvVars;
 }
 
-export const EnvContext = React.createContext<EnvContextType>({} as any);
+export const EnvContext = createContext<EnvContextType>({} as any);
 
 export function useEnv() {
   return useContext(EnvContext);

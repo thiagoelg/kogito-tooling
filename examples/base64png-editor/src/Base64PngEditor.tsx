@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+
 import { EditorApi, KogitoEditorEnvelopeContextType } from "@kie-tools-core/editor/dist/api";
 import { EmptyState, EmptyStateIcon, Nav, NavItem, NavList, Page, Switch, Title } from "@patternfly/react-core";
 import { DEFAULT_RECT } from "@kie-tools-core/guided-tour/dist/api";
@@ -48,7 +48,7 @@ interface Props {
  * @param props Any props that are necessary for this Editor to work. In this case..
  * @param props.envelopeContext The object which allows this Editor to communicate with its containing Channel, and access the Envelope services
  */
-export const Base64PngEditor = React.forwardRef<EditorApi, Props>((props, forwardedRef) => {
+export const Base64PngEditor = forwardRef<EditorApi, Props>((props, forwardedRef) => {
   /**
    * Editor Content - The current Editor value (contains all tweaks).
    * The editorContent has the current value of all tweaks that it has done to the image. This value is the one displayed on the canvas.

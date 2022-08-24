@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.prod.json",
   "compilerOptions": {
     "outDir": "dist",
-    "jsx": "react",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "target": "es6",

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useEffect, useState } from "react";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { Button } from "@patternfly/react-core/dist/js/components/Button";

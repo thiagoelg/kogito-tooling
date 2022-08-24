@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createRef } from "react";
 import { cleanup, fireEvent, getByTestId, render, act } from "@testing-library/react";
 import { EditorEnvelopeView, EditorEnvelopeViewApi } from "@kie-tools-core/editor/dist/envelope/EditorEnvelopeView";
 import { DummyEditor } from "./DummyEditor";
@@ -22,7 +22,7 @@ import { usingEditorEnvelopeI18nContext, usingEnvelopeContext } from "./utils";
 import { Editor } from "@kie-tools-core/editor/dist/api";
 
 function renderEditorEnvelopeView(): EditorEnvelopeViewApi<Editor> {
-  const editorEnvelopeRef = React.createRef<EditorEnvelopeViewApi<Editor>>();
+  const editorEnvelopeRef = createRef<EditorEnvelopeViewApi<Editor>>();
   const setLocale = jest.fn();
   render(
     usingEditorEnvelopeI18nContext(

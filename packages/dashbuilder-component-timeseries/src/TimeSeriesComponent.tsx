@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { Column, ComponentController, DataSet } from "@kie-tools/dashbuilder-component-api";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ECharts } from "@kie-tools/dashbuilder-component-echarts-base";

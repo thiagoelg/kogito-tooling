@@ -15,7 +15,6 @@
  */
 
 import { useWorkspaces } from "../WorkspacesContext";
-import * as React from "react";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useRoutes } from "../../navigation/Hooks";

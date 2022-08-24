@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { getModelIconUrlByType, ModelType } from "../../..";
-import * as React from "react";
 import "./ModelCardIcon.scss";
 
 interface ModelIconProps {

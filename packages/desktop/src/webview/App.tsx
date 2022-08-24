@@ -16,7 +16,6 @@
 
 import { Alert, AlertActionCloseButton, AlertVariant } from "@patternfly/react-core/dist/js/components/Alert";
 import * as electron from "electron";
-import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import "@patternfly/react-core/dist/styles/base.css";
 import "../../static/resources/style.css";

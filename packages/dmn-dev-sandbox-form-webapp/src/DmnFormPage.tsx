@@ -21,7 +21,6 @@ import { EmptyState, EmptyStateBody, EmptyStateIcon } from "@patternfly/react-co
 import { Page, PageSection } from "@patternfly/react-core/dist/js/components/Page";
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/js/components/Text";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/js/icons/exclamation-triangle-icon";
-import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FormData } from "./DmnDevSandboxAppDataApi";
 import { fetchDmnResult } from "./DmnDevSandboxRuntimeApi";

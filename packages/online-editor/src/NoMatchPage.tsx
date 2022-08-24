@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback } from "react";
 import { Text, TextContent } from "@patternfly/react-core/dist/js/components/Text";
 import {

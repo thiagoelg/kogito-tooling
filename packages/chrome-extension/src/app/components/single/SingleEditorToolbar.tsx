@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGlobals } from "../common/GlobalContext";
 import { useChromeExtensionI18n } from "../../i18n";

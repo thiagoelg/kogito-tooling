@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import * as BpmnEditor from "@kie-tools/kie-editors-standalone/dist/bpmn";
 import { EditorComponent, Props } from "./EditorComponent";
 

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ContainerType } from "@kie-tools-core/envelope/dist/api";
 import { PingPongEnvelopeView } from "..";

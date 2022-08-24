@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
+import { createContext, useContext } from "react";
 import { Operation } from "./Operation";
 
 export interface ActiveOperation {
@@ -21,11 +21,11 @@ export interface ActiveOperation {
   setActiveOperation: (operation: Operation) => void;
 }
 
-export const OperationContext = React.createContext<ActiveOperation>({
+export const OperationContext = createContext<ActiveOperation>({
   activeOperation: Operation.NONE,
   setActiveOperation: (operation: Operation) => null,
 });
 
 export function useOperation() {
-  return React.useContext(OperationContext);
+  return useContext(OperationContext);
 }

@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useMemo } from "react";
+import { useMemo, RefObject, ReactNode, Dispatch, SetStateAction, PropsWithChildren } from "react";
 import { FormBase } from "./FormBase";
 import { FormHook, useForm } from "./FormHook";
 import { formI18n } from "./i18n";
@@ -24,27 +23,27 @@ export interface FormProps<Input, Schema> {
   id?: string;
   name?: string;
   locale: string;
-  formRef?: React.RefObject<HTMLFormElement>;
+  formRef?: RefObject<HTMLFormElement>;
   showInlineError?: boolean;
   autoSave?: boolean;
   autoSaveDelay?: number;
   placeholder?: boolean;
   onSubmit?: (model: object) => void;
   onValidate?: (model: object, error: object) => void;
-  errorsField?: () => React.ReactNode;
-  submitField?: () => React.ReactNode;
+  errorsField?: () => ReactNode;
+  submitField?: () => ReactNode;
   notificationsPanel: boolean;
   openValidationTab?: () => void;
   formError: boolean;
-  setFormError: React.Dispatch<React.SetStateAction<boolean>>;
+  setFormError: Dispatch<SetStateAction<boolean>>;
   formInputs: Input;
-  setFormInputs: React.Dispatch<React.SetStateAction<Input>>;
+  setFormInputs: Dispatch<SetStateAction<Input>>;
   formSchema?: Schema;
 }
 
 export type FormComponentProps<Input, Schema> = FormProps<Input, Schema> & FormHook<Input, Schema>;
 
-export function FormComponent(props: React.PropsWithChildren<FormComponentProps<object, object>>) {
+export function FormComponent(props: PropsWithChildren<FormComponentProps<object, object>>) {
   const i18n = useMemo(
     () => props.i18n ?? formI18n.setLocale(props.locale ?? navigator.language).getCurrent(),
     [props.i18n, props.locale]

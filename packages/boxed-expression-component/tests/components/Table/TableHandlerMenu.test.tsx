@@ -17,7 +17,6 @@
 import { render } from "@testing-library/react";
 import { usingTestingBoxedExpressionI18nContext } from "../test-utils";
 import { TableHandlerMenu } from "@kie-tools/boxed-expression-component";
-import * as React from "react";
 import { TableOperation } from "@kie-tools/boxed-expression-component";
 import * as _ from "lodash";
 

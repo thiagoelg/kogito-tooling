@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import { usingCurrentTutorialContext, usingTestingGuidedTourI18nContext } from "../test_context";
 import { Dialog } from "@kie-tools-core/guided-tour/dist/components";

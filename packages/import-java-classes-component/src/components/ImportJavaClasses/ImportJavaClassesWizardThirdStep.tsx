@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import "./ImportJavaClassesWizardThirdStep.css";
 import { ImportJavaClassesWizardFieldListTable } from "./ImportJavaClassesWizardFieldListTable";
 import { JavaClass } from "./model/JavaClass";

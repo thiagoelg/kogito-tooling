@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createElement } from "react";
 import * as ReactDOMServer from "react-dom/server";
 import { AutoForm } from "./index";
 import { Bridge } from "uniforms";
@@ -28,7 +28,7 @@ interface Args {
 }
 
 export function renderForm(args: Args): string {
-  const form = React.createElement(AutoForm, { ...args });
+  const form = createElement(AutoForm, { ...args });
 
   return unescape(ReactDOMServer.renderToString(form));
 }

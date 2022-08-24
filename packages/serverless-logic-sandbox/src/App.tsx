@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { HashRouter } from "react-router-dom";
 import { EnvContextProvider } from "./env/EnvContextProvider";
 import { EditorEnvelopeLocatorContextProvider } from "./envelopeLocator/EditorEnvelopeLocatorContext";

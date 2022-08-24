@@ -22,8 +22,7 @@ import { Page, PageSection } from "@patternfly/react-core/dist/js/components/Pag
 import { Modal } from "@patternfly/react-core/dist/js/components/Modal";
 import { Stack, StackItem } from "@patternfly/react-core/dist/js/layouts/Stack";
 import * as electron from "electron";
-import * as React from "react";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { FileSaveActions } from "../../common/ElectronFile";
 import { GlobalContext } from "../common/GlobalContext";
 import { EditorToolbar } from "./EditorToolbar";
@@ -295,7 +294,7 @@ export function EditorPage(props: Props) {
                     />
                   }
                   actionLinks={
-                    <React.Fragment>
+                    <Fragment>
                       <AlertActionLink
                         data-testid="unsaved-alert-save-button"
                         onClick={onSave}
@@ -310,7 +309,7 @@ export function EditorPage(props: Props) {
                       >
                         {i18n.editorPage.alerts.unsaved.closeWithoutSaving}
                       </AlertActionLink>
-                    </React.Fragment>
+                    </Fragment>
                   }
                   ouiaId="unsaved-changes-warning-alert"
                 >

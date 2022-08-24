@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { useContext, useMemo } from "react";
 
 import { getCurrentStep } from "./utils";

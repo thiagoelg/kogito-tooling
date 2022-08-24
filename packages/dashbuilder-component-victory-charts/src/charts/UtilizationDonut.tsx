@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as React from "react";
-
 import { PieBaseChart } from "./PieBaseChart";
 import { ChartDonutUtilization } from "@patternfly/react-charts";
 

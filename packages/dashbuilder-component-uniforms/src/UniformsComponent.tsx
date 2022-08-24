@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import { ComponentController, DataSet } from "@kie-tools/dashbuilder-component-api";
 import { useState, useEffect, useCallback } from "react";
 import { Uniforms } from "./Uniforms";

@@ -15,8 +15,7 @@
  */
 
 import { DropdownItem } from "@patternfly/react-core/dist/js/components/Dropdown";
-import * as React from "react";
-import { useCallback, useMemo } from "react";
+import { Fragment, useCallback, useMemo } from "react";
 import { useDmnDevSandbox } from "./DmnDevSandboxContext";
 import { OpenShiftInstanceStatus } from "../../openshift/OpenShiftInstanceStatus";
 import { FeatureDependentOnKieSandboxExtendedServices } from "../../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
@@ -65,7 +64,7 @@ export function useDmnDevSandboxDropdownItems(workspace: ActiveWorkspace | undef
 
   return useMemo(() => {
     return [
-      <React.Fragment key={"dmndev-sandbox-dropdown-items"}>
+      <Fragment key={"dmndev-sandbox-dropdown-items"}>
         {workspace && (
           <FeatureDependentOnKieSandboxExtendedServices isLight={false} position="left">
             <DropdownItem
@@ -114,7 +113,7 @@ export function useDmnDevSandboxDropdownItems(workspace: ActiveWorkspace | undef
             </DropdownItem>
           </>
         )}
-      </React.Fragment>,
+      </Fragment>,
     ];
   }, [isDmnDevSandboxConnected, isKieSandboxExtendedServicesRunning, onDevSandboxDeploy, onDevSandboxSetup, workspace]);
 }

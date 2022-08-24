@@ -19,7 +19,6 @@ import { render } from "@testing-library/react";
 import { flushPromises, usingTestingBoxedExpressionI18nContext } from "../test-utils";
 import { ContextEntryExpressionCell } from "@kie-tools/boxed-expression-component/dist/components/ContextExpression";
 import * as _ from "lodash";
-import * as React from "react";
 import { DataRecord } from "react-table";
 import { act } from "react-dom/test-utils";
 

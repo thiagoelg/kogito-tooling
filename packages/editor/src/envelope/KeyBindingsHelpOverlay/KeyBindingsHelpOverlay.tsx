@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
+
 import {
   Text,
   TextContent,
@@ -101,17 +101,17 @@ export function KeyBindingsHelpOverlay() {
         <TextContent>
           <TextList component={TextListVariants.dl}>
             {Array.from(keyBindings.keys()).map((category) => (
-              <React.Fragment key={category}>
+              <Fragment key={category}>
                 <Text component={TextVariants.h2}>{category}</Text>
                 {Array.from(keyBindings.get(category)!).map((keyBinding) => (
-                  <React.Fragment key={keyBinding.combination}>
+                  <Fragment key={keyBinding.combination}>
                     <TextListItem component={TextListItemVariants.dt}>
                       {formatKeyBindingCombination(keyBinding.combination)}
                     </TextListItem>
                     <TextListItem component={TextListItemVariants.dd}>{keyBinding.label}</TextListItem>
-                  </React.Fragment>
+                  </Fragment>
                 ))}
-              </React.Fragment>
+              </Fragment>
             ))}
           </TextList>
         </TextContent>

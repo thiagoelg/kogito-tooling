@@ -24,7 +24,6 @@ import {
   CardTitle,
 } from "@patternfly/react-core/dist/js/components/Card";
 import { ModelType } from "../../..";
-import * as React from "react";
 import { useCallback, useMemo, MouseEvent } from "react";
 import "./ModelCard.scss";
 import { ModelCardIcon } from "../atoms";

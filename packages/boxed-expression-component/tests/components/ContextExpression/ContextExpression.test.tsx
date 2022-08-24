@@ -25,7 +25,6 @@ import {
   usingTestingBoxedExpressionProviderContext,
 } from "../test-utils";
 import { ContextExpression } from "@kie-tools/boxed-expression-component/dist/components/ContextExpression";
-import * as React from "react";
 import { DataType, LogicType } from "@kie-tools/boxed-expression-component";
 
 describe("ContextExpression tests", () => {

@@ -24,7 +24,6 @@ import { Spinner } from "@patternfly/react-core/dist/js/components/Spinner";
 import { Form, FormGroup } from "@patternfly/react-core/dist/js/components/Form";
 import { InputGroup } from "@patternfly/react-core/dist/js/components/InputGroup";
 import { TextInput } from "@patternfly/react-core/dist/js/components/TextInput";
-import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { AuthStatus, useSettings, useSettingsDispatch } from "./SettingsContext";
 import { ExclamationTriangleIcon } from "@patternfly/react-icons/dist/js/icons/exclamation-triangle-icon";

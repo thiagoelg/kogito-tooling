@@ -17,6 +17,7 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { Route, Switch } from "react-router-dom";
+import { DeployPage } from "../editor/Deploy";
 import { EditorPage } from "../editor/EditorPage";
 import { supportedFileExtensionArray } from "../extension";
 import { HomePage } from "../home/HomePage";
@@ -52,6 +53,13 @@ export function RoutesSwitch() {
             }`}
           />
         )}
+      </Route>
+      <Route
+        path={routes.workspaceDeployWithFilePath.path({
+          workspaceId: ":workspaceId",
+        })}
+      >
+        {({ match }) => <DeployPage workspaceId={match!.params.workspaceId!} />}
       </Route>
       <Route exact={true} path={routes.home.path({})}>
         <HomePage />

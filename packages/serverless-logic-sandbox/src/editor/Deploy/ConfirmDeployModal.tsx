@@ -33,7 +33,7 @@ import { WorkspaceFile } from "../../workspace/WorkspacesContext";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
 import { isSingleModuleProject } from "../../project";
-import { useVirtualServiceRegistryDependencies } from "../../workspace/virtualServiceRegistry/hooks/useVirtualServiceRegistryDependencies";
+import { DependencyDeploymentList } from "../../workspace/virtualServiceRegistry/components/DependencyDeploymentList";
 
 const FETCH_OPEN_API_POLLING_TIME = 5000;
 
@@ -70,17 +70,6 @@ export function ConfirmDeployModal(props: ConfirmDeployModalProps) {
   useEffect(() => {
     setShouldDeployAsProject(canDeployAsProject);
   }, [canDeployAsProject]);
-
-  const depsDeployments = useVirtualServiceRegistryDependencies({
-    workspace: props.workspace,
-    workspaceFile: props.workspaceFile,
-    deployAsProject: shouldDeployAsProject,
-    canUploadOpenApi,
-  });
-
-  useEffect(() => {
-    console.log(depsDeployments);
-  }, [depsDeployments]);
 
   const setDeployStartedError = useAlert(
     props.alerts,
@@ -193,8 +182,6 @@ export function ConfirmDeployModal(props: ConfirmDeployModalProps) {
     });
     setConfirmLoading(false);
 
-    openshift.setConfirmDeployModalOpen(false);
-
     if (resourceName) {
       openshift.setDeploymentsDropdownOpen(true);
       setDeployStartedSuccess.show();
@@ -231,16 +218,14 @@ export function ConfirmDeployModal(props: ConfirmDeployModalProps) {
   ]);
 
   const onCancel = useCallback(() => {
-    openshift.setConfirmDeployModalOpen(false);
     setConfirmLoading(false);
-  }, [openshift]);
+  }, []);
 
   return (
     <Modal
       data-testid={"confirm-deploy-modal"}
-      variant={ModalVariant.small}
+      variant={ModalVariant.medium}
       title={i18n.openshift.confirmModal.title}
-      isOpen={openshift.isConfirmDeployModalOpen}
       aria-label={"Confirm deploy modal"}
       onClose={onCancel}
       actions={[
@@ -262,6 +247,13 @@ export function ConfirmDeployModal(props: ConfirmDeployModalProps) {
       <>
         {i18n.openshift.confirmModal.body}
         <br />
+        <br />
+        <DependencyDeploymentList
+          workspace={props.workspace}
+          workspaceFile={props.workspaceFile}
+          deployAsProject={shouldDeployAsProject}
+          canUploadOpenApi
+        />
         <br />
         <Tooltip
           content={

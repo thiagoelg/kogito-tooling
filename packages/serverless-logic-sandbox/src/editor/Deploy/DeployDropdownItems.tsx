@@ -24,6 +24,7 @@ import { OpenshiftIcon } from "@patternfly/react-icons/dist/js/icons/openshift-i
 import { RegistryIcon } from "@patternfly/react-icons/dist/js/icons/registry-icon";
 import * as React from "react";
 import { useCallback, useMemo, useState, useEffect } from "react";
+import { useHistory } from "react-router";
 import { isServerlessWorkflow } from "../../extension";
 import { FeatureDependentOnKieSandboxExtendedServices } from "../../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
 import {
@@ -31,7 +32,7 @@ import {
   useKieSandboxExtendedServices,
 } from "../../kieSandboxExtendedServices/KieSandboxExtendedServicesContext";
 import { KieSandboxExtendedServicesStatus } from "../../kieSandboxExtendedServices/KieSandboxExtendedServicesStatus";
-import { useOpenShift } from "../../openshift/OpenShiftContext";
+import { useRoutes } from "../../navigation/Hooks";
 import { OpenShiftInstanceStatus } from "../../openshift/OpenShiftInstanceStatus";
 import { useSettings, useSettingsDispatch } from "../../settings/SettingsContext";
 import { SettingsTabs } from "../../settings/SettingsModalBody";
@@ -40,10 +41,11 @@ import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
 import { hasVirtualServiceRegistryDependency } from "../../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 
 export function useDeployDropdownItems(props: { workspace?: ActiveWorkspace }) {
+  const routes = useRoutes();
+  const history = useHistory();
   const settings = useSettings();
   const settingsDispatch = useSettingsDispatch();
   const kieSandboxExtendedServices = useKieSandboxExtendedServices();
-  const openshift = useOpenShift();
   const [hasVirtualServiceRegistryDependencies, setHasVirtualServiceRegistryDependencies] = useState<boolean>(false);
 
   useEffect(() => {
@@ -71,13 +73,23 @@ export function useDeployDropdownItems(props: { workspace?: ActiveWorkspace }) {
   }, [settingsDispatch]);
 
   const onDeploy = useCallback(() => {
-    if (isKieSandboxExtendedServicesRunning) {
-      openshift.setConfirmDeployModalOpen(true);
+    if (isKieSandboxExtendedServicesRunning && props.workspace) {
+      history.push({
+        pathname: routes.workspaceDeployWithFilePath.path({
+          workspaceId: props.workspace.descriptor.workspaceId,
+        }),
+      });
       return;
     }
     kieSandboxExtendedServices.setInstallTriggeredBy(DependentFeature.OPENSHIFT);
     kieSandboxExtendedServices.setModalOpen(true);
-  }, [isKieSandboxExtendedServicesRunning, kieSandboxExtendedServices, openshift]);
+  }, [
+    history,
+    isKieSandboxExtendedServicesRunning,
+    kieSandboxExtendedServices,
+    props.workspace,
+    routes.workspaceDeployWithFilePath,
+  ]);
 
   return useMemo(() => {
     return [

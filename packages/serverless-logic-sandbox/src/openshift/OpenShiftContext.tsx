@@ -28,9 +28,6 @@ export interface OpenShiftContextType {
   isDeploymentsDropdownOpen: boolean;
   setDeploymentsDropdownOpen: React.Dispatch<React.SetStateAction<boolean>>;
 
-  isConfirmDeployModalOpen: boolean;
-  setConfirmDeployModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-
   deploy(args: {
     workspaceFile: WorkspaceFile;
     shouldAttachKafkaSource: boolean;

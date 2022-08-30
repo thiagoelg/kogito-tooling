@@ -128,6 +128,10 @@ export const routes = {
       `/${workspaceId}/file/${fileRelativePath}${extension ? "." + extension : ""}`
   ),
 
+  workspaceDeployWithFilePath: new Route<{
+    pathParams: PathParams.WORKSPACE_ID;
+  }>(({ workspaceId }) => `/${workspaceId}/deploy`),
+
   static: {
     sample: new Route<{ pathParams: "type" | "name" }>(({ type, name }) => `samples/${name}/${name}.${type}`),
     images: {

@@ -2,14 +2,16 @@ import * as React from "react";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { isServerlessWorkflow } from "../../../extension";
 import { ActiveWorkspace } from "../../model/ActiveWorkspace";
-import { getVirtualServiceRegistryDependencies } from "../models/VirtualServiceRegistry";
+import { getVirtualServiceRegistryDependencies, VirtualServiceRegistryGroup } from "../models/VirtualServiceRegistry";
 import { useWorkspaces, WorkspaceFile } from "../../WorkspacesContext";
+import { useVirtualServiceRegistry } from "../VirtualServiceRegistryContext";
 
 export enum DEPLOYMENT_STATUS {
   STANDBY = "STANDBY",
   IN_PROGRESS = "IN_PROGRESS",
   DONE = "DONE",
   FAILED = "FAILED",
+  HAS_PREVIOUS_DEPLOY = "HAS_PREVIOUS_DEPLOY",
 }
 
 export enum DEPLOYMENT_ERROR {
@@ -27,6 +29,8 @@ export type DeploymentDependency = {
   workspace: ActiveWorkspace;
 };
 
+export type VirtualServiceRegistryDependency = ActiveWorkspace & { registryGroup: VirtualServiceRegistryGroup };
+
 // Should return list of dependencies workspaces descriptors and a component to deploy said workspaces
 // Should be able to see progress of deployments
 // Should virtually replace functions with service registry when deployments are over
@@ -36,11 +40,12 @@ export function useVirtualServiceRegistryDependencies(props: {
   deployAsProject: boolean;
   canUploadOpenApi: boolean;
 }) {
-  const [virtualServiceRegistryDependencies, setVirtualServiceRegistryDependencies] = useState<Array<ActiveWorkspace>>(
-    []
-  );
+  const [virtualServiceRegistryDependencies, setVirtualServiceRegistryDependencies] = useState<
+    Array<VirtualServiceRegistryDependency>
+  >([]);
   const [dependenciesDeployStatus, setDependenciesDeployStatus] = useState<Record<string, DEPLOYMENT_STATUS>>({});
   const workspaces = useWorkspaces();
+  const virtualServiceRegistry = useVirtualServiceRegistry();
 
   useEffect(() => {
     const updateWorkspacesList = async () => {
@@ -63,13 +68,20 @@ export function useVirtualServiceRegistryDependencies(props: {
         await Promise.all(
           dependencies.map(async (workspaceId) => ({
             descriptor: await workspaces.descriptorService.get(workspaceId),
+            registryGroup: await virtualServiceRegistry.vsrGroupService.get(workspaceId),
             files: await workspaces.getFiles({ fs: await workspaces.fsService.getFs(workspaceId), workspaceId }),
           }))
         )
       );
     };
     updateWorkspacesList();
-  }, [props.deployAsProject, props.workspace.files, props.workspaceFile, workspaces]);
+  }, [
+    props.deployAsProject,
+    props.workspace.files,
+    props.workspaceFile,
+    virtualServiceRegistry.vsrGroupService,
+    workspaces,
+  ]);
 
   const needsDependencyDeployment = useMemo(
     () => virtualServiceRegistryDependencies.length > 0,

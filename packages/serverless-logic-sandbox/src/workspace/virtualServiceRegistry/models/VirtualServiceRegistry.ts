@@ -107,6 +107,7 @@ export interface VirtualServiceRegistryGroup extends DescriptorBase {
   groupName: string;
   createdDateISO: string;
   lastUpdatedDateISO: string;
+  latestSpecUrl?: string;
 }
 
 export function groupPath(

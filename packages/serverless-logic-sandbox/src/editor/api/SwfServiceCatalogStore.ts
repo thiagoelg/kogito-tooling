@@ -236,7 +236,7 @@ export class SwfServiceCatalogStore {
   }
 
   public async uploadArtifact(args: { groupId: string; artifactId: string; content: string }): Promise<void> {
-    await axios.post(this.PROXY_ENDPOINT, args.content, {
+    const response = await axios.post(this.PROXY_ENDPOINT, args.content, {
       headers: {
         ...this.COMMON_HEADERS,
         "X-Registry-ArtifactId": args.artifactId.replace(/\s|\//g, "_"),
@@ -245,6 +245,8 @@ export class SwfServiceCatalogStore {
         )}/artifacts`,
       },
     });
+
+    console.log(response);
     this.refresh();
   }
 }

@@ -54,7 +54,7 @@ export type DeploymentData = {
 
 export type DeploymenStatus = {
   status: DEPLOYMENT_STATUS;
-  error: DeploymentError;
+  error?: DeploymentError;
 };
 
 export interface DeploymentsContextType {
@@ -64,7 +64,7 @@ export interface DeploymentsContextType {
   deploymentsStatus: {
     [deploymentId: string]: DeploymenStatus;
   };
-  addDeployment: () => string;
+  addDeployment: (deploymentData: DeploymentData) => string;
 }
 
 export const DeploymentsContext = createContext<DeploymentsContextType>({} as any);
@@ -73,16 +73,32 @@ export function DeploymentsContextProvider(props: { children: ReactNode }) {
   const [deploymentsData, setDeploymentsData] = useState<DeploymentsContextType["deploymentsData"]>({});
   const [deploymentsStatus, setDeploymentsStatus] = useState<DeploymentsContextType["deploymentsStatus"]>({});
 
+  const addDeployment = useCallback((deploymentData: DeploymentData) => {
+    const deploymentId = deploymentData.descriptor.workspaceId;
+    setDeploymentsData((currentData) => ({
+      ...currentData,
+      [deploymentId]: deploymentData,
+    }));
+    setDeploymentsStatus((currentStatus) => ({
+      ...currentStatus,
+      [deploymentId]: {
+        status: DEPLOYMENT_STATUS.STANDBY,
+      },
+    }));
+    return deploymentId;
+  }, []);
+
   const deploymentsContext: DeploymentsContextType = useMemo(
     () => ({
       deploymentsData,
       deploymentsStatus,
+      addDeployment,
     }),
     [deploymentsData, deploymentsStatus]
   );
 
   return (
-    <DeploymentsContext.Provider value={{ deploymentsData, deploymentsStatus }}>
+    <DeploymentsContext.Provider value={deploymentsContext}>
       <>{props.children}</>
     </DeploymentsContext.Provider>
   );

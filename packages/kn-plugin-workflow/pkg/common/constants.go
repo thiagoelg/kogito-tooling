@@ -16,14 +16,27 @@
 
 package common
 
-// can be overriten by env
-var QUARKUS_VERSION = "2.10.0.Final"
+type DependenciesVersion struct {
+	QuarkusPlatformGroupId string
+	QuarkusVersion         string
+}
 
 const (
-	QUARKUS_DEFAULT_EXTENSIONS = "kogito-quarkus-serverless-workflow,kogito-addons-quarkus-knative-eventing,resteasy-reactive-jackson,quarkus-kubernetes"
-	JAVA_VERSION               = 11
-	MAVEN_MAJOR_VERSION        = 3
-	MAVEN_MINOR_VERSION        = 8
-	DEFAULT_REGISTRY           = "quay.io"
-	DEFAULT_TAG                = "latest"
+	QUARKUS_MAVEN_PLUGIN                             = "quarkus-maven-plugin"
+	QUARKUS_KUBERNETES_EXTENSION                     = "quarkus-kubernetes"
+	QUARKUS_RESTEASY_REACTIVE_JACKSON_EXTENSION      = "quarkus-resteasy-reactive-jackson"
+	QUARKUS_CONTAINER_IMAGE_JIB                      = "quarkus-container-image-jib"
+	QUARKUS_CONTAINER_IMAGE_DOCKER                   = "quarkus-container-image-docker"
+	KOGITO_QUARKUS_SERVERLESS_WORKFLOW_EXTENSION     = "kogito-quarkus-serverless-workflow"
+	KOGITO_ADDONS_QUARKUS_KNATIVE_EVENTING_EXTENSION = "kogito-addons-quarkus-knative-eventing"
+
+	// Versions
+	JAVA_VERSION        = 11
+	MAVEN_MAJOR_VERSION = 3
+	MAVEN_MINOR_VERSION = 8
+
+	// Default values
+	DEFAULT_TAG = "latest"
+
+	WORKFLOW_SW_JSON = "workflow.sw.json"
 )

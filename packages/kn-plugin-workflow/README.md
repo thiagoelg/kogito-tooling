@@ -2,84 +2,32 @@
 
 `kn-plugin-workflow` is a plugin of the Knative Client, to enable users to quickly set up a local Kogito Serverless Workflow project from the command line.
 
-## Getting Started
+[Read the documentation](https://kiegroup.github.io/kogito-docs/serverlessworkflow/main/tooling/kn-plugin-workflow-overview.html)
 
-Note: In order to use the `workflow` plugin, you must install:
+## Build from source
 
-- [Java](https://www.java.com/en/download/help/download_options.html) at least version 11
-- [Maven](https://maven.apache.org/install.html) at least version 3.8.1
-- [Docker](https://docs.docker.com/engine/install/) (Optional)
-- [Podman](https://docs.podman.io/en/latest/) (Optional)
-- [Kubernetes CLI `kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl).
+All the commands in this section should be performed in the monorepo root.
 
-### Instalation
+### Prerequisites
 
-You can download the latest binaries from the [Releases](https://github.com/kiegroup/kie-tools/releases) page.
+- Node `>= 16.13.2` _(To install, follow these instructions: https://nodejs.org/en/download/package-manager/)_
+- pnpm `7.0.0` _(To install, follow these instructions: https://pnpm.io/installation)_
+- Go `1.19` _(To install, follow these instructions: https://go.dev/doc/install)_
 
-There are two ways to run `kn workflow`:
+### Installing and linking dependencies
 
-1. You can run it standalone, just put it on your system path and make sure it is executable.
-2. You can install it as a plugin of the `kn` client to run:
-   - Follow the [documentation](https://github.com/knative/client/blob/main/docs/README.md#installing-kn) to install `kn` CLI if you don't have it
-   - Copy the `kn-workflow` binary to a directory on your `PATH` (for example, `/usr/local/bin`) and make sure its filename is `kn-workflow`
-     - On macOS give the ownership to the root user: `sudo chown root: /usr/local/bin/kn-workflow`
-   - Run `kn plugin list` to verify that the `kn-workflow` plugin is installed successfully
+The following command will install the `kn-plugin-workflow` dependencies and link it with any other monorepo
+package that is listed in the `package.json`:
 
-After the plugin is installed, you can use `kn workflow` to run its related subcommands.
+- `pnpm bootstrap -F "@kie-tools/kn-plugin-workflow..."`
 
-## Usage
+### Building
 
-```
-Get up and running with a local Knative environment
+It has two different strategies to build the `kn-plugin-workflow`:
 
-Usage:
-  kn workflow [command]
+- `build:dev` _(The build will generate one artifact that is compatible with your local machine)_
+- `build:prod` _(The build will generate artifacts for all available architecture and run the available tests)_
 
-Available Commands:
-  build       Build a Kogito Serverless Workflow project and generate a container image
-  completion  Generate the autocompletion script for the specified shell
-  create      Create a Kogito Serverless Workflow project
-  deploy      Deploy a Kogito Serverless Workflow project
-  help        Help about any command
+To build the `kn-plugin-workflow` run the following command:
 
-Flags:
-  -h, --help      help for kn-workflow
-  -v, --verbose   Print verbose logs
-
-Use "kn workflow [command] --help" for more information about a command.
-```
-
-### create
-
-This command will scaffold a new Kogito Serverless Workflow project named "my-project":
-
-```bash
-kn workflow create --name my-project
-```
-
-### build
-
-Builds a Kogito Serverless Workflow project in the current directory and generate a specific image:
-
-```bash
-kn workflow build --image quay.io/mysuer/myproject
-```
-
-### deploy
-
-Deploys a Kogito Serverless Workflow project in the current directory (build command is required):
-
-```bash
-kn workflow deploy
-```
-
-## Building from Source
-
-```bash
-git clone git@github.com:kiegroup/kie-tools.git
-cd kie-tools
-yarn bootstrap
-cd packages/kn-plugin-workflow
-go mod tidy
-yarn build
-```
+- `pnpm -r -F "@kie-tools/kn-plugin-workflow..." <build-strategy>`

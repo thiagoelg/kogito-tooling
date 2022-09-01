@@ -21,7 +21,6 @@ import (
 	"fmt"
 	"html/template"
 	"os/exec"
-	"runtime"
 	"time"
 
 	"github.com/briandowns/spinner"
@@ -65,6 +64,15 @@ func RunCommand(command *exec.Cmd, verbose bool, commandName string, friendlyMes
 	return nil
 }
 
+func RunExtensionCommand(verbose bool, extensionCommand string, friendlyMessages []string, extensions string) error {
+	command := ExecCommand("mvn", extensionCommand, fmt.Sprintf("-Dextensions=%s", extensions))
+	if err := RunCommand(command, verbose, extensionCommand, friendlyMessages); err != nil {
+		fmt.Println("ERROR: It wasn't possible to add Quarkus extension in your pom.xml.")
+		return err
+	}
+	return nil
+}
+
 func printBuildActivity(ctx context.Context, s *spinner.Spinner, friendlyMessages []string) {
 	i := 1
 	ticker := time.NewTicker(10 * time.Second)
@@ -100,12 +108,4 @@ func DefaultTemplatedHelp(cmd *cobra.Command, args []string) {
 	if err := tpl.Execute(cmd.OutOrStdout(), data); err != nil {
 		fmt.Fprintf(cmd.ErrOrStderr(), "unable to display help text: %v", err)
 	}
-}
-
-func GetOsCommand(command string) string {
-	var osCommand = "./" + command
-	if runtime.GOOS == "windows" {
-		osCommand = ".\\" + command
-	}
-	return osCommand
 }

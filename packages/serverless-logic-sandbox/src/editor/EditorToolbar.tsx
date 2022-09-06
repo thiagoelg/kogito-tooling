@@ -91,7 +91,7 @@ import { FileSwitcher } from "./FileSwitcher";
 import { KieSandboxExtendedServicesButtons } from "./KieSandboxExtendedServices/KieSandboxExtendedServicesButtons";
 import { KieSandboxExtendedServicesDropdownGroup } from "./KieSandboxExtendedServices/KieSandboxExtendedServicesDropdownGroup";
 import { NewFileDropdownMenu } from "./NewFileDropdownMenu";
-import { ConfirmDeployModal } from "./Deploy/ConfirmDeployModal";
+import { ConfirmDeployModal } from "../deployments/ConfirmDeployModal";
 import { hasVirtualServiceRegistryDependency } from "../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 
 export interface Props {

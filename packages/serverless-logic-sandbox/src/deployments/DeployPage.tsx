@@ -18,18 +18,18 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { Divider } from "@patternfly/react-core/dist/js/components/Divider";
 import { Page, PageSection } from "@patternfly/react-core/dist/js/components/Page";
-import { OnlineEditorPage } from "../../pageTemplate/OnlineEditorPage";
+import { OnlineEditorPage } from "../pageTemplate/OnlineEditorPage";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/js/layouts/Flex";
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
 import { Title } from "@patternfly/react-core/dist/js/components/Title";
-import { WorkspaceStatusIndicator } from "../../workspace/components/WorkspaceStatusIndicator";
-import { useRoutes } from "../../navigation/Hooks";
-import { useSettings, useSettingsDispatch } from "../../settings/SettingsContext";
+import { WorkspaceStatusIndicator } from "../workspace/components/WorkspaceStatusIndicator";
+import { useRoutes } from "../navigation/Hooks";
+import { useSettings, useSettingsDispatch } from "../settings/SettingsContext";
 import { useHistory } from "react-router";
 import { AngleLeftIcon } from "@patternfly/react-icons/dist/js/icons";
-import { WorkspaceLabel } from "../../workspace/components/WorkspaceLabel";
-import { useWorkspacePromise } from "../../workspace/hooks/WorkspaceHooks";
-import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
+import { WorkspaceLabel } from "../workspace/components/WorkspaceLabel";
+import { useWorkspacePromise } from "../workspace/hooks/WorkspaceHooks";
+import { ActiveWorkspace } from "../workspace/model/ActiveWorkspace";
 
 export interface DeployPageProps {
   workspaceId: string;

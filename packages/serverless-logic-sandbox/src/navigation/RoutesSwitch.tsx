@@ -17,7 +17,7 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { Route, Switch } from "react-router-dom";
-import { DeployPage } from "../editor/Deploy";
+import { DeployPage } from "../deployments";
 import { EditorPage } from "../editor/EditorPage";
 import { supportedFileExtensionArray } from "../extension";
 import { HomePage } from "../home/HomePage";

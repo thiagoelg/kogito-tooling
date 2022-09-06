@@ -16,9 +16,9 @@
 
 import { DropdownGroup } from "@patternfly/react-core/dist/js/components/Dropdown";
 import * as React from "react";
+import { useDeployDropdownItems } from "../../deployments";
 import { KieSandboxExtendedServicesIcon } from "../../kieSandboxExtendedServices/KieSandboxExtendedServicesIcon";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
-import { useDeployDropdownItems } from "../Deploy/DeployDropdownItems";
 
 export function KieSandboxExtendedServicesDropdownGroup(props: { workspace: ActiveWorkspace | undefined }) {
   const deployDropdownItems = useDeployDropdownItems({

@@ -6,34 +6,8 @@ import { getVirtualServiceRegistryDependencies, VirtualServiceRegistryGroup } fr
 import { useWorkspaces, WorkspaceFile } from "../../WorkspacesContext";
 import { useVirtualServiceRegistry } from "../VirtualServiceRegistryContext";
 
-export enum DEPLOYMENT_STATUS {
-  STANDBY = "STANDBY",
-  IN_PROGRESS = "IN_PROGRESS",
-  DONE = "DONE",
-  FAILED = "FAILED",
-  HAS_PREVIOUS_DEPLOY = "HAS_PREVIOUS_DEPLOY",
-}
-
-export enum DEPLOYMENT_ERROR {
-  UPLOAD_API = "UPLOAD_API",
-  DEPLOYMENT_FAILED = "DEPLOYMENT_FAILED",
-}
-
-export type DeploymentDependencyError = {
-  type: DEPLOYMENT_ERROR;
-  message: string;
-};
-
-export type DeploymentDependency = {
-  deploymentStatus: DEPLOYMENT_STATUS;
-  workspace: ActiveWorkspace;
-};
-
 export type VirtualServiceRegistryDependency = ActiveWorkspace & { registryGroup: VirtualServiceRegistryGroup };
 
-// Should return list of dependencies workspaces descriptors and a component to deploy said workspaces
-// Should be able to see progress of deployments
-// Should virtually replace functions with service registry when deployments are over
 export function useVirtualServiceRegistryDependencies(props: {
   workspace: ActiveWorkspace;
   workspaceFile: WorkspaceFile;
@@ -43,7 +17,6 @@ export function useVirtualServiceRegistryDependencies(props: {
   const [virtualServiceRegistryDependencies, setVirtualServiceRegistryDependencies] = useState<
     Array<VirtualServiceRegistryDependency>
   >([]);
-  const [dependenciesDeployStatus, setDependenciesDeployStatus] = useState<Record<string, DEPLOYMENT_STATUS>>({});
   const workspaces = useWorkspaces();
   const virtualServiceRegistry = useVirtualServiceRegistry();
 
@@ -88,29 +61,5 @@ export function useVirtualServiceRegistryDependencies(props: {
     [virtualServiceRegistryDependencies]
   );
 
-  const dependenciesDeployments = useMemo(
-    () =>
-      needsDependencyDeployment
-        ? virtualServiceRegistryDependencies.map((workspace) => ({
-            workspace,
-            deploymentStatus: dependenciesDeployStatus[workspace.descriptor.workspaceId] || DEPLOYMENT_STATUS.STANDBY,
-          }))
-        : [],
-    [dependenciesDeployStatus, needsDependencyDeployment, virtualServiceRegistryDependencies]
-  );
-
-  const deployDependency = useCallback((dependency: DeploymentDependency) => {}, []);
-
-  const errors = useMemo(() => {
-    const errors: Array<DeploymentDependencyError> = [];
-    if (virtualServiceRegistryDependencies.length > 0 && !props.canUploadOpenApi) {
-      errors.push({ type: DEPLOYMENT_ERROR.UPLOAD_API, message: "Uploading API to Service Registry is required." });
-    }
-    if (dependenciesDeployments.some((deployment) => deployment.deploymentStatus === DEPLOYMENT_STATUS.FAILED)) {
-      errors.push({ type: DEPLOYMENT_ERROR.DEPLOYMENT_FAILED, message: "One or more deployments failed." });
-    }
-    return errors;
-  }, [dependenciesDeployments, props.canUploadOpenApi, virtualServiceRegistryDependencies.length]);
-
-  return { needsDependencyDeployment, dependenciesDeployments, errors, deployDependency };
+  return { needsDependencyDeployment, virtualServiceRegistryDependencies };
 }

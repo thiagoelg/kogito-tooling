@@ -25,20 +25,20 @@ import { RegistryIcon } from "@patternfly/react-icons/dist/js/icons/registry-ico
 import * as React from "react";
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { useHistory } from "react-router";
-import { isServerlessWorkflow } from "../../extension";
-import { FeatureDependentOnKieSandboxExtendedServices } from "../../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
+import { isServerlessWorkflow } from "../extension";
+import { FeatureDependentOnKieSandboxExtendedServices } from "../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
 import {
   DependentFeature,
   useKieSandboxExtendedServices,
-} from "../../kieSandboxExtendedServices/KieSandboxExtendedServicesContext";
-import { KieSandboxExtendedServicesStatus } from "../../kieSandboxExtendedServices/KieSandboxExtendedServicesStatus";
-import { useRoutes } from "../../navigation/Hooks";
-import { OpenShiftInstanceStatus } from "../../openshift/OpenShiftInstanceStatus";
-import { useSettings, useSettingsDispatch } from "../../settings/SettingsContext";
-import { SettingsTabs } from "../../settings/SettingsModalBody";
-import { FileLabel } from "../../workspace/components/FileLabel";
-import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
-import { hasVirtualServiceRegistryDependency } from "../../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
+} from "../kieSandboxExtendedServices/KieSandboxExtendedServicesContext";
+import { KieSandboxExtendedServicesStatus } from "../kieSandboxExtendedServices/KieSandboxExtendedServicesStatus";
+import { useRoutes } from "../navigation/Hooks";
+import { OpenShiftInstanceStatus } from "../openshift/OpenShiftInstanceStatus";
+import { useSettings, useSettingsDispatch } from "../settings/SettingsContext";
+import { SettingsTabs } from "../settings/SettingsModalBody";
+import { FileLabel } from "../workspace/components/FileLabel";
+import { ActiveWorkspace } from "../workspace/model/ActiveWorkspace";
+import { hasVirtualServiceRegistryDependency } from "../workspace/virtualServiceRegistry/models/VirtualServiceRegistry";
 
 export function useDeployDropdownItems(props: { workspace?: ActiveWorkspace }) {
   const routes = useRoutes();

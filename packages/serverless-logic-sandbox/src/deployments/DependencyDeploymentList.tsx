@@ -8,10 +8,10 @@ import {
   DataListItemCells,
   DataListItemRow,
 } from "@patternfly/react-core/dist/js/components/DataList";
-import { ActiveWorkspace } from "../../model/ActiveWorkspace";
-import { WorkspaceFile } from "../../WorkspacesContext";
+import { ActiveWorkspace } from "../workspace/model/ActiveWorkspace";
+import { WorkspaceFile } from "../workspace/WorkspacesContext";
 import { Text, TextContent } from "@patternfly/react-core/dist/js/components/Text";
-import { useVirtualServiceRegistryDependencies } from "../hooks/useVirtualServiceRegistryDependencies";
+import { useVirtualServiceRegistryDependencies } from "../workspace/virtualServiceRegistry/hooks/useVirtualServiceRegistryDependencies";
 
 interface DependencyDeploymentListProps {
   workspace: ActiveWorkspace;
@@ -21,14 +21,12 @@ interface DependencyDeploymentListProps {
 }
 
 export function DependencyDeploymentList(props: DependencyDeploymentListProps) {
-  const { needsDependencyDeployment, dependenciesDeployments, errors, deployDependency } =
+  const { needsDependencyDeployment, virtualServiceRegistryDependencies } =
     useVirtualServiceRegistryDependencies(props);
 
   console.log({
     needsDependencyDeployment,
-    dependenciesDeployments,
-    errors,
-    deployDependency,
+    virtualServiceRegistryDependencies,
   });
 
   return (

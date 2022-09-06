@@ -22,18 +22,18 @@ import { ExpandableSection } from "@patternfly/react-core/dist/js/components/Exp
 import { Modal, ModalVariant } from "@patternfly/react-core/dist/js/components/Modal";
 import { Spinner } from "@patternfly/react-core/dist/js/components/Spinner";
 import { useCallback, useMemo, useState, useEffect } from "react";
-import { AlertsController, useAlert } from "../../alerts/Alerts";
-import { useAppI18n } from "../../i18n";
-import { useOpenShift } from "../../openshift/OpenShiftContext";
-import { isKafkaConfigValid } from "../../settings/kafka/KafkaSettingsConfig";
-import { isServiceAccountConfigValid } from "../../settings/serviceAccount/ServiceAccountConfig";
-import { isServiceRegistryConfigValid } from "../../settings/serviceRegistry/ServiceRegistryConfig";
-import { useSettings } from "../../settings/SettingsContext";
-import { WorkspaceFile } from "../../workspace/WorkspacesContext";
+import { AlertsController, useAlert } from "../alerts/Alerts";
+import { useAppI18n } from "../i18n";
+import { useOpenShift } from "../openshift/OpenShiftContext";
+import { isKafkaConfigValid } from "../settings/kafka/KafkaSettingsConfig";
+import { isServiceAccountConfigValid } from "../settings/serviceAccount/ServiceAccountConfig";
+import { isServiceRegistryConfigValid } from "../settings/serviceRegistry/ServiceRegistryConfig";
+import { useSettings } from "../settings/SettingsContext";
+import { WorkspaceFile } from "../workspace/WorkspacesContext";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
-import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
-import { isSingleModuleProject } from "../../project";
-import { DependencyDeploymentList } from "../../workspace/virtualServiceRegistry/components/DependencyDeploymentList";
+import { ActiveWorkspace } from "../workspace/model/ActiveWorkspace";
+import { isSingleModuleProject } from "../project";
+import { DependencyDeploymentList } from "./DependencyDeploymentList";
 
 const FETCH_OPEN_API_POLLING_TIME = 5000;
 

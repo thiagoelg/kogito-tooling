@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Dropdown, DropdownPosition, DropdownToggle } from "@patternfly/react-core/dist/js/components/Dropdown";
 import * as React from "react";
+import { Dropdown, DropdownPosition, DropdownToggle } from "@patternfly/react-core/dist/js/components/Dropdown";
 import { useCallback, useMemo } from "react";
+import { useDeployDropdownItems } from "../../deployments";
 import { FeatureDependentOnKieSandboxExtendedServices } from "../../kieSandboxExtendedServices/FeatureDependentOnKieSandboxExtendedServices";
 import {
   DependentFeature,
@@ -27,7 +28,6 @@ import { useOpenShift } from "../../openshift/OpenShiftContext";
 import { OpenShiftInstanceStatus } from "../../openshift/OpenShiftInstanceStatus";
 import { useSettings } from "../../settings/SettingsContext";
 import { ActiveWorkspace } from "../../workspace/model/ActiveWorkspace";
-import { useDeployDropdownItems } from "../Deploy/DeployDropdownItems";
 import { EditorPageDockDrawerRef } from "../EditorPageDockDrawer";
 
 interface Props {

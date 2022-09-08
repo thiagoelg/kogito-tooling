@@ -32,7 +32,7 @@ import { useWorkspacePromise } from "../workspace/hooks/WorkspaceHooks";
 import { ActiveWorkspace } from "../workspace/model/ActiveWorkspace";
 
 export interface DeployPageProps {
-  workspaceId: string;
+  workspaceId?: string;
 }
 
 export function DeployPage(props: DeployPageProps) {

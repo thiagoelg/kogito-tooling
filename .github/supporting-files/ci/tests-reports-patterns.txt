@@ -1,2 +1,0 @@
-**/dist-tests/junit-report*.xml
-**/target/surefire-reports/TEST-*.xml

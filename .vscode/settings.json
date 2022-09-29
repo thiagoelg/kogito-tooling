@@ -1,5 +1,0 @@
-{
-  "eslint.options": {
-    "configFile": "packages/eslint/.eslintrc.js"
-  }
-}

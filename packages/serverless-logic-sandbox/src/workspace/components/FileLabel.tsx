@@ -22,6 +22,7 @@ type LabelColorType = { color: LabelProps["color"]; label: string };
 
 const swfLabel: LabelColorType = { color: "green", label: "Serverless Workflow" };
 const sdLabel: LabelColorType = { color: "blue", label: "Serverless Decision" };
+const kaotoLabel: LabelColorType = { color: "gold", label: "Kaoto Workflow" };
 const dashboardLabel: LabelColorType = { color: "purple", label: "Dashboard" };
 
 export const labelColors: Record<FileTypes, LabelColorType> = {
@@ -31,6 +32,8 @@ export const labelColors: Record<FileTypes, LabelColorType> = {
   [FileTypes.YARD_JSON]: sdLabel,
   [FileTypes.YARD_YML]: sdLabel,
   [FileTypes.YARD_YAML]: sdLabel,
+  [FileTypes.KAOTO_YML]: kaotoLabel,
+  [FileTypes.KAOTO_YAML]: kaotoLabel,
   [FileTypes.DASH_YAML]: dashboardLabel,
   [FileTypes.DASH_YML]: dashboardLabel,
 };

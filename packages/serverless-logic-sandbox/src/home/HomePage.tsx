@@ -168,6 +168,7 @@ export function HomePage() {
                     "Dashboard files are used to define data visualization from data extracted from applications."
                   }
                 />
+                <NewModelCard title={"Kaoto"} extension={FileTypes.KAOTO_YAML} description={"Kaoto."} />
               </Gallery>
             </PageSection>
           </GridItem>

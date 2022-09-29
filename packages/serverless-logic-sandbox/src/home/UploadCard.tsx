@@ -236,6 +236,7 @@ export function UploadCard(props: { expandWorkspace: (workspaceId: string) => vo
             ref={uploadFolderInputRef}
             style={{ display: "none" }}
             /* @ts-expect-error directory and webkitdirectory are not available but works*/
+            // eslint-disable-next-line react/no-unknown-property
             webkitdirectory=""
             onChange={(e) => {
               const files = Array.from(e.target.files ?? []).map((f: any) => {

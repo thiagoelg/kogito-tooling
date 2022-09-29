@@ -20,10 +20,12 @@ import { PROJECT_FILES } from "../project";
 const EDIT_NON_MODEL_ALLOW_LIST = [PROJECT_FILES.applicationProperties];
 
 const REGEX = {
-  supported: /(\.sw\.json|\.sw\.yaml|\.sw\.yml|\.yard\.json|\.yard\.yaml|\.yard\.yml|\.dash\.yml|\.dash\.yaml)$/i,
+  supported:
+    /(\.sw\.json|\.sw\.yaml|\.sw\.yml|\.kaoto\.yaml|\.kaoto\.yml|\.yard\.json|\.yard\.yaml|\.yard\.yml|\.dash\.yml|\.dash\.yaml)$/i,
   sw: /^.*\.sw\.(json|yml|yaml)$/i,
   swJson: /^.*\.sw\.json$/i,
   swYaml: /^.*\.sw\.(yml|yaml)$/i,
+  kaoto: /^.*\.kaoto\.(yml|yaml)$/i,
   yard: /^.*\.yard\.(json|yml|yaml)$/i,
   dash: /^.*\.dash\.(yml|yaml)$/i,
   json: /^.*\.json$/i,
@@ -34,6 +36,7 @@ const REGEX = {
 export const GLOB_PATTERN = {
   all: "**/*",
   sw: "**/*.sw.+(json|yml|yaml)",
+  kaoto: "**/*.kaoto.+(yml|yaml)",
   yard: "**/*.yard.+(json|yml|yaml)",
   dash: "**/*.dash.+(yml|yaml)",
 };
@@ -42,6 +45,8 @@ export enum FileTypes {
   SW_JSON = "sw.json",
   SW_YML = "sw.yml",
   SW_YAML = "sw.yaml",
+  KAOTO_YML = "kaoto.yml",
+  KAOTO_YAML = "kaoto.yaml",
   YARD_JSON = "yard.json",
   YARD_YML = "yard.yml",
   YARD_YAML = "yard.yaml",
@@ -53,6 +58,8 @@ export const supportedFileExtensionArray = [
   FileTypes.SW_JSON,
   FileTypes.SW_YML,
   FileTypes.SW_YAML,
+  FileTypes.KAOTO_YML,
+  FileTypes.KAOTO_YAML,
   FileTypes.YARD_JSON,
   FileTypes.YARD_YML,
   FileTypes.YARD_YAML,
@@ -86,12 +93,16 @@ export function isServerlessDecision(path: string): boolean {
   return REGEX.yard.test(path);
 }
 
+export function isKaoto(path: string): boolean {
+  return REGEX.kaoto.test(path);
+}
+
 export function isDashbuilder(path: string): boolean {
   return REGEX.dash.test(path);
 }
 
 export function isModel(path: string): boolean {
-  return isServerlessWorkflow(path) || isServerlessDecision(path) || isDashbuilder(path);
+  return isServerlessWorkflow(path) || isServerlessDecision(path) || isDashbuilder(path) || isKaoto(path);
 }
 
 export function isSandboxAsset(path: string): boolean {

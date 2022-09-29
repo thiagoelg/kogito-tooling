@@ -39,6 +39,8 @@ module.exports = {
           or: [
             (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/fonts"),
             (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/pficon"),
+            (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/fonts"),
+            (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/pficon"),
             (input) => posixPath(input).includes("node_modules/monaco-editor/esm/vs/base/browser/ui/codicons/codicon"),
             (input) => posixPath(input).includes("node_modules/monaco-editor/dev/vs/base/browser/ui/codicons/codicon"),
           ],
@@ -100,6 +102,8 @@ module.exports = {
             (input) => posixPath(input).includes("src"),
             (input) => posixPath(input).includes("node_modules/@patternfly/react-styles/css/assets/images"),
             (input) => posixPath(input).includes("node_modules/@patternfly/react-core/dist/styles/assets/images"),
+            (input) => posixPath(input).includes("node_modules/@patternfly/patternfly/assets/images"),
+            (input) => posixPath(input).includes("node_modules/@thiagoelg/kaoto-ui/dist/lib/assets/images"),
             (input) =>
               posixPath(input).includes(
                 "node_modules/@patternfly/react-core/node_modules/@patternfly/react-styles/css/assets/images"

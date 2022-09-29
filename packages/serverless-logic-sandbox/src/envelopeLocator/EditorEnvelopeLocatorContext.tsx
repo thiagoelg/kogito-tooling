@@ -26,6 +26,12 @@ export function EditorEnvelopeLocatorContextProvider(props: { children: React.Re
     () =>
       new EditorEnvelopeLocator(window.location.origin, [
         new EnvelopeMapping({
+          type: "kaoto",
+          filePathGlob: GLOB_PATTERN.kaoto,
+          resourcesPathPrefix: ".",
+          envelopePath: "kaoto-editor-envelope.html",
+        }),
+        new EnvelopeMapping({
           type: "swf",
           filePathGlob: GLOB_PATTERN.sw,
           resourcesPathPrefix: ".",

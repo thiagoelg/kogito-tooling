@@ -60,6 +60,7 @@ module.exports = async (env) => {
       "serverless-workflow-diagram-editor-envelope": "./src/envelope/ServerlessWorkflowDiagramEditorEnvelopeApp.ts",
       "serverless-workflow-text-editor-envelope": "./src/envelope/ServerlessWorkflowTextEditorEnvelopeApp.ts",
       "serverless-workflow-mermaid-viewer-envelope": "./src/envelope/ServerlessWorkflowMermaidViewerEnvelopeApp.ts",
+      "kaoto-editor-envelope": "./src/envelope/KaotoEditorEnvelopeApp.ts",
     },
     plugins: [
       new HtmlWebpackPlugin({
@@ -108,6 +109,10 @@ module.exports = async (env) => {
           {
             from: "./static/envelope/serverless-workflow-text-editor-envelope.html",
             to: "./serverless-workflow-text-editor-envelope.html",
+          },
+          {
+            from: "./static/envelope/kaoto-editor-envelope.html",
+            to: "./kaoto-editor-envelope.html",
           },
           { from: "./static/envelope/dashbuilder-editor-envelope.html", to: "./dashbuilder-editor-envelope.html" },
           { from: "./static/envelope/text-editor-envelope.html", to: "./text-editor-envelope.html" },
@@ -165,6 +170,14 @@ module.exports = async (env) => {
         },
         ...patternflyBase.webpackModuleRules,
       ],
+    },
+    resolve: {
+      alias: {
+        react: path.resolve("./node_modules/react"),
+        "react-dom": path.resolve("./node_modules/react-dom"),
+        "@patternfly/react-core": path.resolve("./node_modules/@patternfly/react-core"),
+        "@types/react": path.resolve("./node_modules/@types/react"),
+      },
     },
     ignoreWarnings: [/Failed to parse source map/],
     devServer: {

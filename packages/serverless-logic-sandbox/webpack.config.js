@@ -20,8 +20,7 @@ const patternflyBase = require("@kie-tools-core/patternfly-base");
 const { merge } = require("webpack-merge");
 const common = require("@kie-tools-core/webpack-base/webpack.common.config");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { ProvidePlugin } = require("webpack");
-const { EnvironmentPlugin } = require("webpack");
+const { ProvidePlugin, DefinePlugin, EnvironmentPlugin } = require("webpack");
 const HtmlReplaceWebpackPlugin = require("html-replace-webpack-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const swEditor = require("@kie-tools/serverless-workflow-diagram-editor-assets");
@@ -147,6 +146,9 @@ module.exports = async (env) => {
             },
           },
         ],
+      }),
+      new DefinePlugin({
+        "process.env.KAOTO_API": JSON.stringify("http://localhost:8081"),
       }),
     ],
     module: {

@@ -16,4 +16,4 @@
 
 import { init } from "@thiagoelg/kaoto-ui/dist/lib/kogito-integration";
 
-init();
+init({ shouldUseNoOpKeyboardShortcutsService: false });

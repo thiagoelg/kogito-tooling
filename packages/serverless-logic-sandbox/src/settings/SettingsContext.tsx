@@ -37,6 +37,7 @@ import { useKieSandboxExtendedServices } from "../kieSandboxExtendedServices/Kie
 import { KieSandboxExtendedServicesStatus } from "../kieSandboxExtendedServices/KieSandboxExtendedServicesStatus";
 import { SwfServiceCatalogStore } from "../editor/api/SwfServiceCatalogStore";
 import { FeaturePreviewSettingsConfig, readFeaturePreviewConfigCookie } from "./featurePreview/FeaturePreviewConfig";
+import { KaotoSettingsConfig, readKaotoConfigCookie } from "./kaoto/KaotoConfig";
 
 export enum AuthStatus {
   SIGNED_OUT,
@@ -95,6 +96,9 @@ export interface SettingsContextType {
   featurePreview: {
     config: FeaturePreviewSettingsConfig;
   };
+  kaoto: {
+    config: KaotoSettingsConfig;
+  };
 }
 
 export interface SettingsDispatchContextType {
@@ -124,6 +128,9 @@ export interface SettingsDispatchContextType {
   };
   featurePreview: {
     setConfig: React.Dispatch<React.SetStateAction<FeaturePreviewSettingsConfig>>;
+  };
+  kaoto: {
+    setConfig: React.Dispatch<React.SetStateAction<KaotoSettingsConfig>>;
   };
 }
 
@@ -228,6 +235,8 @@ export function SettingsContextProvider(props: any) {
     readFeaturePreviewConfigCookie()
   );
 
+  const [kaotoConfig, setKaotoConfig] = useState<KaotoSettingsConfig>(readKaotoConfigCookie());
+
   const [openshiftStatus, setOpenshiftStatus] = useState(
     kieSandboxExtendedServices.status === KieSandboxExtendedServicesStatus.AVAILABLE
       ? OpenShiftInstanceStatus.DISCONNECTED
@@ -284,6 +293,9 @@ export function SettingsContextProvider(props: any) {
       featurePreview: {
         setConfig: setFeaturePreviewConfig,
       },
+      kaoto: {
+        setConfig: setKaotoConfig,
+      },
     };
   }, [
     close,
@@ -324,6 +336,9 @@ export function SettingsContextProvider(props: any) {
       featurePreview: {
         config: featurePreviewConfig,
       },
+      kaoto: {
+        config: kaotoConfig,
+      },
     };
   }, [
     isOpen,
@@ -339,6 +354,7 @@ export function SettingsContextProvider(props: any) {
     serviceRegistryConfig,
     kieSandboxExtendedServices.config,
     featurePreviewConfig,
+    kaotoConfig,
   ]);
 
   return (

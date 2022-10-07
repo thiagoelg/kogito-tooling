@@ -55,6 +55,7 @@ import {
   SwfCombinedEditorChannelApiImpl,
   SwfFeatureToggleChannelApiImpl,
 } from "@kie-tools/serverless-workflow-combined-editor/dist/impl";
+import { useKaotoSettings } from "./hooks/useKaotoBackendApiUrl";
 
 export interface Props {
   workspaceId: string;
@@ -77,6 +78,7 @@ export function EditorPage(props: Props) {
   const isEditorReady = useMemo(() => editor?.isReady, [editor]);
   const [isReady, setReady] = useState(false);
   const swfFeatureToggle = useSwfFeatureToggle(editor);
+  useKaotoSettings(editor);
 
   const queryParams = useQueryParams();
   const virtualServiceRegistry = useVirtualServiceRegistry();

@@ -3381,7 +3381,7 @@ importers:
       "@patternfly/react-tokens": ^4.33.1
       "@rhoas/registry-instance-sdk": ^0.34.1
       "@svgr/webpack": 6.2.1
-      "@thiagoelg/kaoto-ui": 0.3.1-rc11
+      "@thiagoelg/kaoto-ui": 0.3.1-rc17
       "@types/history": ^4.7.3
       "@types/jest": ^26.0.23
       "@types/jest-when": ^2.7.4
@@ -3453,7 +3453,7 @@ importers:
       "@patternfly/react-icons": 4.90.0_biqbaboplfbrettd7655fr4n2y
       "@patternfly/react-tokens": 4.91.0
       "@rhoas/registry-instance-sdk": 0.34.4
-      "@thiagoelg/kaoto-ui": 0.3.1-rc11_ngdtxfy37ui5vbnsvtnngvlgja
+      "@thiagoelg/kaoto-ui": 0.3.1-rc17_ngdtxfy37ui5vbnsvtnngvlgja
       "@types/js-yaml": 4.0.5
       axios: 0.27.2
       buffer: 6.0.3
@@ -9398,9 +9398,9 @@ packages:
       tslib: 2.4.0
     dev: false
 
-  /@patternfly/react-table/4.111.1_biqbaboplfbrettd7655fr4n2y:
+  /@patternfly/react-table/4.111.4_biqbaboplfbrettd7655fr4n2y:
     resolution:
-      { integrity: sha512-k/rYTzprSiI87JAnc4WH/jrjDisS8YpB1mFhIQhPkt1CzOHq26WM+tphtT0+JTY6dSdncb2HCBEcbRcnvoAsCA== }
+      { integrity: sha512-ahACTGhP/Kve0aNSe9N66MSD/DTiaGDMw9eHFp0XSqD6I+OIxC8LJPOc4cgSHjS1LML2v/nS15lnN7rbJX7FgA== }
     peerDependencies:
       react: ^16.8 || ^17 || ^18
       react-dom: ^16.8 || ^17 || ^18
@@ -10954,14 +10954,15 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /@thiagoelg/kaoto-ui/0.3.1-rc11_ngdtxfy37ui5vbnsvtnngvlgja:
+  /@thiagoelg/kaoto-ui/0.3.1-rc17_ngdtxfy37ui5vbnsvtnngvlgja:
     resolution:
-      { integrity: sha512-D3NYppaXgPHS7uaUqUdl5RbLhw60hOzupBYlLmnS+67puOa2b6SioEJ1fxBcZ5vIXMa1mjKGQNx/Mbhzmq7m5w== }
+      { integrity: sha512-pC8sfCTvSFYKlu2HJVit0BWho4L7HGZNOh3Nf+NNINN0FsqDel10H9Wxu6gaJUKuJ05I8fDMJKVqyYT0+E0sww== }
     engines: { node: ">=14.x" }
     peerDependencies:
       "@types/react": "*"
     dependencies:
       "@kie-tools-core/editor": 0.23.0
+      "@kie-tools-core/envelope-bus": 0.23.0
       "@kie-tools-core/guided-tour": 0.23.0
       "@kie-tools-core/monaco-editor": 0.23.0
       "@kie-tools-core/notifications": 0.23.0
@@ -10972,7 +10973,7 @@ packages:
       "@patternfly/react-core": 4.239.0_biqbaboplfbrettd7655fr4n2y
       "@patternfly/react-icons": 4.90.0_biqbaboplfbrettd7655fr4n2y
       "@patternfly/react-log-viewer": 4.84.0_biqbaboplfbrettd7655fr4n2y
-      "@patternfly/react-table": 4.111.1_biqbaboplfbrettd7655fr4n2y
+      "@patternfly/react-table": 4.111.4_biqbaboplfbrettd7655fr4n2y
       "@rhoas/app-services-ui-shared": 0.16.4_react@18.2.0
       "@types/react": 17.0.50
       ajv: 8.11.0

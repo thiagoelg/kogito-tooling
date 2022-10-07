@@ -24,6 +24,7 @@ import { ServiceAccountSettingsTab } from "./serviceAccount/ServiceAccountSettin
 import { ServiceRegistrySettingsTab } from "./serviceRegistry/ServiceRegistrySettingsTab";
 import { KieSandboxExtendedServicesSettingsTab } from "./extendedServices/KieSandboxExtendedServicesSettingsTab";
 import { FeaturePreviewSettingsTab } from "./featurePreview/FeaturePreviewSettingsTab";
+import { KaotoSettingsTab } from "./kaoto/KaotoSettingsTab";
 
 export enum SettingsTabs {
   GITHUB = "github",
@@ -33,6 +34,7 @@ export enum SettingsTabs {
   SERVICE_REGISTRY = "serviceRegistry",
   KAFKA = "kafka",
   FEATURE_PREVIEW = "featurePreview",
+  KAOTO = "kaoto",
 }
 
 export function SettingsModalBody() {
@@ -94,6 +96,9 @@ export function SettingsModalBody() {
         title={<TabTitleText>Feature Preview</TabTitleText>}
       >
         <FeaturePreviewSettingsTab />
+      </Tab>
+      <Tab className="kie-tools--settings-tab" eventKey={SettingsTabs.KAOTO} title={<TabTitleText>Kaoto</TabTitleText>}>
+        <KaotoSettingsTab />
       </Tab>
     </Tabs>
   );

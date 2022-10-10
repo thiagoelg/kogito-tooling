@@ -31,7 +31,7 @@ import { useHistory } from "react-router";
 import { AlertsController } from "../alerts/Alerts";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useEditorEnvelopeLocator } from "../envelopeLocator/EditorEnvelopeLocatorContext";
-import { isSandboxAsset, isServerlessWorkflowJson } from "../extension";
+import { isSandboxAsset, isServerlessWorkflow, isServerlessWorkflowJson, isServerlessWorkflowYaml } from "../extension";
 import { useAppI18n } from "../i18n";
 import { useRoutes } from "../navigation/Hooks";
 import { OnlineEditorPage } from "../pageTemplate/OnlineEditorPage";
@@ -41,7 +41,6 @@ import { useSettingsDispatch } from "../settings/SettingsContext";
 import { PromiseStateWrapper } from "../workspace/hooks/PromiseState";
 import { useWorkspaceFilePromise } from "../workspace/hooks/WorkspaceFileHooks";
 import { useWorkspaces } from "../workspace/WorkspacesContext";
-import { SandboxSwfJsonLanguageService } from "./api/SandboxSwfJsonLanguageService";
 import { SwfLanguageServiceChannelApiImpl } from "./api/SwfLanguageServiceChannelApiImpl";
 import { SwfServiceCatalogChannelApiImpl } from "./api/SwfServiceCatalogChannelApiImpl";
 import { EditorPageDockDrawer, EditorPageDockDrawerRef } from "./EditorPageDockDrawer";
@@ -56,6 +55,7 @@ import {
   SwfFeatureToggleChannelApiImpl,
 } from "@kie-tools/serverless-workflow-combined-editor/dist/impl";
 import { useKaotoSettings } from "./hooks/useKaotoBackendApiUrl";
+import { WebToolsSwfLanguageService } from "./api/WebToolsSwfLanguageService";
 
 export interface Props {
   workspaceId: string;
@@ -167,8 +167,8 @@ export function EditorPage(props: Props) {
     editor?.getStateControl().setSavedCommand();
   }, [workspaces, editor, workspaceFilePromise]);
 
-  const isSwfJson = useMemo(
-    () => workspaceFilePromise.data && isServerlessWorkflowJson(workspaceFilePromise.data.name),
+  const isSwf = useMemo(
+    () => workspaceFilePromise.data && isServerlessWorkflow(workspaceFilePromise.data.name),
     [workspaceFilePromise.data]
   );
 
@@ -184,7 +184,7 @@ export function EditorPage(props: Props) {
       },
       [saveContent]
     ),
-    { throttle: isSwfJson && swfFeatureToggle.stunnerEnabled ? 400 : 200 }
+    { throttle: isSwf && swfFeatureToggle.stunnerEnabled ? 400 : 200 }
   );
 
   useEffect(() => {
@@ -218,16 +218,19 @@ export function EditorPage(props: Props) {
 
   // SWF-specific code should be isolated when having more capabilities for other editors.
 
-  const swfJsonLanguageService = useMemo(() => {
-    if (!isSwfJson) {
+  const swfLanguageService = useMemo(() => {
+    if (!isSwf || !workspaceFilePromise.data) {
       return;
     }
-    return new SandboxSwfJsonLanguageService(settingsDispatch.serviceRegistry.catalogStore);
-  }, [isSwfJson, settingsDispatch.serviceRegistry.catalogStore]);
+
+    const webToolsSwfLanguageService = new WebToolsSwfLanguageService(settingsDispatch.serviceRegistry.catalogStore);
+
+    return webToolsSwfLanguageService.getLs(workspaceFilePromise.data.relativePath);
+  }, [workspaceFilePromise.data, settingsDispatch.serviceRegistry.catalogStore]);
 
   const swfLanguageServiceChannelApiImpl = useMemo(
-    () => swfJsonLanguageService && new SwfLanguageServiceChannelApiImpl(swfJsonLanguageService),
-    [swfJsonLanguageService]
+    () => swfLanguageService && new SwfLanguageServiceChannelApiImpl(swfLanguageService),
+    [swfLanguageService]
   );
 
   const swfServiceCatalogChannelApiImpl = useMemo(
@@ -243,13 +246,13 @@ export function EditorPage(props: Props) {
   );
 
   useEffect(() => {
-    if (embeddedEditorFile && !isServerlessWorkflowJson(embeddedEditorFile.path || "") && !isReady) {
+    if (embeddedEditorFile && !isServerlessWorkflow(embeddedEditorFile.path || "") && !isReady) {
       setReady(true);
     }
   }, [embeddedEditorFile, isReady, settingsDispatch.serviceRegistry.catalogStore, virtualServiceRegistry]);
 
   const apiImpl = useMemo(() => {
-    if (!channelApiImpl || !swfJsonLanguageService || !swfServiceCatalogChannelApiImpl) {
+    if (!channelApiImpl || !swfLanguageService || !swfServiceCatalogChannelApiImpl) {
       return;
     }
 
@@ -261,23 +264,18 @@ export function EditorPage(props: Props) {
     );
   }, [
     channelApiImpl,
-    swfJsonLanguageService,
+    swfLanguageService,
     swfServiceCatalogChannelApiImpl,
     swfFeatureToggleChannelApiImpl,
     swfLanguageServiceChannelApiImpl,
   ]);
 
   useEffect(() => {
-    if (
-      !editor?.isReady ||
-      lastContent.current === undefined ||
-      !workspaceFilePromise.data ||
-      !swfJsonLanguageService
-    ) {
+    if (!editor?.isReady || lastContent.current === undefined || !workspaceFilePromise.data || !swfLanguageService) {
       return;
     }
 
-    swfJsonLanguageService
+    swfLanguageService
       .getDiagnostics({
         content: lastContent.current,
         uriPath: workspaceFilePromise.data.relativePath,
@@ -296,7 +294,7 @@ export function EditorPage(props: Props) {
         editorPageDock?.setNotifications(i18n.terms.validation, "", diagnostics);
       })
       .catch((e) => console.error(e));
-  }, [workspaceFilePromise.data, editor, swfJsonLanguageService, editorPageDock, i18n.terms.validation]);
+  }, [workspaceFilePromise.data, editor, swfLanguageService, editorPageDock, i18n.terms.validation]);
 
   return (
     <OnlineEditorPage>

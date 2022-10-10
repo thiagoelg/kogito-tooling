@@ -62,6 +62,10 @@ module.exports = composeEnv(
         default: "https://cors.isomorphic-git.org",
         description: "",
       },
+      SERVERLESS_LOGIC_SANDBOX__cypressUrl: {
+        default: "https://localhost:9020/",
+        description: "",
+      },
     }),
     get env() {
       return {
@@ -69,6 +73,7 @@ module.exports = composeEnv(
           buildInfo: getOrDefault(this.vars.SERVERLESS_LOGIC_SANDBOX__buildInfo),
           gtmId: getOrDefault(this.vars.SERVERLESS_LOGIC_SANDBOX__gtmId),
           dev: {
+            cypressUrl: getOrDefault(this.vars.SERVERLESS_LOGIC_SANDBOX__cypressUrl),
             port: 9020,
           },
           baseImage: {

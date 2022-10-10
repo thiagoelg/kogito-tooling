@@ -15,6 +15,16 @@
  */
 
 import {
+  SwfServiceCatalogFunction,
+  SwfServiceCatalogFunctionSourceType,
+  SwfServiceCatalogService,
+  SwfServiceCatalogServiceSourceType,
+} from "@kie-tools/serverless-workflow-service-catalog/dist/api";
+import { Specification } from "@severlessworkflow/sdk-typescript";
+import * as jsonc from "jsonc-parser";
+import { posix as posixPath } from "path";
+import { getLanguageService, TextDocument } from "vscode-json-languageservice";
+import {
   CodeLens,
   CompletionItem,
   CompletionItemKind,
@@ -22,23 +32,18 @@ import {
   Position,
   Range,
 } from "vscode-languageserver-types";
-import * as jsonc from "jsonc-parser";
-import { posix as posixPath } from "path";
 import {
-  SwfServiceCatalogFunction,
-  SwfServiceCatalogFunctionSourceType,
-  SwfServiceCatalogService,
-  SwfServiceCatalogServiceSourceType,
-} from "@kie-tools/serverless-workflow-service-catalog/dist/api";
-import { FileLanguage, SwfLanguageServiceCommandArgs, SwfLanguageServiceCommandExecution } from "../api";
-import * as swfModelQueries from "./modelQueries";
-import { Specification } from "@severlessworkflow/sdk-typescript";
+  FileLanguage,
+  SwfLanguageServiceCommandArgs,
+  SwfLanguageServiceCommandExecution,
+  SwfLanguageServiceCommandTypes,
+} from "../api";
 import { SW_SPEC_WORKFLOW_SCHEMA } from "../schemas";
-import { getLanguageService, TextDocument } from "vscode-json-languageservice";
-import { doRefValidation } from "./refValidation";
-import { nodeUpUntilType } from "./nodeUpUntilType";
 import { findNodesAtLocation } from "./findNodesAtLocation";
-import { SwfJsonPath, SwfLsNode, CodeCompletionStrategy } from "./types";
+import * as swfModelQueries from "./modelQueries";
+import { nodeUpUntilType } from "./nodeUpUntilType";
+import { doRefValidation } from "./refValidation";
+import { CodeCompletionStrategy, SwfJsonPath, SwfLsNode } from "./types";
 
 export type SwfLanguageServiceConfig = {
   shouldConfigureServiceRegistries: () => boolean; //TODO: See https://issues.redhat.com/browse/KOGITO-7107
@@ -120,30 +125,30 @@ export class SwfLanguageService {
       }))
     );
 
+    const matchedCompletions = Array.from(completions.entries()).filter(([path, _]) =>
+      args.codeCompletionStrategy.shouldComplete({
+        root: args.rootNode,
+        node: currentNode,
+        path: path,
+        content: args.content,
+        cursorOffset: cursorOffset,
+      })
+    );
+
     const result = await Promise.all(
-      Array.from(completions.entries())
-        .filter(([path, _]) =>
-          args.codeCompletionStrategy.shouldComplete({
-            root: args.rootNode,
-            node: currentNode,
-            path: path,
-            content: args.content,
-            cursorOffset: cursorOffset,
-          })
-        )
-        .map(([_, completionItemsDelegate]) => {
-          return completionItemsDelegate({
-            document: doc,
-            cursorPosition: args.cursorPosition,
-            currentNode,
-            currentNodePosition,
-            rootNode: args.rootNode!,
-            overwriteRange,
-            swfCompletionItemServiceCatalogServices,
-            langServiceConfig: this.args.config,
-            codeCompletionStrategy: args.codeCompletionStrategy,
-          });
-        })
+      matchedCompletions.map(([_, completionItemsDelegate]) => {
+        return completionItemsDelegate({
+          document: doc,
+          cursorPosition: args.cursorPosition,
+          currentNode,
+          currentNodePosition,
+          rootNode: args.rootNode!,
+          overwriteRange,
+          swfCompletionItemServiceCatalogServices,
+          langServiceConfig: this.args.config,
+          codeCompletionStrategy: args.codeCompletionStrategy,
+        });
+      })
     );
 
     return Promise.resolve(result.flat());
@@ -199,6 +204,7 @@ export class SwfLanguageService {
     content: string;
     uri: string;
     rootNode: SwfLsNode | undefined;
+    codeCompletionStrategy: CodeCompletionStrategy;
   }): Promise<CodeLens[]> {
     if (!args.rootNode) {
       return [];
@@ -212,19 +218,22 @@ export class SwfLanguageService {
       jsonPath: ["functions"],
       positionLensAt: "begin",
       commandDelegates: ({ node }) => {
-        if (node.type !== "array") {
+        const commandName: SwfLanguageServiceCommandTypes = "swf.ls.commands.OpenFunctionsCompletionItems";
+
+        if (
+          node.type !== "array" ||
+          !args.codeCompletionStrategy.shouldCreateCodelens({ node, commandName, content: args.content })
+        ) {
           return [];
         }
 
-        const newCursorPosition = document.positionAt(node.offset + 1);
+        const newCursorPosition = args.codeCompletionStrategy.getStartNodeValuePosition(document, node);
 
         return [
           {
-            name: "swf.ls.commands.OpenFunctionsCompletionItems",
+            name: commandName,
             title: "+ Add function...",
-            args: [
-              { newCursorPosition } as SwfLanguageServiceCommandArgs["swf.ls.commands.OpenFunctionsCompletionItems"],
-            ],
+            args: [{ newCursorPosition } as SwfLanguageServiceCommandArgs[typeof commandName]],
           },
         ];
       },
@@ -236,19 +245,21 @@ export class SwfLanguageService {
       jsonPath: ["functions"],
       positionLensAt: "begin",
       commandDelegates: ({ position, node }) => {
-        if (node.type !== "array") {
-          return [];
-        }
+        const commandName: SwfLanguageServiceCommandTypes = "swf.ls.commands.OpenServiceRegistriesConfig";
 
-        if (!this.args.config.shouldConfigureServiceRegistries()) {
+        if (
+          node.type !== "array" ||
+          !args.codeCompletionStrategy.shouldCreateCodelens({ node, commandName, content: args.content }) ||
+          !this.args.config.shouldConfigureServiceRegistries()
+        ) {
           return [];
         }
 
         return [
           {
-            name: "swf.ls.commands.OpenServiceRegistriesConfig",
+            name: commandName,
             title: "↪ Setup Service Registries...",
-            args: [{ position } as SwfLanguageServiceCommandArgs["swf.ls.commands.OpenServiceRegistriesConfig"]],
+            args: [{ position } as SwfLanguageServiceCommandArgs[typeof commandName]],
           },
         ];
       },
@@ -260,23 +271,22 @@ export class SwfLanguageService {
       jsonPath: ["functions"],
       positionLensAt: "begin",
       commandDelegates: ({ position, node }) => {
-        if (node.type !== "array") {
-          return [];
-        }
+        const commandName: SwfLanguageServiceCommandTypes = "swf.ls.commands.LogInServiceRegistries";
 
-        if (this.args.config.shouldConfigureServiceRegistries()) {
-          return [];
-        }
-
-        if (!this.args.config.shouldServiceRegistriesLogIn()) {
+        if (
+          node.type !== "array" ||
+          !args.codeCompletionStrategy.shouldCreateCodelens({ node, commandName, content: args.content }) ||
+          this.args.config.shouldConfigureServiceRegistries() ||
+          !this.args.config.shouldServiceRegistriesLogIn()
+        ) {
           return [];
         }
 
         return [
           {
-            name: "swf.ls.commands.LogInServiceRegistries",
+            name: commandName,
             title: "↪ Log in Service Registries...",
-            args: [{ position } as SwfLanguageServiceCommandArgs["swf.ls.commands.LogInServiceRegistries"]],
+            args: [{ position } as SwfLanguageServiceCommandArgs[typeof commandName]],
           },
         ];
       },
@@ -288,23 +298,22 @@ export class SwfLanguageService {
       jsonPath: ["functions"],
       positionLensAt: "begin",
       commandDelegates: ({ position, node }) => {
-        if (node.type !== "array") {
-          return [];
-        }
+        const commandName: SwfLanguageServiceCommandTypes = "swf.ls.commands.RefreshServiceRegistries";
 
-        if (this.args.config.shouldConfigureServiceRegistries()) {
-          return [];
-        }
-
-        if (!this.args.config.canRefreshServices()) {
+        if (
+          node.type !== "array" ||
+          !args.codeCompletionStrategy.shouldCreateCodelens({ node, commandName, content: args.content }) ||
+          this.args.config.shouldConfigureServiceRegistries() ||
+          !this.args.config.canRefreshServices()
+        ) {
           return [];
         }
 
         return [
           {
-            name: "swf.ls.commands.RefreshServiceRegistries",
+            name: commandName,
             title: "↺ Refresh Service Registries...",
-            args: [{ position } as SwfLanguageServiceCommandArgs["swf.ls.commands.RefreshServiceRegistries"]],
+            args: [{ position } as SwfLanguageServiceCommandArgs[typeof commandName]],
           },
         ];
       },
@@ -335,19 +344,13 @@ export class SwfLanguageService {
       const serviceFileName = posixPath.basename(func.source.serviceFileAbsolutePath);
       const serviceFileRelativePosixPath = posixPath.join(specsDirRelativePosixPath, serviceFileName);
       return `${serviceFileRelativePosixPath}#${func.name}`;
-    }
-
-    //
-    else if (
+    } else if (
       (await this.args.config.shouldReferenceServiceRegistryFunctionsWithUrls()) &&
       containingService.source.type === SwfServiceCatalogServiceSourceType.SERVICE_REGISTRY &&
       func.source.type === SwfServiceCatalogFunctionSourceType.SERVICE_REGISTRY
     ) {
       return `${containingService.source.url}#${func.name}`;
-    }
-
-    //
-    else if (
+    } else if (
       containingService.source.type === SwfServiceCatalogServiceSourceType.SERVICE_REGISTRY &&
       func.source.type === SwfServiceCatalogFunctionSourceType.SERVICE_REGISTRY
     ) {
@@ -357,10 +360,7 @@ export class SwfLanguageService {
       );
       const serviceFileRelativePosixPath = posixPath.join(specsDirRelativePosixPath, serviceFileName);
       return `${serviceFileRelativePosixPath}#${func.name}`;
-    }
-
-    //
-    else {
+    } else {
       throw new Error("Unknown Service Catalog function source type");
     }
   }
@@ -375,7 +375,7 @@ export class SwfLanguageService {
     }) => ({ title: string } & SwfLanguageServiceCommandExecution<any>)[];
     positionLensAt: "begin" | "end";
   }): CodeLens[] {
-    const nodes = findNodesAtLocation(args.rootNode, args.jsonPath);
+    const nodes = findNodesAtLocation({ root: args.rootNode, path: args.jsonPath });
     const codeLenses = nodes.flatMap((node) => {
       // Only position at the end if the type is object or array and has at least one child.
       const position =
@@ -432,7 +432,6 @@ const completions = new Map<
       langServiceConfig,
       codeCompletionStrategy,
     }) => {
-      const separator = currentNode.type === "object" ? "," : "";
       const existingFunctionOperations = swfModelQueries.getFunctions(rootNode).map((f) => f.operation);
 
       const specsDir = await langServiceConfig.getSpecsDirPosixPaths(document);
@@ -460,15 +459,25 @@ const completions = new Map<
                 ? CompletionItemKind.Interface
                 : CompletionItemKind.Reference;
 
+            const label = codeCompletionStrategy.formatLabel(
+              toCompletionItemLabelPrefix(swfServiceCatalogFunc, specsDir.specsDirRelativePosixPath),
+              kind
+            );
+
             return {
               kind,
-              label: toCompletionItemLabelPrefix(swfServiceCatalogFunc, specsDir.specsDirRelativePosixPath),
+              label,
               detail:
                 swfServiceCatalogService.source.type === SwfServiceCatalogServiceSourceType.SERVICE_REGISTRY
                   ? swfServiceCatalogService.source.url
                   : swfServiceCatalogFunc.operation,
               textEdit: {
-                newText: codeCompletionStrategy.translate(swfFunction) + separator,
+                newText:
+                  codeCompletionStrategy.translate({
+                    completion: swfFunction,
+                    completionItemKind: kind,
+                    overwriteRange,
+                  }) + (currentNode.type === "object" ? "," : ""),
                 range: overwriteRange,
               },
               snippet: true,
@@ -508,13 +517,18 @@ const completions = new Map<
               ? CompletionItemKind.Function
               : CompletionItemKind.Folder;
 
+          const label = codeCompletionStrategy.formatLabel(swfServiceCatalogFunc.operation, kind);
+
           return {
             kind,
-            label: `"${swfServiceCatalogFunc.operation}"`,
-            detail: `"${swfServiceCatalogFunc.operation}"`,
-            filterText: `"${swfServiceCatalogFunc.operation}"`,
+            label,
+            detail: label,
+            filterText: label,
             textEdit: {
-              newText: codeCompletionStrategy.translate(`${swfServiceCatalogFunc.operation}`),
+              newText: codeCompletionStrategy.translate({
+                completion: `${swfServiceCatalogFunc.operation}`,
+                completionItemKind: kind,
+              }),
               range: overwriteRange,
             },
             insertTextFormat: InsertTextFormat.Snippet,
@@ -551,14 +565,17 @@ const completions = new Map<
           arguments: swfFunctionRefArgs,
         };
 
+        const kind = CompletionItemKind.Module;
+        const label = codeCompletionStrategy.formatLabel(swfFunctionRef.refName, kind);
+
         return [
           {
-            kind: CompletionItemKind.Module,
-            label: `${swfFunctionRef.refName}`,
-            sortText: `${swfFunctionRef.refName}`,
+            kind,
+            label,
+            sortText: label,
             detail: `${swfServiceCatalogFunc.operation}`,
             textEdit: {
-              newText: codeCompletionStrategy.translate(swfFunctionRef),
+              newText: codeCompletionStrategy.translate({ completion: swfFunctionRef, completionItemKind: kind }),
               range: overwriteRange,
             },
             insertTextFormat: InsertTextFormat.Snippet,
@@ -573,15 +590,21 @@ const completions = new Map<
     ["states", "*", "actions", "*", "functionRef", "refName"],
     ({ overwriteRange, rootNode, codeCompletionStrategy }) => {
       const result = swfModelQueries.getFunctions(rootNode).flatMap((swfFunction) => {
+        const kind = CompletionItemKind.Value;
+        const label = codeCompletionStrategy.formatLabel(swfFunction.name, kind);
+
         return [
           {
-            kind: CompletionItemKind.Value,
-            label: `"${swfFunction.name}"`,
-            sortText: `"${swfFunction.name}"`,
+            kind,
+            label,
+            sortText: label,
             detail: `"${swfFunction.name}"`,
-            filterText: `"${swfFunction.name}"`,
+            filterText: label,
             textEdit: {
-              newText: codeCompletionStrategy.translate(`${swfFunction.name}`),
+              newText: codeCompletionStrategy.translate({
+                completion: `${swfFunction.name}`,
+                completionItemKind: kind,
+              }),
               range: overwriteRange,
             },
             insertTextFormat: InsertTextFormat.Snippet,
@@ -632,14 +655,17 @@ const completions = new Map<
         swfFunctionRefArgs[argName] = `$\{${argIndex++}:}`;
       });
 
+      const kind = CompletionItemKind.Module;
+      const label = `'${swfFunctionRefName}' arguments`;
+
       return Promise.resolve([
         {
-          kind: CompletionItemKind.Module,
-          label: `'${swfFunctionRefName}' arguments`,
-          sortText: `${swfFunctionRefName} arguments`,
+          kind,
+          label,
+          sortText: label,
           detail: swfFunction.operation,
           textEdit: {
-            newText: codeCompletionStrategy.translate(swfFunctionRefArgs),
+            newText: codeCompletionStrategy.translate({ completion: swfFunctionRefArgs, completionItemKind: kind }),
             range: overwriteRange,
           },
           insertTextFormat: InsertTextFormat.Snippet,
@@ -671,7 +697,7 @@ function toCompletionItemLabelPrefix(
 }
 
 export function findNodeAtLocation(root: SwfLsNode, path: SwfJsonPath): SwfLsNode | undefined {
-  return findNodesAtLocation(root, path)[0];
+  return findNodesAtLocation({ root, path })[0];
 }
 
 export function findNodeAtOffset(root: SwfLsNode, offset: number, includeRightBound?: boolean): SwfLsNode | undefined {

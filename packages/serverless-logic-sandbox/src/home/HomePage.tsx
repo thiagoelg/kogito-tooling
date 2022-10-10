@@ -155,20 +155,11 @@ export function HomePage() {
                   yamlExtension={FileTypes.SW_YAML}
                   description={"Serverless Workflow files are used to define orchestration logic for services."}
                 />
-                <NewServerlessModelCard
-                  title={"Decision"}
-                  jsonExtension={FileTypes.YARD_JSON}
-                  yamlExtension={FileTypes.YARD_YAML}
-                  description={"Serverless Decision files are used to define decision logic for services."}
-                />
                 <NewModelCard
-                  title={"Dashboard"}
-                  extension={FileTypes.DASH_YAML}
-                  description={
-                    "Dashboard files are used to define data visualization from data extracted from applications."
-                  }
+                  title={"Kaoto"}
+                  extension={FileTypes.KAOTO_YAML}
+                  description={"Kaoto files are low code and no-code workflows based on Apache Camel"}
                 />
-                <NewModelCard title={"Kaoto"} extension={FileTypes.KAOTO_YAML} description={"Kaoto."} />
               </Gallery>
             </PageSection>
           </GridItem>

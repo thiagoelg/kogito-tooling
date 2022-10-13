@@ -1,7 +1,6 @@
 {
   "id": "jsongreet",
   "version": "1.0",
-  "specVersion": "0.8",
   "name": "Greeting workflow",
   "expressionLang": "jsonpath",
   "description": "JSON based greeting workflow",

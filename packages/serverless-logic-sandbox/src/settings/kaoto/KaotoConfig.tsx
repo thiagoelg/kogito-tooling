@@ -19,7 +19,7 @@ import { getCookie, makeCookieName, setCookie } from "../../cookies";
 export const KAOTO_BACKEND_API_URL_COOKIE_NAME = makeCookieName("kaoto", "backend-api-url");
 
 export const DEFAULT_KAOTO_BACKEND_API_URL =
-  "https://kaoto-backend-kaoto-kogito.rhba-0ad6762cc85bcef5745bb684498c2436-0000.us-south.containers.appdomain.cloud";
+  "https://kaoto-backend-main-kaoto-kogito.rhba-0ad6762cc85bcef5745bb684498c2436-0000.us-south.containers.appdomain.cloud";
 
 export interface KaotoSettingsConfig {
   kaotoBackendApiUrl: string;

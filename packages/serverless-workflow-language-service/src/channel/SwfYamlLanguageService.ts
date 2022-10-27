@@ -31,7 +31,7 @@ import { getNodeFormat } from "./getNodeFormat";
 import { FileLanguage } from "../api";
 import { indentText } from "./indentText";
 import { matchNodeWithLocation } from "./matchNodeWithLocation";
-import { findNodeAtOffset, SwfLanguageService, SwfLanguageServiceArgs } from "./SwfLanguageService";
+import { findNodeAtOffset, positions_equals, SwfLanguageService, SwfLanguageServiceArgs } from "./SwfLanguageService";
 import {
   ShouldCreateCodelensArgs,
   CodeCompletionStrategy,
@@ -39,6 +39,7 @@ import {
   SwfLsNode,
   TranslateArgs,
 } from "./types";
+import { getLineContentFromOffset } from "./getLineContentFromOffset";
 
 export class SwfYamlLanguageService {
   private readonly ls: SwfLanguageService;
@@ -57,6 +58,10 @@ export class SwfYamlLanguageService {
   }
 
   parseContent(content: string): SwfLsNode | undefined {
+    if (!content.trim()) {
+      return;
+    }
+
     const ast = load(content);
 
     // check if the yaml is not valid
@@ -78,18 +83,19 @@ export class SwfYamlLanguageService {
     const cursorOffset = doc.offsetAt(args.cursorPosition);
 
     if (
-      !rootNode ||
       args.content.slice(cursorOffset - 1, cursorOffset) === ":" ||
       args.content.slice(cursorOffset - 1, cursorOffset) === "-"
     ) {
       return [];
     }
 
-    const isCurrentNodeUncompleted = isNodeUncompleted({
-      ...args,
-      rootNode,
-      cursorOffset,
-    });
+    const isCurrentNodeUncompleted = rootNode
+      ? isNodeUncompleted({
+          ...args,
+          rootNode,
+          cursorOffset,
+        })
+      : false;
 
     if (isCurrentNodeUncompleted) {
       args.cursorPosition = Position.create(args.cursorPosition.line, args.cursorPosition.character - 1);
@@ -187,7 +193,7 @@ export class YamlCodeCompletionStrategy implements CodeCompletionStrategy {
   public translate(args: TranslateArgs): string {
     const completionDump = dump(args.completion, {}).slice(0, -1);
 
-    if (["{}", "[]"].includes(completionDump)) {
+    if (["{}", "[]"].includes(completionDump) || args.completionItemKind === CompletionItemKind.Text) {
       return completionDump;
     }
 
@@ -197,7 +203,7 @@ export class YamlCodeCompletionStrategy implements CodeCompletionStrategy {
 
     return ([CompletionItemKind.Interface, CompletionItemKind.Reference] as CompletionItemKind[]).includes(
       args.completionItemKind
-    ) && args.overwriteRange?.end.character === 0
+    ) && positions_equals(args.overwriteRange?.start ?? null, args.currentNodeRange?.start ?? null)
       ? `- ${completionText}\n`
       : completionText;
   }
@@ -232,12 +238,22 @@ export class YamlCodeCompletionStrategy implements CodeCompletionStrategy {
       return false;
     }
 
+    //this manage the test case: "completion › add in the middle / without dash character"
+    if (args.node?.type === "array" && args.cursorOffset !== args.node.offset) {
+      const lineContent = getLineContentFromOffset(args.content, args.cursorOffset);
+      const lineContentStartsWithDash = /^\s*- /.test(lineContent);
+
+      if (!lineContentStartsWithDash) {
+        return false;
+      }
+    }
+
     return matchNodeWithLocation(args.root, args.node, args.path);
   }
 
   public shouldCreateCodelens(args: ShouldCreateCodelensArgs): boolean {
     return (
-      args.commandName !== "swf.ls.commands.OpenFunctionsCompletionItems" ||
+      args.commandName !== "swf.ls.commands.OpenCompletionItems" ||
       getNodeFormat(args.content, args.node) !== FileLanguage.JSON
     );
   }

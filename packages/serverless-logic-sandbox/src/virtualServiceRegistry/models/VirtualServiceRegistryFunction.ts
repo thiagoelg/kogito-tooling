@@ -18,7 +18,6 @@ import { isJson, isSpec } from "../../extension";
 import { WorkspaceFile } from "../../workspace/WorkspacesContext";
 import { generateOpenApiSpec } from "./BaseOpenApiSpec";
 import * as yaml from "yaml";
-import { decoder } from "../../workspace/encoderdecoder/EncoderDecoder";
 import { toWorkspaceIdFromVsrFunctionPath } from "../VirtualServiceRegistryPathConverter";
 import { VIRTUAL_SERVICE_REGISTRY_PATH_PREFIX } from "../VirtualServiceRegistryConstants";
 

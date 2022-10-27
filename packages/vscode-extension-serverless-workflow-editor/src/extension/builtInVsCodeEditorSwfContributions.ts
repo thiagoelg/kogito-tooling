@@ -65,7 +65,7 @@ export function setupBuiltInVsCodeEditorSwfContributions(args: {
     "swf.ls.commands.ImportFunctionFromCompletionItem": (cmdArgs) => {
       args.swfServiceCatalogSupportActions.importFunctionFromCompletionItem(cmdArgs);
     },
-    "swf.ls.commands.OpenFunctionsCompletionItems": (cmdArgs) => {
+    "swf.ls.commands.OpenCompletionItems": (cmdArgs) => {
       if (!vscode.window.activeTextEditor) {
         return;
       }
@@ -258,7 +258,9 @@ export function setupBuiltInVsCodeEditorSwfContributions(args: {
   );
 
   vscode.window.onDidChangeTextEditorSelection((e) => {
-    if (!isEventFiredFromUser(e)) {
+    const selection = e.selections[0];
+
+    if (!isEventFiredFromUser(e) || !selection.start.isEqual(selection.end)) {
       return;
     }
 

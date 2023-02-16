@@ -65,6 +65,7 @@ export const en: OnlineI18n = {
     cantUpdateSnippetTooltip: `You can't update your Snippet because you're either not logged in, not the owner, or your models are in nested directories.`,
     share: "Share",
     embed: "Embed",
+    copiedToClipboard: "Succesfully copied URL to Clipboard",
   },
   devDeployments: {
     common: {

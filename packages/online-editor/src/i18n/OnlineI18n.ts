@@ -63,6 +63,7 @@ interface OnlineDictionary extends ReferenceDictionary {
     cantUpdateSnippetTooltip: string;
     share: string;
     embed: string;
+    copiedToClipboard: string;
   };
   devDeployments: {
     common: {

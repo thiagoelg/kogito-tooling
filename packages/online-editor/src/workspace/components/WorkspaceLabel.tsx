@@ -30,16 +30,17 @@ import { switchExpression } from "../../switchExpression/switchExpression";
 import { Button } from "@patternfly/react-core/dist/js/components/Button";
 import { ButtonVariant } from "@patternfly/react-core";
 import { CopyIcon } from "@patternfly/react-icons/dist/js/icons/copy-icon";
-import { Popover } from "@patternfly/react-core/dist/js/components/Popover";
+import { Popover, PopoverProps } from "@patternfly/react-core/dist/js/components/Popover";
 import { useGlobalAlert } from "../../alerts";
 import { Alert } from "@patternfly/react-core/dist/js/components/Alert";
 import { useOnlineI18n } from "../../i18n";
+import { Tooltip, TooltipProps } from "@patternfly/react-core/dist/js/components/Tooltip";
 
 function shorten(s: string, max: number) {
   return s.length > max ? s.substring(0, max / 2 - 1) + "..." + s.substring(s.length - max / 2 + 2, s.length) : s;
 }
 
-export function WorkspaceLabel(props: { descriptor?: WorkspaceDescriptor }) {
+export function WorkspaceLabel(props: { descriptor?: WorkspaceDescriptor; showLinks?: boolean } = { showLinks: true }) {
   const { i18n } = useOnlineI18n();
   const workspaceImportableUrl = useImportableUrl(props.descriptor?.origin.url?.toString());
 
@@ -87,7 +88,7 @@ export function WorkspaceLabel(props: { descriptor?: WorkspaceDescriptor }) {
     { durationInSeconds: 2 }
   );
 
-  const popoverContent = useMemo(() => {
+  const labelDescription = useMemo(() => {
     return switchExpression(props.descriptor?.origin.kind, {
       GIT: `'${props.descriptor?.name}' is linked to a Git Repository.`,
       GITHUB_GIST: `'${props.descriptor?.name}' is linked to a GitHub Gist.`,
@@ -96,7 +97,7 @@ export function WorkspaceLabel(props: { descriptor?: WorkspaceDescriptor }) {
     });
   }, [props.descriptor?.name, props.descriptor?.origin.kind]);
 
-  const copyButton = useMemo(() => {
+  const copyUrlButton = useMemo(() => {
     if (!props.descriptor || !props.descriptor.origin.url) {
       return;
     }
@@ -125,54 +126,69 @@ export function WorkspaceLabel(props: { descriptor?: WorkspaceDescriptor }) {
     );
   }, [props.descriptor, copiedToClipboardAlert]);
 
+  const DescriptionComponent = useMemo(() => {
+    if (props.showLinks) {
+      return (popoverProps: { children: PopoverProps["children"] }) => (
+        <Popover bodyContent={labelDescription} footerContent={copyUrlButton} position={"right"}>
+          <Button variant={ButtonVariant.plain} style={{ padding: 0 }}>
+            {popoverProps.children}
+          </Button>
+        </Popover>
+      );
+    }
+    return (tooltipProps: { children: TooltipProps["children"] }) => (
+      <Tooltip position="right" content={labelDescription}>
+        {tooltipProps.children}
+      </Tooltip>
+    );
+  }, [copyUrlButton, labelDescription, props.showLinks]);
+
   return (
-    <Popover bodyContent={popoverContent} footerContent={copyButton} position={"right"}>
-      <Button variant={ButtonVariant.plain} style={{ padding: 0 }}>
-        <Flex
-          flexWrap={{ default: "nowrap" }}
-          justifyContent={{ default: "justifyContentFlexStart" }}
-          spaceItems={{ default: "spaceItemsSm" }}
-          style={{ display: "inline-flex" }}
-        >
-          {switchExpression(props.descriptor?.origin.kind, {
-            GIT: (
-              <>
-                <FlexItem>{gitLabel}</FlexItem>
-                <FlexItem>
-                  <Label>
-                    <CodeBranchIcon />
-                    &nbsp;&nbsp;{props.descriptor?.origin.branch}
-                  </Label>
-                </FlexItem>
-              </>
-            ),
-            GITHUB_GIST: (
+    <DescriptionComponent>
+      <Flex
+        flexWrap={{ default: "nowrap" }}
+        justifyContent={{ default: "justifyContentFlexStart" }}
+        spaceItems={{ default: "spaceItemsSm" }}
+        style={{ display: "inline-flex" }}
+      >
+        {switchExpression(props.descriptor?.origin.kind, {
+          GIT: (
+            <>
+              <FlexItem>{gitLabel}</FlexItem>
               <FlexItem>
                 <Label>
-                  <GithubIcon />
-                  &nbsp;&nbsp;Gist
+                  <CodeBranchIcon />
+                  &nbsp;&nbsp;{props.descriptor?.origin.branch}
                 </Label>
               </FlexItem>
-            ),
-            BITBUCKET_SNIPPET: (
-              <FlexItem>
-                <Label>
-                  <BitbucketIcon />
-                  &nbsp;&nbsp;Snippet
-                </Label>
-              </FlexItem>
-            ),
-            LOCAL: (
-              <FlexItem>
-                <Label>
-                  <PendingIcon />
-                  &nbsp;&nbsp;Ephemeral
-                </Label>
-              </FlexItem>
-            ),
-          })}
-        </Flex>
-      </Button>
-    </Popover>
+            </>
+          ),
+          GITHUB_GIST: (
+            <FlexItem>
+              <Label>
+                <GithubIcon />
+                &nbsp;&nbsp;Gist
+              </Label>
+            </FlexItem>
+          ),
+          BITBUCKET_SNIPPET: (
+            <FlexItem>
+              <Label>
+                <BitbucketIcon />
+                &nbsp;&nbsp;Snippet
+              </Label>
+            </FlexItem>
+          ),
+          LOCAL: (
+            <FlexItem>
+              <Label>
+                <PendingIcon />
+                &nbsp;&nbsp;Ephemeral
+              </Label>
+            </FlexItem>
+          ),
+        })}
+      </Flex>
+    </DescriptionComponent>
   );
 }

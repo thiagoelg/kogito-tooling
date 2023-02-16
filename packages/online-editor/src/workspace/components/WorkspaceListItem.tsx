@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as React from "react";
 import { WorkspaceDescriptor } from "@kie-tools-core/workspaces-git-fs/dist/worker/api/WorkspaceDescriptor";
 import { WorkspaceFile } from "@kie-tools-core/workspaces-git-fs/dist/context/WorkspacesContext";
 import { Flex } from "@patternfly/react-core/dist/js/layouts/Flex";
@@ -21,7 +22,6 @@ import { WorkspaceLabel } from "./WorkspaceLabel";
 import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/js/components/Text";
 import { FolderIcon } from "@patternfly/react-icons/dist/js/icons/folder-icon";
 import { WorkspaceDescriptorDates } from "./WorkspaceDescriptorDates";
-import * as React from "react";
 
 export function WorkspaceListItem(props: {
   isBig: boolean;
@@ -32,7 +32,7 @@ export function WorkspaceListItem(props: {
   return (
     <>
       <Flex>
-        <WorkspaceLabel descriptor={props.workspaceDescriptor} />
+        <WorkspaceLabel descriptor={props.workspaceDescriptor} showLinks={false} />
         <TextContent>
           <Text
             component={TextVariants.small}

@@ -18,6 +18,8 @@ const findWorkspacePackages = require("@pnpm/find-workspace-packages").default;
 const fs = require("fs");
 const path = require("path");
 
+const unlink = process.argv[2] === "--unlink";
+
 async function main() {
   (await findWorkspacePackages(".")).forEach((pkg) => {
     // always create node_modules. this fixes the case where we don't install dependencies for every package.
@@ -42,7 +44,7 @@ async function main() {
 function selfLink(pkg, selfLinkPath) {
   const relTargetPath = path.relative(path.dirname(selfLinkPath), pkg.dir);
   console.info(
-    `[link-packages-with-self] Linking '${pkg.manifest.name}'. ${path.relative(
+    `[link-packages-with-self] ${unlink ? "Unlinking" : "Linking"} '${pkg.manifest.name}'. ${path.relative(
       pkg.dir,
       selfLinkPath
     )} -> ${relTargetPath}`
@@ -50,7 +52,9 @@ function selfLink(pkg, selfLinkPath) {
   if (fs.existsSync(selfLinkPath)) {
     fs.unlinkSync(selfLinkPath);
   }
-  fs.symlinkSync(relTargetPath, selfLinkPath);
+  if (!unlink) {
+    fs.symlinkSync(relTargetPath, selfLinkPath);
+  }
 }
 
 main();

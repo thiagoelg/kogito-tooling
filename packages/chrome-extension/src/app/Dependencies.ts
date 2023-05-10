@@ -31,13 +31,13 @@ export class Dependencies {
 
   public readonly singleView = {
     iframeContainerTarget: () => {
-      return document.querySelector(".Box.mt-3.position-relative") as HTMLElement | null;
+      return document.querySelector(".Box-sc-g0xbh4-0.TCenl") as HTMLElement | null;
     },
     toolbarContainerTarget: () => {
-      return document.querySelector(".Box.mt-3.position-relative") as HTMLElement | null;
+      return document.querySelector(".Box-sc-g0xbh4-0.ePiodO") as HTMLElement | null;
     },
     githubTextEditorToReplaceElement: () => {
-      return document.querySelector(".Box-body.p-0.blob-wrapper.data") as HTMLElement | null;
+      return document.querySelector(".Box-sc-g0xbh4-0.TCenl") as HTMLElement | null;
     },
   };
 

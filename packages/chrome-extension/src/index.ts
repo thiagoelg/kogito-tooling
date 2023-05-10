@@ -49,6 +49,8 @@ export function startExtension(args: {
   const resourceContentServiceFactory = new ResourceContentServiceFactory();
   const dependencies = new Dependencies();
 
+  console.log({ id: chrome.runtime.id });
+
   const runInit = () =>
     init({
       id: chrome.runtime.id,
@@ -78,6 +80,8 @@ function init(globals: Globals) {
     globals.logger.log(`This GitHub page is not supported.`);
     return;
   }
+
+  console.log({ pageType });
 
   if (pageType === GitHubPageType.EDIT) {
     renderSingleEditorApp({ ...globals, fileInfo });

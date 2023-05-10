@@ -69,7 +69,7 @@
 }
 
 .kogito-toolbar-container.view {
-  margin: 16px 0 16px 0;
+  padding: 0px 0 16px 0;
   flex-direction: row-reverse !important;
   justify-content: space-between;
 }

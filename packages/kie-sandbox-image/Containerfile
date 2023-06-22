@@ -16,24 +16,27 @@ FROM --platform=linux/amd64 registry.access.redhat.com/ubi9/ubi-minimal:9.2
 
 COPY entrypoint.sh dist-dev/image-env-to-json-standalone dist-dev/EnvJson.schema.json /tmp/
 
-RUN microdnf --disableplugin=subscription-manager -y install httpd-2.4.53-11.el9_2.5.x86_64 \
+RUN microdnf --disableplugin=subscription-manager -y install httpd-2.4.53-11.el9_2.5.x86_64 shadow-utils-2:4.9-6.el9.x86_64 \
   && microdnf --disableplugin=subscription-manager clean all \
   && sed -i -e 's/Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf \
   && sed -i -e 's/#ServerName www.example.com:80/ServerName 127.0.0.1:8080/' /etc/httpd/conf/httpd.conf \
   && sed -i -e "/ServerName 127.0.0.1:8080/aHeader set Content-Security-Policy \"frame-ancestors 'self';\"" /etc/httpd/conf/httpd.conf \
   && sed -i -e 's/Options Indexes FollowSymLinks/Options -Indexes +FollowSymLinks/' /etc/httpd/conf/httpd.conf \
+  && groupadd -r -g 1000 myuser \
+  && useradd -r -u 1000 -g myuser -m -d /opt/myuser -s /bin/bash myuser \
   && mkdir /kie-sandbox \
   && mv -t /kie-sandbox /tmp/entrypoint.sh /tmp/image-env-to-json-standalone /tmp/EnvJson.schema.json \
-  && chgrp -R 0 /var/log/httpd /var/run/httpd /var/www/html /kie-sandbox \
+  && chgrp -R 1000 /var/log/httpd /var/run/httpd /var/www/html /kie-sandbox \
   && chmod -R g=u /var/log/httpd /var/run/httpd /var/www/html /kie-sandbox \
-  && chmod +x /kie-sandbox/entrypoint.sh /kie-sandbox/image-env-to-json-standalone
+  && chmod +x /kie-sandbox/entrypoint.sh /kie-sandbox/image-env-to-json-standalone \
+  && chown -R 1000:1000 /kie-sandbox 
 
-COPY dist-dev/online-editor /var/www/html
+USER 1000
+
+COPY --chown=1000:1000 dist-dev/online-editor /var/www/html
 
 RUN if [ -f /var/www/html/env.json ]; then chmod a+w /var/www/html/env.json; fi
 
 EXPOSE 8080
-
-USER 1000
 
 ENTRYPOINT [ "/kie-sandbox/entrypoint.sh" ]

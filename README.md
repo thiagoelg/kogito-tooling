@@ -30,11 +30,6 @@ To start building the KIE Tools project, you're going to need:
 
 > **ℹ️ NOTE:** Some packages will require that `make` is available as well.
 
-> **ℹ️ NOTE:** \*nix users will also need:
->
-> - `lib-gtk-3-dev`
-> - `appindicator3-0.1` (`libappindicator3-dev` and `gir1.2-appindicator3-0.1`)
-
 > **ℹ️ NOTE:** Users of Fedora or RHEL will need to add a repository:
 >
 > `sudo yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm`

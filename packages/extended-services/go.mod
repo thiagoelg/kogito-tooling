@@ -1,6 +1,6 @@
 module github.com/kiegroup/kie-tools/packages/extended-services
 
-go 1.19
+go 1.20
 
 require (
 	fyne.io/systray v1.10.1-0.20230602210930-b6a2d6ca2a7b

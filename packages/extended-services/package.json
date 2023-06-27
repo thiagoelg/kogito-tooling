@@ -22,7 +22,7 @@
     "build:darwin:amd": "make darwin-amd64",
     "build:darwin:arm": "make darwin-arm64",
     "build:dev": "rimraf dist jitexecutor && pnpm copy-jitexecutor && pnpm build",
-    "build:linux": "make linux && pnpm build-headless:linux && cp GNOME_SHELL_USERS.md dist/linux/GNOME_SHELL_USERS.md",
+    "build:linux": "make linux && pnpm build-headless:linux && cp LINUX_USERS.md dist/linux/LINUX_USERS.md",
     "build:prod": "rimraf dist jitexecutor && pnpm copy-jitexecutor && pnpm build && pnpm pack-app",
     "build:win32": "make win32",
     "copy-jitexecutor": "run-script-os",
@@ -32,7 +32,7 @@
     "install": "go mod tidy",
     "pack-app": "run-script-os",
     "pack-app:darwin": "cd ./scripts/macos && ./build.sh",
-    "pack-app:linux": "cd ./dist/linux && tar -pcvzf kie_sandbox_extended_services.tar.gz kie_sandbox_extended_services GNOME_SHELL_USERS.md",
+    "pack-app:linux": "cd ./dist/linux && tar -pcvzf kie_sandbox_extended_services.tar.gz kie_sandbox_extended_services LINUX_USERS.md",
     "pack-app:win32": "echo 'Nothing to do'",
     "start": "cross-env ENV=dev make start"
   },

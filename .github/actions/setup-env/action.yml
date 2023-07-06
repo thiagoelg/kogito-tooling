@@ -24,9 +24,6 @@ runs:
         cd ${{ inputs.working_dir }}
         mkdir tmp
 
-    - name: Collect Workflow Telemetry
-      uses: runforesight/workflow-telemetry-action@v1
-
     - name: "Setup pnpm"
       uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd
       with:
@@ -57,7 +54,7 @@ runs:
       if: runner.os == 'macOS'
       shell: bash
       run: |
-        brew install docker
+        brew install --cask docker
         colima start --memory 4
 
         # For testcontainers to find the Colima socket

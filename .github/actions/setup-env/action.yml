@@ -50,17 +50,15 @@ runs:
       with:
         maven-version: 3.8.6
 
-    - name: "Set up Docker"
+    - name: Install docker (macOS only)
       if: runner.os == 'macOS'
-      uses: docker-practice/actions-setup-docker@c077d323aa88f0c69efced1994e25201bbd598b6 #v1
-      with:
-        timeout-minutes: 12
-
-    - name: "Get docker info"
       shell: bash
       run: |
-        docker info
-        docker compose version
+        brew install --cask docker
+        sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
+        open -a /Applications/Docker.app --args --unattended --accept-license
+        while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
+        docker --version
 
     - name: "Setup network timeout"
       shell: bash

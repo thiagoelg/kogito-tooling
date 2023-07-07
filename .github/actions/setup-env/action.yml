@@ -56,6 +56,12 @@ runs:
       with:
         timeout-minutes: 12
 
+    - name: "Get docker info"
+      shell: bash
+      run: |
+        docker info
+        docker compose version
+
     - name: "Setup network timeout"
       shell: bash
       run: |

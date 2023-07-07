@@ -61,6 +61,9 @@ runs:
         # https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#cannot-connect-to-the-docker-daemon-at-unixvarrundockersock-is-the-docker-daemon-running
         sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
 
+        docker info
+        docker compose version
+
     - name: "Setup network timeout"
       shell: bash
       run: |

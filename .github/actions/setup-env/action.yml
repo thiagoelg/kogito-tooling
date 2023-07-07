@@ -52,18 +52,9 @@ runs:
 
     - name: "Set up Docker"
       if: runner.os == 'macOS'
-      shell: bash
-      run: |
-        brew update
-        brew install --cask docker
-        colima start --memory 4
-
-        # For testcontainers to find the Colima socket
-        # https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#cannot-connect-to-the-docker-daemon-at-unixvarrundockersock-is-the-docker-daemon-running
-        sudo ln -sf $HOME/.colima/default/docker.sock /var/run/docker.sock
-
-        docker info
-        docker compose version
+      uses: docker-practice/actions-setup-docker@c077d323aa88f0c69efced1994e25201bbd598b6 #v1
+      with:
+        timeout-minutes: 12
 
     - name: "Setup network timeout"
       shell: bash

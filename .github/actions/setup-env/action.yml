@@ -54,6 +54,7 @@ runs:
       if: runner.os == 'macOS'
       shell: bash
       run: |
+        brew update
         brew install --cask docker
         colima start --memory 4
 

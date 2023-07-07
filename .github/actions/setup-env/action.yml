@@ -54,6 +54,12 @@ runs:
       if: runner.os == 'macOS'
       shell: bash
       run: |
+        env | grep HOMEBREW_NO_INSTALL_FROM_API
+        if brew tap | grep "homebrew/core"; then
+          unset HOMEBREW_NO_INSTALL_FROM_API
+          env | grep NO_INSTALL
+          brew untap homebrew/core
+        fi
         brew update
         brew install docker docker-compose
         mkdir -p ~/.docker/cli-plugins

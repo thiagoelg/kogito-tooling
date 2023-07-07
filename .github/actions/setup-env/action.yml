@@ -50,12 +50,13 @@ runs:
       with:
         maven-version: 3.8.6
 
-    - name: Install docker (macOS only)
+    - name: Setup docker (macOS only)
       if: runner.os == 'macOS'
       shell: bash
       run: |
+        brew update
         brew install --cask docker
-        /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
+        sudo /Applications/Docker.app/Contents/MacOS/Docker --unattended --install-privileged-components
         open -a /Applications/Docker.app --args --unattended --accept-license
         while ! /Applications/Docker.app/Contents/Resources/bin/docker info &>/dev/null; do sleep 1; done
         docker --version

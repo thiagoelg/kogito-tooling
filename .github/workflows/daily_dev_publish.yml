@@ -179,7 +179,7 @@ jobs:
 
       - name: "Load docker images to podman"
         if: runner.os == 'Linux'
-        run: docker images --format docker-daemon:{{.Repository}}:{{.Tag}} | grep -v '<none>' | xargs podman pull
+        run: docker images --format docker-daemon:{{.Repository}}:{{.Tag}} | grep -e '${{ env.KIE_SANDBOX_EXTENDED_SERVICES__imageName }}' -e '${{ env.GIT_CORS_PROXY__imageName }}' -e '${{ env.KIE_SANDBOX__imageName }}' | grep -v '<none>' | xargs podman pull
 
       # - name: "Push dmn-dev-deployment-base-image to quay.io (Ubuntu only)"
       #   if: runner.os == 'Linux' && github.event_name != 'pull_request'

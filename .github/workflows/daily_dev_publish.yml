@@ -46,12 +46,12 @@ jobs:
       KIE_SANDBOX__imageBuildTags: "daily-dev"
 
       KIE_SANDBOX_EXTENDED_SERVICES__imageRegistry: "quay.io"
-      KIE_SANDBOX_EXTENDED_SERVICES__imageAccount: "kie-tools"
+      KIE_SANDBOX_EXTENDED_SERVICES__imageAccount: "thiagoelg"
       KIE_SANDBOX_EXTENDED_SERVICES__imageName: "kie-sandbox-extended-services-image"
       KIE_SANDBOX_EXTENDED_SERVICES__imageBuildTags: "daily-dev"
 
       GIT_CORS_PROXY__imageRegistry: "quay.io"
-      GIT_CORS_PROXY__imageAccount: "kie-tools"
+      GIT_CORS_PROXY__imageAccount: "thiagoelg"
       GIT_CORS_PROXY__imageName: "git-cors-proxy-image"
       GIT_CORS_PROXY__imageBuildTags: "daily-dev"
 
@@ -138,8 +138,6 @@ jobs:
           SERVERLESS_LOGIC_WEB_TOOLS__extendedServicesDownloadUrlWindows: "https://github.com/kiegroup/kie-tools/releases/download/${{ env.SERVERLESS_LOGIC_WEB_TOOLS__extendedServicesVersion }}/kie_sandbox_extended_services_windows_${{ env.SERVERLESS_LOGIC_WEB_TOOLS__extendedServicesVersion }}.exe"
           SERVERLESS_LOGIC_WEB_TOOLS__extendedServicesCompatibleVersion: "${{ env.SERVERLESS_LOGIC_WEB_TOOLS__extendedServicesVersion }}"
           SERVERLESS_LOGIC_WEB_TOOLS__buildInfo: "${{ steps.version.outputs.version }} (daily-dev) @ ${{ github.sha }}"
-          KIE_SANDBOX_EXTENDED_SERVICES__imageAccount: "thiagoelg"
-          GIT_CORS_PROXY__imageAccount: "thiagoelg"
         run: |
           cd kie-tools
           pnpm -r -F @kie-tools/git-cors-proxy-image... -F @kie-tools/kie-sandbox-extended-services-image... build:prod

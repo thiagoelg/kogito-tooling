@@ -177,6 +177,10 @@ jobs:
           name: swf-chrome-extension
           path: kie-tools/packages/chrome-extension-serverless-workflow-editor/dist/chrome_extension_serverless_workflow_editor_${{ steps.version.outputs.version }}.zip
 
+      - name: "Load docker images to podman"
+        if: runner.os == 'Linux' && github.event_name != 'pull_request'
+        run: docker images --format docker-daemon:{{.Repository}}:{{.Tag}} | grep -v '<none>' | xargs podman pull
+
       - name: "Push dmn-dev-deployment-base-image to quay.io (Ubuntu only)"
         if: runner.os == 'Linux' && github.event_name != 'pull_request'
         uses: redhat-actions/push-to-registry@v2

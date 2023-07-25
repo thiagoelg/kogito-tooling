@@ -178,6 +178,7 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
                 if (
                   (await new KieSandboxKubernetesService({
                     connection: authSession,
+                    proxyUrl: extendedServices.config.url.corsProxy,
                   }).isConnectionEstablished()) === KubernetesConnectionStatus.CONNECTED
                 ) {
                   return [authSession.id, AuthSessionStatus.VALID];

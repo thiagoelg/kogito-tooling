@@ -50,6 +50,7 @@ export const INGRESS_TEMPLATE = (args: CreateResourceFetchArgs): IngressDescript
       },
     },
     spec: {
+      ingressClassName: "nginx",
       rules: [
         {
           http: {

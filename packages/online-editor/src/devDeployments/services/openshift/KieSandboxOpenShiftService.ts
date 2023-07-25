@@ -60,7 +60,10 @@ export class KieSandboxOpenShiftService implements KieSandboxDeploymentService {
     const uploadStatuses = await Promise.all(
       routes
         .map((route) => this.getRouteUrl(route))
-        .map(async (url) => ({ url: url, uploadStatus: await getUploadStatus({ baseUrl: url }) }))
+        .map(async (url) => ({
+          url: url,
+          uploadStatus: await getUploadStatus({ baseUrl: url, proxyUrl: this.args.proxyUrl! }),
+        }))
     );
 
     return deployments

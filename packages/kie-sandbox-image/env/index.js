@@ -23,15 +23,15 @@ module.exports = composeEnv([require("@kie-tools/root-env/env")], {
       description: "",
     },
     KIE_SANDBOX__imageAccount: {
-      default: "kie-tools",
+      default: "thiagoelg",
       description: "",
     },
     KIE_SANDBOX__imageName: {
-      default: "kie-sandbox-image",
+      default: "canvas",
       description: "",
     },
     KIE_SANDBOX__imageBuildTags: {
-      default: "latest",
+      default: "aks-test",
       description: "",
     },
   }),

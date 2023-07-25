@@ -55,8 +55,9 @@ export function ConnectToKubernetesSection() {
     () =>
       new KieSandboxKubernetesService({
         connection,
+        proxyUrl: extendedServices.config.url.corsProxy,
       }),
-    [connection]
+    [connection, extendedServices.config.url.corsProxy]
   );
 
   const successPrimaryAction = useMemo(() => {

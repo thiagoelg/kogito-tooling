@@ -84,7 +84,10 @@ export class KieSandboxKubernetesService implements KieSandboxDeploymentService 
     const uploadStatuses = await Promise.all(
       ingresses
         .map((ingress) => this.getIngressUrl(ingress))
-        .map(async (url) => ({ url: url, uploadStatus: await getUploadStatus({ baseUrl: url }) }))
+        .map(async (url) => ({
+          url: url,
+          uploadStatus: await getUploadStatus({ baseUrl: url, proxyUrl: this.args.proxyUrl! }),
+        }))
     );
 
     return deployments
@@ -173,13 +176,17 @@ export class KieSandboxKubernetesService implements KieSandboxDeploymentService 
           deploymentState = this.service.extractDeploymentState({ deployment });
         } else {
           try {
-            const uploadStatus = await getUploadStatus({ baseUrl: args.baseUrl });
+            const uploadStatus = await getUploadStatus({ baseUrl: args.baseUrl, proxyUrl: this.args.proxyUrl! });
             if (uploadStatus === "NOT_READY") {
               return;
             }
             clearInterval(interval);
             if (uploadStatus === "WAITING") {
-              await postUpload({ baseUrl: args.baseUrl, workspaceZipBlob: args.workspaceZipBlob });
+              await postUpload({
+                baseUrl: args.baseUrl,
+                workspaceZipBlob: args.workspaceZipBlob,
+                proxyUrl: this.args.proxyUrl!,
+              });
               resolve();
             }
           } catch (e) {

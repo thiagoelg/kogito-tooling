@@ -56,6 +56,7 @@ export function DevDeploymentsContextProvider(props: Props) {
       } else if (authSession.type === "kubernetes") {
         return new KieSandboxKubernetesService({
           connection: authSession,
+          proxyUrl: extendedServices.config.url.corsProxy,
         });
       }
       throw new Error("Invalid AuthSession type.");

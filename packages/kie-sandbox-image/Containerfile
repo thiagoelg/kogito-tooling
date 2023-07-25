@@ -14,6 +14,39 @@
 
 FROM --platform=linux/amd64 registry.access.redhat.com/ubi9/ubi-minimal:9.2
 
+ENV KIE_SANDBOX_APP_NAME='BAMOE Canvas'
+
+ENV KIE_SANDBOX_REQUIRE_CUSTOM_COMMIT_MESSAGE='true'
+
+ENV KIE_SANDBOX_EXTENDED_SERVICES_VERSION="9.0.0"
+
+ENV KIE_SANDBOX_EDITORS='[ \
+    { \
+        "extension": "bpmn", \
+        "filePathGlob": "**/*.bpmn?(2)", \
+        "editor": { \
+            "resourcesPathPrefix": "gwt-editors/bpmn", \
+            "path": "bpmn-envelope.html" \
+        }, \
+        "card": { \
+            "title": "Workflow", \
+            "description": "BPMN files are used to generate business workflows." \
+        } \
+    }, \
+    { \
+        "extension": "dmn", \
+        "filePathGlob": "**/*.dmn", \
+        "editor": { \
+            "resourcesPathPrefix": "gwt-editors/dmn", \
+            "path": "dmn-envelope.html" \
+        }, \
+        "card": { \
+            "title": "Decision", \
+            "description": "DMN files are used to generate decision models" \
+        } \
+    } \
+]'
+
 COPY entrypoint.sh dist-dev/image-env-to-json-standalone dist-dev/EnvJson.schema.json /tmp/
 
 RUN microdnf --disableplugin=subscription-manager -y install httpd-2.4.53-11.el9_2.5.x86_64 \

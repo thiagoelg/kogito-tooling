@@ -63,8 +63,6 @@ runs:
         ln -sfn $(brew --prefix)/opt/docker-compose/bin/docker-compose ~/.docker/cli-plugins/docker-compose
         brew install docker-Buildx
         ln -sfn $(brew --prefix)/opt/docker-buildx/bin/docker-buildx ~/.docker/cli-plugins/docker-buildx
-        colima stop
-        colima delete
         colima start --memory 4 --network-address --verbose
 
     - name: "Setup network timeout"

@@ -4,7 +4,7 @@ const execSync = require("child_process").execSync;
 const env = kieSandboxDistributionEnv.env;
 const kieSandboxUrl = `http://127.0.0.1:${env.kieSandboxDistribution.kieSandbox.exposedPort}`;
 const corsProxyUrl = `http://127.0.0.1:${env.kieSandboxDistribution.corsProxy.exposedPort}`;
-const extendedServicesUrl = `http://0.0.0.0:${env.kieSandboxDistribution.extendedServices.exposedPort}`;
+const extendedServicesUrl = `http://127.0.0.1:${env.kieSandboxDistribution.extendedServices.exposedPort}`;
 
 describe("Test built images individually", async () => {
   it("cors-proxy homepage", async () => {

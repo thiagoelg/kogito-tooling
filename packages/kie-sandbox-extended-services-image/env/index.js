@@ -34,7 +34,7 @@ module.exports = composeEnv([require("@kie-tools/root-env/env"), require("@kie-t
       description: "",
     },
     KIE_SANDBOX_EXTENDED_SERVICES__imageBuildTags: {
-      default: "latest",
+      default: "java",
       description: "",
     },
   }),

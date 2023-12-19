@@ -17,7 +17,6 @@
 pipeline {
     agent {
         docker {
-            label 'dind'
             image 'quay.io/kie-tools/kie-tools-ci-build:latest'
             args '--shm-size=2g --privileged --group-add docker'
         }

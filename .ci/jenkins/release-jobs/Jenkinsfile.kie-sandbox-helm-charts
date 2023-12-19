@@ -69,19 +69,19 @@ pipeline {
             }
         }
 
-        stage('Checkout kie-tools') {
-            steps {
-                dir('kie-tools') {
-                    script {
-                        githubUtils.checkoutRepo(
-                            "http://github.com/${pipelineVars.githubRepositorySlug}.git",
-                            "${params.BASE_REF}",
-                            "${pipelineVars.kieToolsBotGithubCredentialsId}"
-                        )
-                    }
-                }
-            }
-        }
+        // stage('Checkout kie-tools') {
+        //     steps {
+        //         dir('kie-tools') {
+        //             script {
+        //                 githubUtils.checkoutRepo(
+        //                     "http://github.com/${pipelineVars.githubRepositorySlug}.git",
+        //                     "${params.BASE_REF}",
+        //                     "${pipelineVars.kieToolsBotGithubCredentialsId}"
+        //                 )
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Setup PNPM') {
             steps {

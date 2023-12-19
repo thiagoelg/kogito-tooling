@@ -63,24 +63,24 @@ pipeline {
             }
         }
 
-        stage('Clean workspace before build') {
-            steps {
-                cleanWs(deleteDirs: true, disableDeferredWipeout: true)
-            }
-        }
+        // stage('Clean workspace before build') {
+        //     steps {
+        //         cleanWs(deleteDirs: true, disableDeferredWipeout: true)
+        //     }
+        // }
 
-        stage('Checkout kie-tools') {
-            steps {
-                dir('kie-tools') {
-                    script {
-                        githubUtils.checkoutRepo(
-                            "http://github.com/thiagoelg/kie-tools.git",
-                            "${params.BASE_REF}",
-                        )
-                    }
-                }
-            }
-        }
+        // stage('Checkout kie-tools') {
+        //     steps {
+        //         dir('kie-tools') {
+        //             script {
+        //                 githubUtils.checkoutRepo(
+        //                     "http://github.com/thiagoelg/kie-tools.git",
+        //                     "${params.BASE_REF}",
+        //                 )
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Setup PNPM') {
             steps {

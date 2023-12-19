@@ -17,8 +17,8 @@
 pipeline {
     agent {
         docker {
-            image 'quay.io/kie-tools/kie-tools-ci-build:latest'
-            args '-u 910:910 --shm-size=2g --privileged --group-add docker'
+            image 'quay.io/thiagoelg/kie-tools-ci-build:v1'
+            args '--shm-size=2g --privileged --group-add docker'
         }
     }
 
@@ -63,25 +63,24 @@ pipeline {
             }
         }
 
-        // stage('Clean workspace before build') {
-        //     steps {
-        //         cleanWs(deleteDirs: true, disableDeferredWipeout: true)
-        //     }
-        // }
+        stage('Clean workspace before build') {
+            steps {
+                cleanWs(deleteDirs: true, disableDeferredWipeout: true)
+            }
+        }
 
-        // stage('Checkout kie-tools') {
-        //     steps {
-        //         dir('kie-tools') {
-        //             script {
-        //                 githubUtils.checkoutRepo(
-        //                     "http://github.com/${pipelineVars.githubRepositorySlug}.git",
-        //                     "${params.BASE_REF}",
-        //                     "${pipelineVars.kieToolsBotGithubCredentialsId}"
-        //                 )
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Checkout kie-tools') {
+            steps {
+                dir('kie-tools') {
+                    script {
+                        githubUtils.checkoutRepo(
+                            "http://github.com/thiagoelg/kie-tools.git",
+                            "${params.BASE_REF}",
+                        )
+                    }
+                }
+            }
+        }
 
         stage('Setup PNPM') {
             steps {
@@ -112,22 +111,6 @@ pipeline {
                 }
             }
         }
-
-        // stage('Push dev-deployment-base-image to quay.io') {
-        //     when {
-        //         expression { !params.DRY_RUN }
-        //     }
-        //     steps {
-        //         script {
-        //             dockerUtils.pushImageToRegistry(
-        //                 "${env.DEV_DEPLOYMENT_BASE_IMAGE__registry}/${env.DEV_DEPLOYMENT_BASE_IMAGE__account}",
-        //                 "${env.DEV_DEPLOYMENT_BASE_IMAGE__name}",
-        //                 "${env.DEV_DEPLOYMENT_BASE_IMAGE__buildTags}",
-        //                 "${pipelineVars.quayPushCredentialsId}"
-        //             )
-        //         }
-        //     }
-        // }
 
     }
 

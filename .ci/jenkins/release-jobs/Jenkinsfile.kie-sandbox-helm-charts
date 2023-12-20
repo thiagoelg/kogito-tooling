@@ -74,8 +74,9 @@ pipeline {
         //         dir('kie-tools') {
         //             script {
         //                 githubUtils.checkoutRepo(
-        //                     "http://github.com/thiagoelg/kie-tools.git",
+        //                     "http://github.com/${pipelineVars.githubRepositorySlug}.git",
         //                     "${params.BASE_REF}",
+        //                     "${pipelineVars.kieToolsBotGithubCredentialsId}"
         //                 )
         //             }
         //         }

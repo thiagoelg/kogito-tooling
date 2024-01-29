@@ -20,6 +20,8 @@
 import * as jsYaml from "js-yaml";
 import { K8sResourceYaml } from "../src/common";
 import { callK8sApiServer } from "../src/k8sApiServerCalls";
+import { patchK8sResourceYaml } from "../src/patchK8sResourceYaml";
+import { interpolateK8sResourceYaml } from "../src/interpolateK8sResourceYaml";
 import { buildK8sApiServerEndpointsByResourceKind } from "../src/k8sApiServerEndpointsByResourceKind";
 import * as fs from "fs";
 
@@ -28,11 +30,13 @@ async function main(args: {
   k8sNamespace: string;
   k8sServiceAccountToken: string;
   k8sYamlFilepath: string;
+  k8sResourcePatchesJsonFile?: string;
+  k8sTokenMapJsonFile?: string;
 }) {
   if (!args.k8sApiServerUrl || !args.k8sNamespace || !args.k8sServiceAccountToken || !args.k8sYamlFilepath) {
     console.info(`USAGE:
 
-pnpm start <k8sApiServerUrl> <k8sNamespace> <k8sServiceAccountToken> <k8sYamlFilepath>
+pnpm start <k8sApiServerUrl> <k8sNamespace> <k8sServiceAccountToken> <k8sYamlFilepath> <k8sResourcePatchesJsonFilepath> <k8sTokenMapJsonFilepath>
 
 EXAMPLE:
 
@@ -49,9 +53,23 @@ pnpm start https://api.to.my.openshift.cluster.com:6443 my-project sha256~MGnPXM
   console.info("");
 
   // Fetch the YAML file
-  const k8sYamlResourcesString = fs.readFileSync(args.k8sYamlFilepath).toString();
+  let k8sYamlResourcesString = fs.readFileSync(args.k8sYamlFilepath).toString();
   console.info(`Done reading YAML from '${args.k8sYamlFilepath}'.`);
   console.info("");
+
+  if (args.k8sResourcePatchesJsonFile) {
+    const resourcePatches = JSON.parse(fs.readFileSync(args.k8sResourcePatchesJsonFile).toString());
+    if (resourcePatches) {
+      k8sYamlResourcesString = patchK8sResourceYaml(k8sYamlResourcesString, resourcePatches);
+    }
+  }
+
+  if (args.k8sTokenMapJsonFile) {
+    const tokenMap = JSON.parse(fs.readFileSync(args.k8sTokenMapJsonFile).toString());
+    if (tokenMap) {
+      k8sYamlResourcesString = interpolateK8sResourceYaml(k8sYamlResourcesString, tokenMap);
+    }
+  }
 
   // Parse YAML (can be multiple, separated by `---`)
   console.info("Start parsing YAML...");
@@ -84,4 +102,6 @@ main({
   k8sNamespace: process.argv[3],
   k8sServiceAccountToken: process.argv[4],
   k8sYamlFilepath: process.argv[5],
+  k8sResourcePatchesJsonFile: process.argv[6],
+  k8sTokenMapJsonFile: process.argv[7],
 });

@@ -31,7 +31,7 @@ import { computeDataTypes } from "./computed/computeDataTypes";
 import { computeDiagramData } from "./computed/computeDiagramData";
 import { computeExternalModelsByType } from "./computed/computeExternalModelsByType";
 import { computeImportsByNamespace } from "./computed/computeImportsByNamespace";
-import { computeIndexes } from "./computed/computeIndexes";
+import { computeIndexedDrd } from "./computed/computeIndexes";
 import { computeIsDropTargetNodeValidForSelection } from "./computed/computeIsDropTargetNodeValidForSelection";
 
 enableMapSet(); // Necessary because `Computed` has a lot of Maps and Sets.
@@ -56,8 +56,9 @@ export interface SnapGrid {
   y: number;
 }
 
-export enum DiagramNodesPanel {
+export enum DiagramLhsPanel {
   NONE = "NONE",
+  DRD_SELECTOR = "DRD_SELECTOR",
   DRG_NODES = "DRG_NODES",
   EXTERNAL_NODES = "EXTERNAL_NODES",
 }
@@ -97,10 +98,7 @@ export interface State {
     overlaysPanel: {
       isOpen: boolean;
     };
-    openNodesPanel: DiagramNodesPanel;
-    drdSelector: {
-      isOpen: boolean;
-    };
+    openLhsPanel: DiagramLhsPanel;
     overlays: {
       enableNodeHierarchyHighlight: boolean;
       enableExecutionHitsHighlights: boolean;
@@ -125,7 +123,7 @@ export type Computed = {
 
   importsByNamespace(): Map<string, DMN15__tImport>;
 
-  indexes(): ReturnType<typeof computeIndexes>;
+  indexedDrd(): ReturnType<typeof computeIndexedDrd>;
 
   getDiagramData(e: ExternalModelsIndex | undefined): ReturnType<typeof computeDiagramData>;
 
@@ -193,10 +191,7 @@ export const defaultStaticState = (): Omit<State, "dmn" | "dispatch" | "computed
     overlaysPanel: {
       isOpen: false,
     },
-    openNodesPanel: DiagramNodesPanel.NONE,
-    drdSelector: {
-      isOpen: false,
-    },
+    openLhsPanel: DiagramLhsPanel.NONE,
     overlays: {
       enableNodeHierarchyHighlight: false,
       enableExecutionHitsHighlights: false,
@@ -334,8 +329,12 @@ export function createDmnEditorStore(model: State["dmn"]["model"], computedCache
             );
           },
 
-          indexes: () => {
-            return computedCache.cached("indexes", computeIndexes, [s.dmn.model.definitions, s.diagram.drdIndex]);
+          indexedDrd: () => {
+            return computedCache.cached("indexedDrd", computeIndexedDrd, [
+              s.dmn.model.definitions["@_namespace"],
+              s.dmn.model.definitions,
+              s.diagram.drdIndex,
+            ]);
           },
 
           importsByNamespace: () => {
@@ -382,7 +381,7 @@ export function createDmnEditorStore(model: State["dmn"]["model"], computedCache
               s.diagram,
               s.dmn.model.definitions,
               s.computed(s).getExternalModelTypesByNamespace(externalModelsByNamespace),
-              s.computed(s).indexes(),
+              s.computed(s).indexedDrd(),
               s.computed(s).isAlternativeInputDataShape(),
             ]),
         };

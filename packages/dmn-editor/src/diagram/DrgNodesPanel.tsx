@@ -26,7 +26,7 @@ import { TimesIcon } from "@patternfly/react-icons/dist/js/icons/times-icon";
 import * as React from "react";
 import { useCallback, useState } from "react";
 import { DmnObjectListItem } from "../externalNodes/DmnObjectListItem";
-import { DiagramNodesPanel } from "../store/Store";
+import { DiagramLhsPanel } from "../store/Store";
 import { useDmnEditorStore, useDmnEditorStoreApi } from "../store/StoreContext";
 import { Unpacked } from "../tsExt/tsExt";
 import { buildXmlHref } from "../xml/xmlHrefs";
@@ -36,7 +36,7 @@ export const MIME_TYPE_FOR_DMN_EDITOR_DRG_NODE = "kie-dmn-editor--drg-node";
 
 export function DrgNodesPanel() {
   const thisDmn = useDmnEditorStore((s) => s.dmn);
-  const dmnShapesByHref = useDmnEditorStore((s) => s.computed(s).indexes().dmnShapesByHref);
+  const dmnShapesByHref = useDmnEditorStore((s) => s.computed(s).indexedDrd().dmnShapesByHref);
 
   const dmnEditorStoreApi = useDmnEditorStoreApi();
 
@@ -87,10 +87,11 @@ export function DrgNodesPanel() {
             <Text component="h3">DRG Nodes</Text>
           </TextContent>
           <Button
+            title={"Close"}
             variant={ButtonVariant.plain}
             onClick={() =>
               dmnEditorStoreApi.setState((state) => {
-                state.diagram.openNodesPanel = DiagramNodesPanel.NONE;
+                state.diagram.openLhsPanel = DiagramLhsPanel.NONE;
               })
             }
           >

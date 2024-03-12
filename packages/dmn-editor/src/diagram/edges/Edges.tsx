@@ -158,6 +158,7 @@ export const InformationRequirementEdge = React.memo((props: RF.EdgeProps<DmnDia
         strokeWidth={props.interactionWidth ?? DEFAULT_INTRACTION_WIDTH}
         onMouseMove={onMouseMove}
         onDoubleClick={onDoubleClick}
+        data-edgetype={"information-requirement"}
       />
       <InformationRequirementPath d={path} className={`kie-dmn-editor--edge ${className}`} />
 
@@ -206,6 +207,7 @@ export const KnowledgeRequirementEdge = React.memo((props: RF.EdgeProps<DmnDiagr
         strokeWidth={props.interactionWidth ?? DEFAULT_INTRACTION_WIDTH}
         onMouseMove={onMouseMove}
         onDoubleClick={onDoubleClick}
+        data-edgetype={"knowledge-requirement"}
       />
       <KnowledgeRequirementPath d={path} className={`kie-dmn-editor--edge ${className}`} />
 
@@ -255,6 +257,7 @@ export const AuthorityRequirementEdge = React.memo((props: RF.EdgeProps<DmnDiagr
         strokeWidth={props.interactionWidth ?? DEFAULT_INTRACTION_WIDTH}
         onMouseMove={onMouseMove}
         onDoubleClick={onDoubleClick}
+        data-edgetype={"authority-requirement"}
       />
       <AuthorityRequirementPath
         d={path}
@@ -307,6 +310,7 @@ export const AssociationEdge = React.memo((props: RF.EdgeProps<DmnDiagramEdgeDat
         strokeWidth={props.interactionWidth ?? DEFAULT_INTRACTION_WIDTH}
         onMouseMove={onMouseMove}
         onDoubleClick={onDoubleClick}
+        data-edgetype={"association"}
       />
       <AssociationPath d={path} className={`kie-dmn-editor--edge ${className}`} />
 

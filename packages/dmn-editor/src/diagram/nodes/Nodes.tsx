@@ -89,6 +89,7 @@ export type DmnDiagramNodeData<T extends NodeDmnObjects = NodeDmnObjects> = {
   dmnObject: T;
   shape: DMNDI15__DMNShape & { index: number };
   index: number;
+  hasHiddenRequirements: boolean;
   /**
    * We don't use Reactflow's parenting mechanism because it is
    * too opinionated on how it deletes nodes/edges that are
@@ -133,7 +134,6 @@ export const InputDataNode = React.memo(
       nodeType: type as typeof NODE_TYPES.inputData,
       snapGrid,
       shape,
-      isExternal,
       isAlternativeInputDataShape,
     });
 
@@ -239,9 +239,11 @@ export const InputDataNode = React.memo(
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
           style={alternativeSvgStyle}
-          className={selectedAlternativeClass}
+          className={`kie-dmn-editor--input-data-node ${selectedAlternativeClass}`}
           ref={ref}
           tabIndex={-1}
+          data-nodehref={id}
+          data-nodelabel={inputData["@_name"]}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
@@ -249,6 +251,7 @@ export const InputDataNode = React.memo(
             <InfoNodePanel isVisible={!isTargeted && shouldActLikeHovered} />
 
             <OutgoingStuffNodePanel
+              nodeHref={id}
               isVisible={!isTargeted && shouldActLikeHovered}
               nodeTypes={outgoingStructure[NODE_TYPES.inputData].nodes}
               edgeTypes={outgoingStructure[NODE_TYPES.inputData].edges}
@@ -318,7 +321,15 @@ export const InputDataNode = React.memo(
 
 export const DecisionNode = React.memo(
   ({
-    data: { parentRfNode, dmnObject: decision, shape, index, dmnObjectQName, dmnObjectNamespace },
+    data: {
+      parentRfNode,
+      dmnObject: decision,
+      shape,
+      index,
+      dmnObjectQName,
+      dmnObjectNamespace,
+      hasHiddenRequirements,
+    },
     selected,
     dragging,
     zIndex,
@@ -338,9 +349,7 @@ export const DecisionNode = React.memo(
     const shouldActLikeHovered = useDmnEditorStore(
       (s) => (isHovered || isResizing) && s.diagram.draggingNodes.length === 0
     );
-    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(
-      decision["@_id"]
-    );
+    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(id);
     useHoveredNodeAlwaysOnTop(ref, zIndex, shouldActLikeHovered, dragging, selected, isEditingLabel);
     const [isDataTypesPanelExpanded, setDataTypePanelExpanded] = useState(false);
 
@@ -352,7 +361,6 @@ export const DecisionNode = React.memo(
       nodeType: type as typeof NODE_TYPES.decision,
       snapGrid,
       shape,
-      isExternal,
     });
     const setName = useCallback<OnEditableNodeLabelChange>(
       (newName: string) => {
@@ -410,6 +418,7 @@ export const DecisionNode = React.memo(
             strokeWidth={parentRfNode ? 3 : shapeStyle.strokeWidth}
             fillColor={shapeStyle.fillColor}
             strokeColor={shapeStyle.strokeColor}
+            hasHiddenRequirements={hasHiddenRequirements}
           />
         </svg>
 
@@ -421,6 +430,8 @@ export const DecisionNode = React.memo(
           tabIndex={-1}
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
+          data-nodehref={id}
+          data-nodelabel={decision["@_name"]}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
@@ -429,6 +440,7 @@ export const DecisionNode = React.memo(
             <EditExpressionNodePanel isVisible={!isTargeted && shouldActLikeHovered} id={decision["@_id"]!} />
           )}
           <OutgoingStuffNodePanel
+            nodeHref={id}
             isVisible={!isTargeted && shouldActLikeHovered}
             nodeTypes={outgoingStructure[NODE_TYPES.decision].nodes}
             edgeTypes={outgoingStructure[NODE_TYPES.decision].edges}
@@ -472,7 +484,7 @@ export const DecisionNode = React.memo(
 
 export const BkmNode = React.memo(
   ({
-    data: { dmnObject: bkm, shape, index, dmnObjectQName, dmnObjectNamespace },
+    data: { dmnObject: bkm, shape, index, dmnObjectQName, dmnObjectNamespace, hasHiddenRequirements },
     selected,
     dragging,
     zIndex,
@@ -492,9 +504,7 @@ export const BkmNode = React.memo(
     const shouldActLikeHovered = useDmnEditorStore(
       (s) => (isHovered || isResizing) && s.diagram.draggingNodes.length === 0
     );
-    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(
-      bkm["@_id"]
-    );
+    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(id);
     useHoveredNodeAlwaysOnTop(ref, zIndex, shouldActLikeHovered, dragging, selected, isEditingLabel);
     const [isDataTypesPanelExpanded, setDataTypePanelExpanded] = useState(false);
 
@@ -502,7 +512,7 @@ export const BkmNode = React.memo(
 
     const { isTargeted, isValidConnectionTarget } = useConnectionTargetStatus(id, shouldActLikeHovered);
     const className = useNodeClassName(isValidConnectionTarget, id);
-    const nodeDimensions = useNodeDimensions({ nodeType: type as typeof NODE_TYPES.bkm, snapGrid, shape, isExternal });
+    const nodeDimensions = useNodeDimensions({ nodeType: type as typeof NODE_TYPES.bkm, snapGrid, shape });
     const setName = useCallback<OnEditableNodeLabelChange>(
       (newName: string) => {
         dmnEditorStoreApi.setState((state) => {
@@ -545,6 +555,7 @@ export const BkmNode = React.memo(
             strokeWidth={shapeStyle.strokeWidth}
             fillColor={shapeStyle.fillColor}
             strokeColor={shapeStyle.strokeColor}
+            hasHiddenRequirements={hasHiddenRequirements}
           />
         </svg>
 
@@ -556,12 +567,15 @@ export const BkmNode = React.memo(
           tabIndex={-1}
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
+          data-nodehref={id}
+          data-nodelabel={bkm["@_name"]}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
           <InfoNodePanel isVisible={!isTargeted && shouldActLikeHovered} />
           {!isExternal && <EditExpressionNodePanel isVisible={!isTargeted && shouldActLikeHovered} id={bkm["@_id"]!} />}
           <OutgoingStuffNodePanel
+            nodeHref={id}
             isVisible={!isTargeted && shouldActLikeHovered}
             nodeTypes={outgoingStructure[NODE_TYPES.bkm].nodes}
             edgeTypes={outgoingStructure[NODE_TYPES.bkm].edges}
@@ -605,7 +619,7 @@ export const BkmNode = React.memo(
 
 export const KnowledgeSourceNode = React.memo(
   ({
-    data: { dmnObject: knowledgeSource, shape, index, dmnObjectQName },
+    data: { dmnObject: knowledgeSource, shape, index, dmnObjectQName, hasHiddenRequirements },
     selected,
     dragging,
     zIndex,
@@ -626,9 +640,7 @@ export const KnowledgeSourceNode = React.memo(
       (s) => (isHovered || isResizing) && s.diagram.draggingNodes.length === 0
     );
 
-    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(
-      knowledgeSource["@_id"]
-    );
+    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(id);
     useHoveredNodeAlwaysOnTop(ref, zIndex, shouldActLikeHovered, dragging, selected, isEditingLabel);
 
     const dmnEditorStoreApi = useDmnEditorStoreApi();
@@ -639,7 +651,6 @@ export const KnowledgeSourceNode = React.memo(
       nodeType: type as typeof NODE_TYPES.knowledgeSource,
       snapGrid,
       shape,
-      isExternal,
     });
     const setName = useCallback<OnEditableNodeLabelChange>(
       (newName: string) => {
@@ -670,6 +681,7 @@ export const KnowledgeSourceNode = React.memo(
             strokeWidth={shapeStyle.strokeWidth}
             fillColor={shapeStyle.fillColor}
             strokeColor={shapeStyle.strokeColor}
+            hasHiddenRequirements={hasHiddenRequirements}
           />
         </svg>
 
@@ -681,11 +693,14 @@ export const KnowledgeSourceNode = React.memo(
           tabIndex={-1}
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
+          data-nodehref={id}
+          data-nodelabel={knowledgeSource["@_name"]}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
           <InfoNodePanel isVisible={!isTargeted && shouldActLikeHovered} />
           <OutgoingStuffNodePanel
+            nodeHref={id}
             isVisible={!isTargeted && shouldActLikeHovered}
             nodeTypes={outgoingStructure[NODE_TYPES.knowledgeSource].nodes}
             edgeTypes={outgoingStructure[NODE_TYPES.knowledgeSource].edges}
@@ -742,9 +757,7 @@ export const TextAnnotationNode = React.memo(
       (s) => (isHovered || isResizing) && s.diagram.draggingNodes.length === 0
     );
 
-    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(
-      textAnnotation["@_id"]
-    );
+    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(id);
     useHoveredNodeAlwaysOnTop(ref, zIndex, shouldActLikeHovered, dragging, selected, isEditingLabel);
 
     const dmnEditorStoreApi = useDmnEditorStoreApi();
@@ -755,7 +768,6 @@ export const TextAnnotationNode = React.memo(
       nodeType: type as typeof NODE_TYPES.textAnnotation,
       snapGrid,
       shape,
-      isExternal,
     });
     const setText = useCallback(
       (newText: string) => {
@@ -797,11 +809,14 @@ export const TextAnnotationNode = React.memo(
           tabIndex={-1}
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
+          data-nodehref={id}
+          data-nodelabel={textAnnotation["@_label"] ?? textAnnotation.text?.__$$text}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
           <InfoNodePanel isVisible={!isTargeted && shouldActLikeHovered} />
           <OutgoingStuffNodePanel
+            nodeHref={id}
             isVisible={!isTargeted && shouldActLikeHovered}
             nodeTypes={outgoingStructure[NODE_TYPES.textAnnotation].nodes}
             edgeTypes={outgoingStructure[NODE_TYPES.textAnnotation].edges}
@@ -859,9 +874,7 @@ export const DecisionServiceNode = React.memo(
     );
     const isDropTarget = useDmnEditorStore((s) => s.diagram.dropTargetNode?.id === id);
 
-    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(
-      decisionService["@_id"]
-    );
+    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(id);
     useHoveredNodeAlwaysOnTop(ref, zIndex, shouldActLikeHovered, dragging, selected, isEditingLabel);
     const [isDataTypesPanelExpanded, setDataTypePanelExpanded] = useState(false);
 
@@ -874,7 +887,6 @@ export const DecisionServiceNode = React.memo(
       nodeType: type as typeof NODE_TYPES.decisionService,
       snapGrid,
       shape,
-      isExternal,
     });
     const setName = useCallback<OnEditableNodeLabelChange>(
       (newName: string) => {
@@ -919,8 +931,7 @@ export const DecisionServiceNode = React.memo(
 
     const dividerLineRef = useRef<SVGPathElement>(null);
 
-    // External Decision Service nodes are always collapsed.
-    const isCollapsed = isExternal || shape["@_isCollapsed"];
+    const isCollapsed = shape["@_isCollapsed"] ?? false;
 
     const onCreateDataType = useDataTypeCreationCallbackForNodes(index, decisionService["@_name"]);
 
@@ -941,7 +952,7 @@ export const DecisionServiceNode = React.memo(
             updateDecisionServiceDividerLine({
               definitions: state.dmn.model.definitions,
               drdIndex: state.diagram.drdIndex,
-              dmnShapesByHref: state.computed(state).indexes().dmnShapesByHref,
+              dmnShapesByHref: state.computed(state).indexedDrd().dmnShapesByHref,
               drgElementIndex: index,
               shapeIndex: shape.index,
               localYPosition: e.y,
@@ -995,11 +1006,14 @@ export const DecisionServiceNode = React.memo(
           tabIndex={-1}
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
+          data-nodehref={id}
+          data-nodelabel={decisionService["@_name"]}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
           <InfoNodePanel isVisible={!isTargeted && selected && !dragging} />
           <OutgoingStuffNodePanel
+            nodeHref={id}
             isVisible={!isTargeted && selected && !dragging}
             nodeTypes={outgoingStructure[NODE_TYPES.decisionService].nodes}
             edgeTypes={outgoingStructure[NODE_TYPES.decisionService].edges}
@@ -1067,16 +1081,13 @@ export const GroupNode = React.memo(
     const dmnEditorStoreApi = useDmnEditorStoreApi();
     const reactFlow = RF.useReactFlow<DmnDiagramNodeData, DmnDiagramEdgeData>();
 
-    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(
-      group["@_id"]
-    );
+    const { isEditingLabel, setEditingLabel, triggerEditing, triggerEditingIfEnter } = useEditableNodeLabel(id);
     const { isTargeted, isValidConnectionTarget } = useConnectionTargetStatus(id, shouldActLikeHovered);
     const className = useNodeClassName(isValidConnectionTarget, id);
     const nodeDimensions = useNodeDimensions({
       nodeType: type as typeof NODE_TYPES.group,
       snapGrid,
       shape,
-      isExternal,
     });
     const setName = useCallback<OnEditableNodeLabelChange>(
       (newName: string) => {
@@ -1140,10 +1151,13 @@ export const GroupNode = React.memo(
           tabIndex={-1}
           onDoubleClick={triggerEditing}
           onKeyDown={triggerEditingIfEnter}
+          data-nodehref={id}
+          data-nodelabel={group["@_name"]}
         >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
           <OutgoingStuffNodePanel
+            nodeHref={id}
             isVisible={!isTargeted && selected && !dragging}
             nodeTypes={outgoingStructure[NODE_TYPES.group].nodes}
             edgeTypes={outgoingStructure[NODE_TYPES.group].edges}
@@ -1205,7 +1219,6 @@ export const UnknownNode = React.memo(
       nodeType: type as typeof NODE_TYPES.unknown,
       snapGrid,
       shape,
-      isExternal,
     });
 
     return (
@@ -1216,7 +1229,12 @@ export const UnknownNode = React.memo(
 
         <RF.Handle key={"unknown"} id={"unknown"} type={"source"} style={{ opacity: 0 }} position={RF.Position.Top} />
 
-        <div ref={ref} className={`kie-dmn-editor--node kie-dmn-editor--unknown-node ${className}`} tabIndex={-1}>
+        <div
+          ref={ref}
+          className={`kie-dmn-editor--node kie-dmn-editor--unknown-node ${className}`}
+          tabIndex={-1}
+          data-nodehref={id}
+        >
           {/* {`render count: ${renderCount.current}`}
           <br /> */}
           <InfoNodePanel isVisible={!isTargeted && shouldActLikeHovered} />
@@ -1306,21 +1324,20 @@ function useNodeResizing(id: string): boolean {
   return RF.useStore((s) => s.nodeInternals.get(id)?.resizing ?? false);
 }
 
-type NodeDimensionsProps = {
+type NodeDimensionsArgs = {
   snapGrid: SnapGrid;
   shape: DMNDI15__DMNShape;
-  isExternal: boolean;
 } & (
   | { nodeType: Extract<NodeType, typeof NODE_TYPES.inputData>; isAlternativeInputDataShape: boolean }
   | { nodeType: Exclude<NodeType, typeof NODE_TYPES.inputData> }
 );
 
-function useNodeDimensions(props: NodeDimensionsProps): RF.Dimensions {
-  const { nodeType, snapGrid, shape, isExternal } = props;
-  const isAlternativeInputDataShape = nodeType === NODE_TYPES.inputData ? props.isAlternativeInputDataShape : false;
+function useNodeDimensions(args: NodeDimensionsArgs): RF.Dimensions {
+  const { nodeType, snapGrid, shape } = args;
+  const isAlternativeInputDataShape = nodeType === NODE_TYPES.inputData ? args.isAlternativeInputDataShape : false;
 
   return useMemo(() => {
-    if (nodeType === NODE_TYPES.decisionService && (isExternal || shape["@_isCollapsed"])) {
+    if (nodeType === NODE_TYPES.decisionService && shape["@_isCollapsed"]) {
       return DECISION_SERVICE_COLLAPSED_DIMENSIONS;
     }
 
@@ -1338,7 +1355,7 @@ function useNodeDimensions(props: NodeDimensionsProps): RF.Dimensions {
       width: snapShapeDimensions(snapGrid, shape, minSizes).width,
       height: snapShapeDimensions(snapGrid, shape, minSizes).height,
     };
-  }, [isAlternativeInputDataShape, isExternal, shape, snapGrid, nodeType]);
+  }, [isAlternativeInputDataShape, shape, snapGrid, nodeType]);
 }
 
 function useHoveredNodeAlwaysOnTop(

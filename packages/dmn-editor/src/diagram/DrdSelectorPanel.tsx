@@ -24,7 +24,7 @@ import { Text, TextContent } from "@patternfly/react-core/dist/js/components/Tex
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
 import { PlusCircleIcon } from "@patternfly/react-icons/dist/js/icons/plus-circle-icon";
 import { Divider } from "@patternfly/react-core/dist/js/components/Divider";
-import { DiagramNodesPanel } from "../store/Store";
+import { DiagramLhsPanel } from "../store/Store";
 import { getDrdId } from "./drd/drdId";
 import { Title } from "@patternfly/react-core/dist/js/components/Title";
 import { Form, FormGroup, FormSection } from "@patternfly/react-core/dist/js/components/Form";
@@ -64,6 +64,7 @@ export function DrdSelectorPanel() {
               <Text component="h3">DRDs</Text>
             </TextContent>
             <Button
+              title={"New DRD"}
               variant={ButtonVariant.link}
               onClick={() => {
                 dmnEditorStoreApi.setState((state) => {
@@ -76,8 +77,7 @@ export function DrdSelectorPanel() {
                   });
 
                   state.diagram.drdIndex = newIndex;
-                  state.diagram.drdSelector.isOpen = false;
-                  state.diagram.openNodesPanel = DiagramNodesPanel.DRG_NODES;
+                  state.diagram.openLhsPanel = DiagramLhsPanel.DRG_NODES;
                   state.focus.consumableId = getDrdId({ drdIndex: newIndex });
                 });
               }}

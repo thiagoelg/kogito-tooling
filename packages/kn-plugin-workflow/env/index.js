@@ -34,21 +34,9 @@ module.exports = composeEnv([rootEnv, kogitoSwfDevModeEnv], {
       default: "io.quarkus.platform",
       description: "Quarkus group to be used when creating the SonataFlow project",
     },
-    KN_PLUGIN_WORKFLOW__devModeImageRegistry: {
-      default: kogitoSwfDevModeEnv.env.kogitoSwfDevMode.registry,
-      description: "Quarkus group to be used when creating the SonataFlow project",
-    },
-    KN_PLUGIN_WORKFLOW__devModeImageAccount: {
-      default: kogitoSwfDevModeEnv.env.kogitoSwfDevMode.account,
-      description: "Quarkus group to be used when creating the SonataFlow project",
-    },
-    KN_PLUGIN_WORKFLOW__devModeImageName: {
-      default: kogitoSwfDevModeEnv.env.kogitoSwfDevMode.name,
-      description: "Quarkus group to be used when creating the SonataFlow project",
-    },
-    KN_PLUGIN_WORKFLOW__devModeImageTag: {
-      default: kogitoSwfDevModeEnv.env.kogitoSwfDevMode.tag,
-      description: "Quarkus group to be used when creating the SonataFlow project",
+    KN_PLUGIN_WORKFLOW__devModeImageUrl: {
+      default: `${kogitoSwfDevModeEnv.env.kogitoSwfDevMode.registry}/${kogitoSwfDevModeEnv.env.kogitoSwfDevMode.account}/${kogitoSwfDevModeEnv.env.kogitoSwfDevMode.name}:${kogitoSwfDevModeEnv.env.kogitoSwfDevMode.tag}`,
+      description: "Kogito SWF DevMode image URL.",
     },
   }),
   get env() {
@@ -56,12 +44,7 @@ module.exports = composeEnv([rootEnv, kogitoSwfDevModeEnv], {
       knPluginWorkflow: {
         version: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__version),
         quarkusPlatformGroupId: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__quarkusPlatformGroupId),
-        devModeImage: {
-          registry: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__devModeImageRegistry),
-          account: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__devModeImageAccount),
-          name: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__devModeImageName),
-          tag: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__devModeImageTag),
-        },
+        devModeImageUrl: getOrDefault(this.vars.KN_PLUGIN_WORKFLOW__devModeImageUrl),
       },
     };
   },

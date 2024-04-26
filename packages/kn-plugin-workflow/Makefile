@@ -28,7 +28,7 @@ MAIN_PATH        := cmd/main.go
 METADATA_PATH                 := github.com/apache/incubator-kie-tools/packages/kn-plugin-workflow/pkg/metadata
 SET_QUARKUS_PLATFORM_GROUP_ID := $(METADATA_PATH).QuarkusPlatformGroupId=$(QUARKUS_PLATFORM_GROUP_ID)
 SET_QUARKUS_VERSION           := $(METADATA_PATH).QuarkusVersion=$(QUARKUS_VERSION)
-SET_DEV_MODE_IMAGE            := $(METADATA_PATH).DevModeImage=$(DEV_MODE_IMAGE_REGISTRY)/$(DEV_MODE_IMAGE_ACCOUNT)/$(DEV_MODE_IMAGE_NAME):$(DEV_MODE_IMAGE_TAG)
+SET_DEV_MODE_IMAGE            := $(METADATA_PATH).DevModeImage=$(DEV_MODE_IMAGE_URL)
 SET_VERSION                   := $(METADATA_PATH).PluginVersion=$(PLUGIN_VERSION)
 SET_KOGITO_VERSION            := $(METADATA_PATH).KogitoVersion=$(KOGITO_VERSION)
 LDFLAGS                       := "-X $(SET_QUARKUS_PLATFORM_GROUP_ID) -X $(SET_QUARKUS_VERSION) -X $(SET_VERSION) -X $(SET_DEV_MODE_IMAGE) -X $(SET_KOGITO_VERSION)"

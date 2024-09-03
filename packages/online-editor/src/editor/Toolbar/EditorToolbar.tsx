@@ -269,8 +269,8 @@ export function EditorToolbarWithWorkspace(
 
   return (
     <>
-      <PageSection type={"nav"} variant={"light"} padding={{ default: "noPadding" }}>
-        {canSeeWorkspaceToolbar && (
+      {canSeeWorkspaceToolbar && (
+        <PageSection type={"nav"} variant={"light"} padding={{ default: "noPadding" }}>
           <Flex
             justifyContent={{ default: "justifyContentSpaceBetween" }}
             flexWrap={{ default: "nowrap" }}
@@ -286,8 +286,8 @@ export function EditorToolbarWithWorkspace(
             </FlexItem>
             <VsCodeDropdownMenu workspace={props.workspace} />
           </Flex>
-        )}
-      </PageSection>
+        </PageSection>
+      )}
       <PageSection type={"nav"} variant={"light"} style={{ paddingTop: 0, paddingBottom: 0 }}>
         <Flex
           justifyContent={{ default: "justifyContentSpaceBetween" }}

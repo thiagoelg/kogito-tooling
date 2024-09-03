@@ -36,11 +36,11 @@ module.exports = composeEnv([rootEnv], {
       description: "The image used in the FROM import.",
     },
     DEV_DEPLOYMENT_KOGITO_QUARKUS_BLANK_APP_IMAGE__registry: {
-      default: "quay.io",
+      default: "docker.io",
       description: "E.g., `docker.io` or `quay.io`.",
     },
     DEV_DEPLOYMENT_KOGITO_QUARKUS_BLANK_APP_IMAGE__account: {
-      default: "thiagoelg",
+      default: "apache",
       description: "E.g,. `apache` or `kie-tools-bot`",
     },
     DEV_DEPLOYMENT_KOGITO_QUARKUS_BLANK_APP_IMAGE__name: {

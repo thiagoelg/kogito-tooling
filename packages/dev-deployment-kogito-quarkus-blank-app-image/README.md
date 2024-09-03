@@ -29,7 +29,8 @@ These files can decisions or processes, all of them will be used as resources fo
 
 ### Pre defined (have a default value)
 
-- `ROOT_PATH`: The root path for the Quarkus app and it's sub-applications (e.g. Swagger UI). Defaults to `""`, meaning the app will run at the root path.
+- `ROOT_PATH`: The root path for the Quarkus app. Defaults to `"/"`, meaning the app will run at the root path.
+- `NON_APPLICATION_ROOT_PATH`: The root path for the Quarkus app addons (e.g. Swagger UI). Defaults to `"/q"`.
 - `DEV_DEPLOYMENT__UPLOAD_SERVICE_EXTRACT_TO_DIR`: The directory to extract the files uploaded via the Upload Service. Defaults to `/app/src/main/resources` inside the container.
 - `DEV_DEPLOYMENT__UPLOAD_SERVICE_PORT`: The port where the Upload Service will listen on. Defaults to `8080`.
 

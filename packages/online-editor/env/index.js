@@ -95,11 +95,11 @@ module.exports = composeEnv([rootEnv, extendedServicesEnv, corsProxyEnv], {
       description: "Image tag to be used by Dev Deployments when deploying models.",
     },
     ONLINE_EDITOR__devDeploymentKogitoQuarkusBlankAppImageRegistry: {
-      default: "docker.io",
+      default: "quay.io",
       description: "Image registry to be used by Dev Deployments when deploying models.",
     },
     ONLINE_EDITOR__devDeploymentKogitoQuarkusBlankAppImageAccount: {
-      default: "apache",
+      default: "thiagoelg",
       description: "Image account to be used by Dev Deployments when deploying models.",
     },
     ONLINE_EDITOR__devDeploymentKogitoQuarkusBlankAppImageName: {
@@ -107,7 +107,7 @@ module.exports = composeEnv([rootEnv, extendedServicesEnv, corsProxyEnv], {
       description: "Image name to be used by Dev Deployments when deploying models.",
     },
     ONLINE_EDITOR__devDeploymentKogitoQuarkusBlankAppImageTag: {
-      default: rootEnv.env.root.streamName,
+      default: "devui",
       description: "Image tag to be used by Dev Deployments when deploying models.",
     },
     ONLINE_EDITOR__devDeploymentDmnFormWebappImageRegistry: {
@@ -127,7 +127,7 @@ module.exports = composeEnv([rootEnv, extendedServicesEnv, corsProxyEnv], {
       description: "Image tag to be used by Dev Deployments to display a form for deployed DMN models.",
     },
     ONLINE_EDITOR__devDeploymentImagePullPolicy: {
-      default: "IfNotPresent",
+      default: "Always",
       description: "The image pull policy. Can be 'Always', 'IfNotPresent', or 'Never'.",
     },
     ONLINE_EDITOR_DEV__port: {

@@ -72,6 +72,11 @@ export function KubernetesDeploymentOptions(args: DeploymentOptionArgs): Array<D
           {
             op: "add",
             path: "/spec/template/spec/containers/0/env/-",
+            value: { name: "NON_APPLICATION_ROOT_PATH", value: "/${{ devDeployment.uniqueName }}/q" },
+          },
+          {
+            op: "add",
+            path: "/spec/template/spec/containers/0/env/-",
             value: { name: "DEV_DEPLOYMENT__UPLOAD_SERVICE_ROOT_PATH", value: "${{ devDeployment.uniqueName }}" },
           },
         ],
@@ -116,6 +121,11 @@ export function KubernetesDeploymentOptions(args: DeploymentOptionArgs): Array<D
             op: "add",
             path: "/spec/template/spec/containers/0/env/-",
             value: { name: "ROOT_PATH", value: "/${{ devDeployment.uniqueName }}" },
+          },
+          {
+            op: "add",
+            path: "/spec/template/spec/containers/0/env/-",
+            value: { name: "NON_APPLICATION_ROOT_PATH", value: "/${{ devDeployment.uniqueName }}/q" },
           },
           {
             op: "add",

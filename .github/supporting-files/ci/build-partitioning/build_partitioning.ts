@@ -161,7 +161,10 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       `bash -c "git diff --name-only ${__ARG_baseSha} ${__ARG_headSha} -- ${nonSourceFilesPatternsForGitDiff}"`
     ).toString()
   );
-  const changedPackagesFromTurboFilter: Array<string> = JSON.parse(
+  const changedPackagesDirsFromTurboFilter: Array<string> = JSON.parse(
+    execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
+  ).packages.items.map((item: { path: string }) => item.path);
+  const changedPackagesNamesFromTurboFilter: Array<string> = JSON.parse(
     execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
   ).packages.items.map((item: { name: string }) => item.name);
 
@@ -171,18 +174,23 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   console.log("[TEST] changedSourcePaths: ");
   console.log(changedSourcePaths);
 
-  console.log("[TEST] changedPackagesFromTurboFilter: ");
-  console.log(changedPackagesFromTurboFilter);
+  console.log("[TEST] changedPackagesDirsFromTurboFilter: ");
+  console.log(changedPackagesDirsFromTurboFilter);
 
   const changedSourcePathsInRoot = changedSourcePaths.filter((path) =>
     __PACKAGES_ROOT_PATHS.every((rootPath) => !path.startsWith(rootPath))
   );
 
-  const affectedPackageDirsInAllPartitions = stdoutArray(
-    await execSync(`pnpm -F ...[${__ARG_baseSha}] exec bash -c pwd`).toString()
+  const affectedPackageDirsInAllPartitions = await JSON.parse(
+    execSync(
+      `turbo ls ${changedPackagesNamesFromTurboFilter.map((packageName) => `--filter='...${packageName}'`).join(" ")} --output json`
+    ).toString()
   )
+    .packages.items.map((item: { path: string }) => item.path)
     .map((pkgDir) => path.relative(cwd, pkgDir))
     .map((pkgDir) => pkgDir.split(path.sep).join(path.posix.sep));
+
+  console.log({ affectedPackageDirsInAllPartitions });
 
   return await Promise.all(
     partitionDefinitions.map(async (partition) => {
@@ -203,7 +211,11 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}/`))
       );
 
-      if (changedPackagesFromTurboFilter.length === 0) {
+      const changedSourcePathsInPartitionWithTurbo = changedPackagesDirsFromTurboFilter.filter((path) =>
+        [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}/`))
+      );
+
+      if (changedSourcePathsInPartitionWithTurbo.length === 0) {
         console.log(`[build-partitioning] 'None' build of '${partition.name}'.`);
         console.log(`[build-partitioning] Building 0/${partition.dirs.size}/${allPackageDirs.size} packages.`);
         console.log(``);

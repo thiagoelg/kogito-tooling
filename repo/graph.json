@@ -163,6 +163,7 @@
       { "id": "@kie-tools/python-venv" },
       { "id": "@kie/kogito-jit-runner-image" },
       { "id": "@kie/kogito-jobs-service-allinone-image" },
+      { "id": "@kie-tools/new-package" },
       { "id": "@kie-tools/unitables" },
       { "id": "pmml-vscode-extension" },
       { "id": "@kie-tools/runtime-tools-components" },
@@ -2001,6 +2002,11 @@
         "weight": 1
       },
       {
+        "source": "@kie-tools/new-package",
+        "target": "@kie-tools/root-env",
+        "weight": 1
+      },
+      {
         "source": "@kie-tools/unitables",
         "target": "@kie-tools/boxed-expression-component",
         "weight": 1
@@ -2669,6 +2675,7 @@
     ["@kie-tools/maven-config-setup-helper", "packages/maven-config-setup-helper"],
     ["@kie-tools/maven-m2-repo-via-http-image", "packages/maven-m2-repo-via-http-image"],
     ["@kie-tools-core/monaco-editor", "packages/monaco-editor"],
+    ["@kie-tools/new-package", "packages/new-package"],
     ["@kie-tools-core/notifications", "packages/notifications"],
     ["@kie-tools/online-editor", "packages/online-editor"],
     ["@kie-tools-core/operating-system", "packages/operating-system"],

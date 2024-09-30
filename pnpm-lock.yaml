@@ -6454,6 +6454,12 @@ importers:
         specifier: ^5.9.0
         version: 5.9.0
 
+  packages/new-package:
+    devDependencies:
+      '@kie-tools/root-env':
+        specifier: workspace:*
+        version: link:../root-env
+
   packages/notifications:
     dependencies:
       '@kie-tools-core/i18n':

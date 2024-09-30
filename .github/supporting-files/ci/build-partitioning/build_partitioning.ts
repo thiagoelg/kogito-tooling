@@ -20,7 +20,7 @@
  */
 
 import { Partial, None, Full, PartitionDefinition } from "./types";
-import { __ROOT_PKG_NAME, __NON_SOURCE_FILES_PATTERNS, __PACKAGES_ROOT_DIRS, stdoutArray } from "./globals";
+import { __ROOT_PKG_NAME, __NON_SOURCE_FILES_PATTERNS, __PACKAGES_ROOT_PATHS, stdoutArray } from "./globals";
 import {
   assertLeafPackagesInPartitionDefinitionsDontOverlap,
   assertLeafPackagesInPartitionsExist,
@@ -180,7 +180,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   console.log(changedPackagesFromTurboAffected);
 
   const changedSourcePathsInRoot = changedSourcePaths.filter((path) =>
-    __PACKAGES_ROOT_DIRS.every((pkgDir) => !path.startsWith(`${pkgDir}/`))
+    __PACKAGES_ROOT_PATHS.every((pkgDir) => !path.startsWith(`${pkgDir}/`))
   );
 
   const affectedPackageDirsInAllPartitions = stdoutArray(
@@ -191,7 +191,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 
   return await Promise.all(
     partitionDefinitions.map(async (partition) => {
-      if (__ARG_forceFull /* || changedSourcePathsInRoot.length > 0 */) {
+      if (__ARG_forceFull || changedSourcePathsInRoot.length > 0) {
         console.log(`[build-partitioning] 'Full' build of '${partition.name}'.`);
         console.log(
           `[build-partitioning] Building ${partition.dirs.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
@@ -255,19 +255,23 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         [...relevantPackageNamesInPartition].filter((pkgName) => !affectedPackageNamesInPartition.has(pkgName))
       );
 
+      const upstreamPackageNamesInPartitionWithTubro = new Set(
+        [...relevantPackageNamesInPartitionWithTurbo].filter((pkgName) => !affectedPackageNamesInPartition.has(pkgName))
+      );
+
       await assertOptimalPartialBuild({
         partition,
-        relevantPackageNamesInPartition,
-        upstreamPackageNamesInPartition,
-        affectedPackageNamesInPartition,
+        relevantPackageNamesInPartition: relevantPackageNamesInPartitionWithTurbo,
+        upstreamPackageNamesInPartition: upstreamPackageNamesInPartitionWithTubro,
+        affectedPackageNamesInPartition: affectedPackageNamesInPartitionWithTurbo,
       });
 
       return {
         mode: "partial",
         name: partition.name,
-        bootstrapPnpmFilterString: [...relevantPackageNamesInPartition].map((p) => `-F '${p}'`).join(" "),
-        upstreamPnpmFilterString: [...upstreamPackageNamesInPartition].map((p) => `-F '${p}'`).join(" "),
-        affectedPnpmFilterString: [...affectedPackageNamesInPartition].map((p) => `-F '${p}'`).join(" "),
+        bootstrapPnpmFilterString: [...relevantPackageNamesInPartitionWithTurbo].map((p) => `-F '${p}'`).join(" "),
+        upstreamPnpmFilterString: [...upstreamPackageNamesInPartitionWithTubro].map((p) => `-F '${p}'`).join(" "),
+        affectedPnpmFilterString: [...affectedPackageNamesInPartitionWithTurbo].map((p) => `-F '${p}'`).join(" "),
       };
     })
   );

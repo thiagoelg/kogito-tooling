@@ -172,7 +172,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 
   const affectedPackageDirsInAllPartitions: Array<string> = await JSON.parse(
     execSync(
-      `turbo ls ${changedPackagesNames.map((packageName) => `--filter='...${packageName}'`).join(" ")} --output json`
+      `bash -c "turbo ls ${changedPackagesNames.map((packageName) => `--filter='...${packageName}'`).join(" ")} --output json"`
     ).toString()
   )
     .packages.items.map((item: { path: string }) => item.path)

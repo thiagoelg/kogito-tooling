@@ -80,6 +80,8 @@ jobs:
 
           echo '{}' > turbo.json
 
+          turbo telemetry disable
+
           bun ./.github/supporting-files/ci/build-partitioning/build_partitioning.ts \
             --outputPath='/tmp/partitions.json' \
             --forceFull='${{ !github.event.pull_request }}' \

@@ -156,10 +156,10 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
     ).toString()
   );
   const changedPackagesFromTurboFilter = stdoutArray(
-    execSync(`bash -c "turbo --filter='[${__ARG_baseSha}...${__ARG_headSha}]'"`).toString()
+    execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]'"`).toString()
   );
   const changedPackagesFromTurboAffected = stdoutArray(
-    execSync(`bash -c "TURBO_SCM_BASE=${__ARG_baseSha} TURBO_SCM_HEAD=${__ARG_headSha} turbo --affected`).toString()
+    execSync(`bash -c "TURBO_SCM_BASE=${__ARG_baseSha} TURBO_SCM_HEAD=${__ARG_headSha} turbo ls --affected"`).toString()
   );
   console.log("[build-partitioning] Changed source paths:");
   console.log(new Set(changedSourcePaths));

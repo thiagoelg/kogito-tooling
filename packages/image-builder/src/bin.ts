@@ -477,7 +477,7 @@ Also useful to aid on developing images and pushing them to Kubernetes/OpenShift
               }
             });
           } catch (e) {
-            throw new Error("-> Failed to create required resources. Are you logged in the 'oc' CLI?");
+            throw new Error("-> Failed to create required resources. Are you logged in the 'oc' CLI? test");
           }
         }
       )

@@ -234,7 +234,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       );
 
       const affectedPackageNamesInPartitionWithTurbo = new Set(
-        changedPackagesDirsFromTurboFilter
+        affectedPackageDirsInAllPartitions
           .filter((pkgDir) => partition.dirs.has(pkgDir))
           .map((packageDir) => packageNamesByDir.get(packageDir)!)
       );

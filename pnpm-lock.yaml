@@ -13340,6 +13340,9 @@ importers:
       '@kie-tools/maven-config-setup-helper':
         specifier: workspace:*
         version: link:../maven-config-setup-helper
+      '@kie-tools/new-package':
+        specifier: workspace:*
+        version: link:../new-package
       '@kie-tools/root-env':
         specifier: workspace:*
         version: link:../root-env

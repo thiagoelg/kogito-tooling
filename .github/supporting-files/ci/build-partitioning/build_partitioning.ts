@@ -163,7 +163,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   );
   const changedPackagesFromTurboFilter = JSON.parse(
     execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
-  ).packages.items.map((item) => item.path);
+  ).packages.items.map((item: { name: string }) => item.name);
 
   const changedPackagesFromTurboAffected: Array<string> = JSON.parse(
     execSync(
@@ -171,7 +171,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
     ).toString()
   ).packages.items.map((item: { name: string }) => item.name);
 
-  const affectedPackageNames = changedPackagesFromTurboAffected;
+  const affectedPackageNames = changedPackagesFromTurboFilter;
 
   console.log("[build-partitioning] Changed source paths:");
   console.log(new Set(changedSourcePaths));
@@ -214,7 +214,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}/`))
       );
 
-      if (changedSourcePathsInPartition.length === 0) {
+      if (changedPackagesFromTurboAffected.length === 0) {
         console.log(`[build-partitioning] 'None' build of '${partition.name}'.`);
         console.log(`[build-partitioning] Building 0/${partition.dirs.size}/${allPackageDirs.size} packages.`);
         console.log(``);

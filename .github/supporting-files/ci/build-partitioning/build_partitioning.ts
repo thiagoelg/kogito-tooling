@@ -191,7 +191,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 
   return await Promise.all(
     partitionDefinitions.map(async (partition) => {
-      if (__ARG_forceFull || changedSourcePathsInRoot.length > 0) {
+      if (__ARG_forceFull /* || changedSourcePathsInRoot.length > 0 */) {
         console.log(`[build-partitioning] 'Full' build of '${partition.name}'.`);
         console.log(
           `[build-partitioning] Building ${partition.dirs.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`

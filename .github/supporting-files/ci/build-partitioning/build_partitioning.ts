@@ -155,8 +155,17 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       `bash -c "git diff --name-only ${__ARG_baseSha} ${__ARG_headSha} -- ${nonSourceFilesPatternsForGitDiff}"`
     ).toString()
   );
+  const changedPackagesFromTurboFilter = stdoutArray(
+    execSync(`bash -c "turbo --filter='[${__ARG_baseSha}...${__ARG_headSha}]`).toString()
+  );
   console.log("[build-partitioning] Changed source paths:");
   console.log(new Set(changedSourcePaths));
+
+  console.log("[TEST] changedSourcePaths: ");
+  console.log(changedSourcePaths);
+
+  console.log("[TEST] changedPackagesFromTurboFilter: ");
+  console.log(changedPackagesFromTurboFilter);
 
   const changedSourcePathsInRoot = changedSourcePaths.filter((path) =>
     __PACKAGES_ROOT_DIRS.every((pkgDir) => !path.startsWith(`${pkgDir}/`))

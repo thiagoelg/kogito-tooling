@@ -155,12 +155,18 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       `bash -c "git diff --name-only ${__ARG_baseSha} ${__ARG_headSha} -- ${nonSourceFilesPatternsForGitDiff}"`
     ).toString()
   );
-  const changedPackagesFromTurboFilter = stdoutArray(
-    execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]'"`).toString()
-  );
-  const changedPackagesFromTurboAffected = stdoutArray(
-    execSync(`bash -c "TURBO_SCM_BASE=${__ARG_baseSha} TURBO_SCM_HEAD=${__ARG_headSha} turbo ls --affected"`).toString()
-  );
+  const changedPackagesFromTurboFilter = JSON.parse(
+    execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
+  ).packages.items.map((item) => item.path);
+
+  const changedPackagesFromTurboAffected: Array<string> = JSON.parse(
+    execSync(
+      `bash -c "TURBO_SCM_BASE=${__ARG_baseSha} TURBO_SCM_HEAD=${__ARG_headSha} turbo ls --affected --output json"`
+    ).toString()
+  ).packages.items.map((item: { name: string }) => item.name);
+
+  const affectedPackageNames = changedPackagesFromTurboAffected;
+
   console.log("[build-partitioning] Changed source paths:");
   console.log(new Set(changedSourcePaths));
 
@@ -218,8 +224,18 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
           .map((packageDir) => packageNamesByDir.get(packageDir)!)
       );
 
+      const affectedPackageNamesInPartitionWithTurbo = new Set(
+        affectedPackageNames.filter((pkgName) => partition.leafPackageNames.has(pkgName))
+      );
+
       const relevantPackageNamesInPartition = new Set(
-        [...(await getDirsOfDependencies(affectedPackageNamesInPartition, partition.name))].map(
+        [...(await getDirsOfDependencies(affectedPackageNamesInPartition))].map(
+          (pkgDir) => packageNamesByDir.get(pkgDir)!
+        )
+      );
+
+      const relevantPackageNamesInPartitionWithTurbo = new Set(
+        [...(await getDirsOfDependencies(affectedPackageNamesInPartitionWithTurbo))].map(
           (pkgDir) => packageNamesByDir.get(pkgDir)!
         )
       );
@@ -229,6 +245,11 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         `[build-partitioning] Building ${relevantPackageNamesInPartition.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
       );
       console.log(relevantPackageNamesInPartition);
+
+      console.log(
+        `[build-partitioning] TURBO: Building ${relevantPackageNamesInPartitionWithTurbo.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
+      );
+      console.log(relevantPackageNamesInPartitionWithTurbo);
 
       const upstreamPackageNamesInPartition = new Set(
         [...relevantPackageNamesInPartition].filter((pkgName) => !affectedPackageNamesInPartition.has(pkgName))

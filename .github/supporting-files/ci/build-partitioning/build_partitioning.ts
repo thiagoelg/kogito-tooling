@@ -211,8 +211,10 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}/`))
       );
 
+      console.log("!!!!!!!!!!!");
+      console.log({ dirs: partition.dirs, changedPackagesDirsFromTurboFilter });
       const changedSourcePathsInPartitionWithTurbo = changedPackagesDirsFromTurboFilter.filter((path) =>
-        [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}/`))
+        [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}`))
       );
 
       if (changedSourcePathsInPartitionWithTurbo.length === 0) {

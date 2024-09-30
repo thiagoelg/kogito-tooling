@@ -161,17 +161,9 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       `bash -c "git diff --name-only ${__ARG_baseSha} ${__ARG_headSha} -- ${nonSourceFilesPatternsForGitDiff}"`
     ).toString()
   );
-  const changedPackagesFromTurboFilter = JSON.parse(
+  const changedPackagesFromTurboFilter: Array<string> = JSON.parse(
     execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
   ).packages.items.map((item: { name: string }) => item.name);
-
-  const changedPackagesFromTurboAffected: Array<string> = JSON.parse(
-    execSync(
-      `bash -c "TURBO_SCM_BASE=${__ARG_baseSha} TURBO_SCM_HEAD=${__ARG_headSha} turbo ls --affected --output json"`
-    ).toString()
-  ).packages.items.map((item: { name: string }) => item.name);
-
-  const affectedPackageNames = changedPackagesFromTurboFilter;
 
   console.log("[build-partitioning] Changed source paths:");
   console.log(new Set(changedSourcePaths));
@@ -181,9 +173,6 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 
   console.log("[TEST] changedPackagesFromTurboFilter: ");
   console.log(changedPackagesFromTurboFilter);
-
-  console.log("[TEST] changedPackagesFromTurboAffected: ");
-  console.log(changedPackagesFromTurboAffected);
 
   const changedSourcePathsInRoot = changedSourcePaths.filter((path) =>
     __PACKAGES_ROOT_PATHS.every((rootPath) => !path.startsWith(rootPath))
@@ -214,7 +203,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}/`))
       );
 
-      if (changedPackagesFromTurboAffected.length === 0) {
+      if (changedPackagesFromTurboFilter.length === 0) {
         console.log(`[build-partitioning] 'None' build of '${partition.name}'.`);
         console.log(`[build-partitioning] Building 0/${partition.dirs.size}/${allPackageDirs.size} packages.`);
         console.log(``);
@@ -231,7 +220,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       );
 
       const affectedPackageNamesInPartitionWithTurbo = new Set(
-        affectedPackageNames.filter((pkgName) => partition.leafPackageNames.has(pkgName))
+        changedPackagesFromTurboFilter.filter((pkgName) => partition.leafPackageNames.has(pkgName))
       );
 
       const relevantPackageNamesInPartition = new Set(
@@ -261,14 +250,14 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         [...relevantPackageNamesInPartition].filter((pkgName) => !affectedPackageNamesInPartition.has(pkgName))
       );
 
-      const upstreamPackageNamesInPartitionWithTubro = new Set(
+      const upstreamPackageNamesInPartitionWithTurbo = new Set(
         [...relevantPackageNamesInPartitionWithTurbo].filter((pkgName) => !affectedPackageNamesInPartition.has(pkgName))
       );
 
       await assertOptimalPartialBuild({
         partition,
         relevantPackageNamesInPartition: relevantPackageNamesInPartitionWithTurbo,
-        upstreamPackageNamesInPartition: upstreamPackageNamesInPartitionWithTubro,
+        upstreamPackageNamesInPartition: upstreamPackageNamesInPartitionWithTurbo,
         affectedPackageNamesInPartition: affectedPackageNamesInPartitionWithTurbo,
       });
 
@@ -276,7 +265,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         mode: "partial",
         name: partition.name,
         bootstrapPnpmFilterString: [...relevantPackageNamesInPartitionWithTurbo].map((p) => `-F '${p}'`).join(" "),
-        upstreamPnpmFilterString: [...upstreamPackageNamesInPartitionWithTubro].map((p) => `-F '${p}'`).join(" "),
+        upstreamPnpmFilterString: [...upstreamPackageNamesInPartitionWithTurbo].map((p) => `-F '${p}'`).join(" "),
         affectedPnpmFilterString: [...affectedPackageNamesInPartitionWithTurbo].map((p) => `-F '${p}'`).join(" "),
       };
     })

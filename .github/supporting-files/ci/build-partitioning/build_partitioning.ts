@@ -20,7 +20,13 @@
  */
 
 import { Partial, None, Full, PartitionDefinition } from "./types";
-import { __ROOT_PKG_NAME, __NON_SOURCE_FILES_PATTERNS, __PACKAGES_ROOT_PATHS, stdoutArray } from "./globals";
+import {
+  __ROOT_PKG_NAME,
+  __NON_SOURCE_FILES_PATTERNS,
+  __PACKAGES_ROOT_PATHS,
+  stdoutArray,
+  __ROOT_LOCKFILE,
+} from "./globals";
 import {
   assertLeafPackagesInPartitionDefinitionsDontOverlap,
   assertLeafPackagesInPartitionsExist,
@@ -180,7 +186,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   console.log(changedPackagesFromTurboAffected);
 
   const changedSourcePathsInRoot = changedSourcePaths.filter((path) =>
-    __PACKAGES_ROOT_PATHS.every((pkgDir) => !path.startsWith(`${pkgDir}/`))
+    __PACKAGES_ROOT_PATHS.every((rootPath) => !path.startsWith(rootPath))
   );
 
   const affectedPackageDirsInAllPartitions = stdoutArray(

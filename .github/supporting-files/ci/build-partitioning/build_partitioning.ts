@@ -156,7 +156,10 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
     ).toString()
   );
   const changedPackagesFromTurboFilter = stdoutArray(
-    execSync(`bash -c "turbo --filter='[${__ARG_baseSha}...${__ARG_headSha}]`).toString()
+    execSync(`bash -c "turbo --filter='[${__ARG_baseSha}...${__ARG_headSha}]'`).toString()
+  );
+  const changedPackagesFromTurboAffected = stdoutArray(
+    execSync(`bash -c "TURBO_SCM_BASE=${__ARG_baseSha} TURBO_SCM_HEAD=${__ARG_headSha} turbo --affected`).toString()
   );
   console.log("[build-partitioning] Changed source paths:");
   console.log(new Set(changedSourcePaths));
@@ -166,6 +169,9 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 
   console.log("[TEST] changedPackagesFromTurboFilter: ");
   console.log(changedPackagesFromTurboFilter);
+
+  console.log("[TEST] changedPackagesFromTurboAffected: ");
+  console.log(changedPackagesFromTurboAffected);
 
   const changedSourcePathsInRoot = changedSourcePaths.filter((path) =>
     __PACKAGES_ROOT_DIRS.every((pkgDir) => !path.startsWith(`${pkgDir}/`))

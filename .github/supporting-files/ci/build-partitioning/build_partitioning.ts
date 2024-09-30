@@ -181,7 +181,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
     __PACKAGES_ROOT_PATHS.every((rootPath) => !path.startsWith(rootPath))
   );
 
-  const affectedPackageDirsInAllPartitions = await JSON.parse(
+  const affectedPackageDirsInAllPartitions: Array<string> = await JSON.parse(
     execSync(
       `turbo ls ${changedPackagesNamesFromTurboFilter.map((packageName) => `--filter='...${packageName}'`).join(" ")} --output json`
     ).toString()
@@ -234,7 +234,9 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       );
 
       const affectedPackageNamesInPartitionWithTurbo = new Set(
-        changedPackagesFromTurboFilter.filter((pkgName) => partition.leafPackageNames.has(pkgName))
+        changedPackagesDirsFromTurboFilter
+          .filter((pkgDir) => partition.dirs.has(pkgDir))
+          .map((packageDir) => packageNamesByDir.get(packageDir)!)
       );
 
       const relevantPackageNamesInPartition = new Set(

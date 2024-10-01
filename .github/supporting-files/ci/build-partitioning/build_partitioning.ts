@@ -142,9 +142,9 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   });
 
   const allPackageDirs = new Set(
-    stdoutArray(await execSync(`bash -c "pnpm -F !${__ROOT_PKG_NAME}... exec bash -c pwd"`).toString())
-      .map((pkgDir) => path.relative(cwd, pkgDir))
-      .map((pkgDir) => pkgDir.split(path.sep).join(path.posix.sep))
+    stdoutArray(await execSync(`bash -c "pnpm -F !${__ROOT_PKG_NAME}... exec bash -c pwd"`).toString()).map((pkgDir) =>
+      convertToPosixStylePath(pkgDir)
+    )
   );
 
   await assertCompleteness({ packageDirsByName, partitions: partitionDefinitions, allPackageDirs });
@@ -157,7 +157,10 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   );
   const changedPackages: Array<{ path: string; name: string }> = JSON.parse(
     execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
-  ).packages.items.map((item: { path: string; name: string }) => ({ path: item.path, name: item.name }));
+  ).packages.items.map((item: { path: string; name: string }) => ({
+    path: convertToPosixStylePath(item.path),
+    name: item.name,
+  }));
 
   const changedPackagesDirs = changedPackages.map((item) => item.path);
 
@@ -176,8 +179,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
     ).toString()
   )
     .packages.items.map((item: { path: string }) => item.path)
-    .map((pkgDir) => path.relative(cwd, pkgDir))
-    .map((pkgDir) => pkgDir.split(path.sep).join(path.posix.sep));
+    .map((pkgDir) => convertToPosixStylePath(pkgDir));
 
   return await Promise.all(
     partitionDefinitions.map(async (partition) => {
@@ -194,9 +196,15 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
         };
       }
 
+      console.log("[build-partitioning] Changed package dirs in Partition:");
+      console.log(new Set(changedPackagesDirs));
+
       const changedSourcePathsInPartition = changedPackagesDirs.filter((path) =>
         [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}`))
       );
+
+      console.log("[build-partitioning] Changed source paths in Partition:");
+      console.log(new Set(changedSourcePathsInPartition));
 
       if (changedSourcePathsInPartition.length === 0) {
         console.log(`[build-partitioning] 'None' build of '${partition.name}'.`);
@@ -221,7 +229,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       );
 
       console.log(
-        `[build-partitioning] TURBO: Building ${relevantPackageNamesInPartition.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
+        `[build-partitioning]: Building ${relevantPackageNamesInPartition.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
       );
       console.log(relevantPackageNamesInPartition);
 
@@ -250,8 +258,12 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 async function getDirsOfDependencies(leafPackageNames: Set<string>) {
   const packagesFilter = [...leafPackageNames].map((pkgName) => `-F ${pkgName}...`).join(" ");
   return new Set(
-    stdoutArray(execSync(`pnpm ${packagesFilter} exec bash -c pwd`).toString()) //
-      .map((pkgDir) => path.relative(cwd, pkgDir))
-      .map((pkgDir) => pkgDir.split(path.sep).join(path.posix.sep))
+    stdoutArray(execSync(`bash -c "pnpm ${packagesFilter} exec bash -c pwd"`).toString()) //
+      .map((pkgDir) => convertToPosixStylePath(pkgDir))
   );
+}
+
+function convertToPosixStylePath(pathString: string) {
+  const alreadyRelativePath = !pathString.startsWith(path.sep) && !pathString.startsWith(path.posix.sep);
+  return `${alreadyRelativePath ? pathString : path.relative(cwd, pathString)}`.split(path.sep).join(path.posix.sep);
 }

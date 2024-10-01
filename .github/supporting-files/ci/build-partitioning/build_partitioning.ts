@@ -226,7 +226,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
       );
 
       console.log(
-        `[build-partitioning]: Building ${relevantPackageNamesInPartition.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
+        `[build-partitioning] Building ${relevantPackageNamesInPartition.size}/${partition.dirs.size}/${allPackageDirs.size} packages.`
       );
       console.log(relevantPackageNamesInPartition);
 

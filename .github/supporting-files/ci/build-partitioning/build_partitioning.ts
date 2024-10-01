@@ -56,7 +56,7 @@ const {
   allowPositionals: true,
 });
 
-const cwd = execSync("bash -c pwd").toString().trim();
+const absolutePosixWorkspaceRootPath = execSync("bash -c pwd").toString().trim();
 
 const __ARG_forceFull = forceFull === "true";
 
@@ -143,7 +143,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
 
   const allPackageDirs = new Set(
     stdoutArray(await execSync(`bash -c "pnpm -F !${__ROOT_PKG_NAME}... exec bash -c pwd"`).toString()).map((pkgDir) =>
-      convertToPosixStylePath(pkgDir)
+      convertToPosixPathRelativeToWorkspaceRoot(pkgDir)
     )
   );
 
@@ -158,7 +158,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
   const changedPackages: Array<{ path: string; name: string }> = JSON.parse(
     execSync(`bash -c "turbo ls --filter='[${__ARG_baseSha}...${__ARG_headSha}]' --output json"`).toString()
   ).packages.items.map((item: { path: string; name: string }) => ({
-    path: convertToPosixStylePath(item.path),
+    path: convertToPosixPathRelativeToWorkspaceRoot(item.path),
     name: item.name,
   }));
 
@@ -179,7 +179,7 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
     ).toString()
   )
     .packages.items.map((item: { path: string }) => item.path)
-    .map((pkgDir) => convertToPosixStylePath(pkgDir));
+    .map((pkgDir) => convertToPosixPathRelativeToWorkspaceRoot(pkgDir));
 
   return await Promise.all(
     partitionDefinitions.map(async (partition) => {
@@ -195,9 +195,6 @@ async function getPartitions(): Promise<Array<None | Full | Partial>> {
           fullBuildPnpmFilterString: [...partition.leafPackageNames].map((l) => `-F '${l}...'`).join(" "),
         };
       }
-
-      console.log("[build-partitioning] Changed package dirs in Partition:");
-      console.log(new Set(changedPackagesDirs));
 
       const changedSourcePathsInPartition = changedPackagesDirs.filter((path) =>
         [...partition.dirs].some((partitionDir) => path.startsWith(`${partitionDir}`))
@@ -259,11 +256,17 @@ async function getDirsOfDependencies(leafPackageNames: Set<string>) {
   const packagesFilter = [...leafPackageNames].map((pkgName) => `-F ${pkgName}...`).join(" ");
   return new Set(
     stdoutArray(execSync(`bash -c "pnpm ${packagesFilter} exec bash -c pwd"`).toString()) //
-      .map((pkgDir) => convertToPosixStylePath(pkgDir))
+      .map((pkgDir) => convertToPosixPathRelativeToWorkspaceRoot(pkgDir))
   );
 }
 
-function convertToPosixStylePath(pathString: string) {
-  const alreadyRelativePath = !pathString.startsWith(path.sep) && !pathString.startsWith(path.posix.sep);
-  return `${alreadyRelativePath ? pathString : path.relative(cwd, pathString)}`.split(path.sep).join(path.posix.sep);
+function convertToPosixPathRelativeToWorkspaceRoot(targetPath: string) {
+  // If it's not an absolute path we can assume it's relative to the workspace root (the current directory).
+  const isTargetPathRelativeToWorkspaceRoot =
+    !targetPath.startsWith(path.sep) && !targetPath.startsWith(path.posix.sep) && !path.isAbsolute(targetPath);
+
+  // Replace separators to make sure they are posix style.
+  return `${isTargetPathRelativeToWorkspaceRoot ? targetPath : path.relative(absolutePosixWorkspaceRootPath, targetPath)}`
+    .split(path.sep)
+    .join(path.posix.sep);
 }

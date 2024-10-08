@@ -55,7 +55,6 @@ import {
   ProcessInstanceFilter,
   ProcessInstanceState,
 } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 import {
   BulkListType,
   IOperationResults,
@@ -95,7 +94,7 @@ interface ProcessListToolbarProps {
   pluralProcessLabel: string;
 }
 
-const ProcessListToolbar: React.FC<ProcessListToolbarProps & OUIAProps> = ({
+const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
   filters,
   setFilters,
   applyFilter,
@@ -112,8 +111,6 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps & OUIAProps> = ({
   defaultStatusFilter,
   singularProcessLabel,
   pluralProcessLabel,
-  ouiaId,
-  ouiaSafe,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [businessKeyInput, setBusinessKeyInput] = useState<string>("");
@@ -654,7 +651,6 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps & OUIAProps> = ({
         collapseListedFiltersBreakpoint="xl"
         clearAllFilters={resetAllFilters}
         clearFiltersButtonText="Reset to default"
-        {...componentOuiaProps(ouiaId, "process-list-toolbar", ouiaSafe)}
       >
         <ToolbarContent>{toolbarItems}</ToolbarContent>
       </Toolbar>

@@ -20,7 +20,6 @@ import React, { useMemo, useState } from "react";
 import { Dropdown, DropdownItem, KebabToggle } from "@patternfly/react-core/dist/js/components/Dropdown";
 import { checkProcessInstanceState } from "./ProcessListUtils";
 import { ProcessInstance, ProcessInstanceState } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 
 interface ProcessListActionsKebabProps {
   processInstance: ProcessInstance;
@@ -30,14 +29,12 @@ interface ProcessListActionsKebabProps {
   onOpenTriggerCloudEvent?: (processInstance: ProcessInstance) => void;
 }
 
-const ProcessListActionsKebab: React.FC<ProcessListActionsKebabProps & OUIAProps> = ({
+const ProcessListActionsKebab: React.FC<ProcessListActionsKebabProps> = ({
   processInstance,
   onSkipClick,
   onRetryClick,
   onAbortClick,
   onOpenTriggerCloudEvent,
-  ouiaId,
-  ouiaSafe,
 }) => {
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
 
@@ -98,7 +95,6 @@ const ProcessListActionsKebab: React.FC<ProcessListActionsKebabProps & OUIAProps
       aria-label="process instance actions dropdown"
       aria-labelledby="process instance actions dropdown"
       dropdownItems={dropDownList}
-      {...componentOuiaProps(ouiaId, "process-list-actions-kebab", ouiaSafe)}
     />
   );
 };

@@ -28,7 +28,6 @@ import DisablePopup from "./DisablePopup";
 import ErrorPopover from "./ErrorPopover";
 import "../styles.css";
 import { ProcessInstance, ProcessInstanceState } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 import { ItemDescriptor } from "@kie-tools/runtime-tools-components/dist/components/ItemDescriptor";
 import { EndpointLink } from "@kie-tools/runtime-tools-components/dist/components/EndpointLink";
 import { KogitoSpinner } from "@kie-tools/runtime-tools-components/dist/components/KogitoSpinner";
@@ -53,7 +52,7 @@ export interface ProcessListChildTableProps {
   singularProcessLabel: string;
   pluralProcessLabel: string;
 }
-const ProcessListChildTable: React.FC<ProcessListChildTableProps & OUIAProps> = ({
+const ProcessListChildTable: React.FC<ProcessListChildTableProps> = ({
   parentProcessId,
   selectedInstances,
   setSelectedInstances,
@@ -66,8 +65,6 @@ const ProcessListChildTable: React.FC<ProcessListChildTableProps & OUIAProps> = 
   setSelectableInstances,
   singularProcessLabel,
   pluralProcessLabel,
-  ouiaId,
-  ouiaSafe,
 }) => {
   const [rows, setRows] = useState<(IRow | string[])[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -141,11 +138,7 @@ const ProcessListChildTable: React.FC<ProcessListChildTableProps & OUIAProps> = 
           {
             title: (
               <>
-                <a
-                  className="process-list__link"
-                  onClick={() => handleClick(child)}
-                  {...componentOuiaProps(ouiaId, "process-description", ouiaSafe)}
-                >
+                <a className="process-list__link" onClick={() => handleClick(child)}>
                   <strong>
                     <ItemDescriptor itemDescription={getProcessInstanceDescription(child)} />
                   </strong>
@@ -188,9 +181,6 @@ const ProcessListChildTable: React.FC<ProcessListChildTableProps & OUIAProps> = 
             ),
           },
         ];
-        cells.forEach((cellInRow, index) => {
-          cellInRow.props = componentOuiaProps(columnNames[index].toLowerCase(), "process-list-cell", true);
-        });
         tempRows.push({
           // props are not passed to the actual <tr> element (to set OUIA attributes).
           // Seems that only solution is to use TableComposable instead.
@@ -263,7 +253,6 @@ const ProcessListChildTable: React.FC<ProcessListChildTableProps & OUIAProps> = 
       rows={rows}
       variant={"compact"}
       className="process-list__compact-table"
-      {...componentOuiaProps(ouiaId, "process-list-child-table", ouiaSafe ? ouiaSafe : !isLoading)}
     >
       <TableHeader />
       <TableBody />

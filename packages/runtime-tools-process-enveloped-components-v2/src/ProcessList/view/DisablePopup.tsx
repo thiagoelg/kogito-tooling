@@ -19,19 +19,13 @@
 import React, { ReactElement } from "react";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
 import { ProcessInstance } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 
 interface DisablePopupProps {
   processInstanceData: ProcessInstance;
   component: ReactElement;
 }
 
-const DisablePopup: React.FC<DisablePopupProps & OUIAProps> = ({
-  processInstanceData,
-  component,
-  ouiaId,
-  ouiaSafe,
-}) => {
+const DisablePopup: React.FC<DisablePopupProps> = ({ processInstanceData, component }) => {
   let content = "";
   if (!processInstanceData.addons?.includes("process-management") && processInstanceData.serviceUrl === null) {
     content =
@@ -42,7 +36,7 @@ const DisablePopup: React.FC<DisablePopupProps & OUIAProps> = ({
     content = "Management add-on capability not enabled. Contact your administrator to set up";
   }
   return (
-    <Tooltip content={content} id="disable-popup-tooltip" {...componentOuiaProps(ouiaId, "disable-popup", ouiaSafe)}>
+    <Tooltip content={content} id="disable-popup-tooltip">
       {component}
     </Tooltip>
   );

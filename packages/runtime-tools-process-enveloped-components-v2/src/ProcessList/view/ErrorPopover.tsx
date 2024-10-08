@@ -21,20 +21,13 @@ import { Popover } from "@patternfly/react-core/dist/js/components/Popover";
 import { Button } from "@patternfly/react-core/dist/js/components/Button";
 import { ProcessInstanceIconCreator } from "./ProcessListUtils";
 import { ProcessInstance } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 
 interface ErrorPopoverProps {
   processInstanceData: ProcessInstance;
   onSkipClick: (processInstance: ProcessInstance) => Promise<void>;
   onRetryClick: (processInstance: ProcessInstance) => Promise<void>;
 }
-const ErrorPopover: React.FC<ErrorPopoverProps & OUIAProps> = ({
-  processInstanceData,
-  onSkipClick,
-  onRetryClick,
-  ouiaId,
-  ouiaSafe,
-}) => {
+const ErrorPopover: React.FC<ErrorPopoverProps> = ({ processInstanceData, onSkipClick, onRetryClick }) => {
   return (
     <Popover
       zIndex={300}
@@ -69,7 +62,6 @@ const ErrorPopover: React.FC<ErrorPopoverProps & OUIAProps> = ({
         ]
       }
       position="auto"
-      {...componentOuiaProps(ouiaId, "error-popover", ouiaSafe)}
     >
       <Button variant="link" isInline data-testid="error-state">
         {ProcessInstanceIconCreator(processInstanceData.state)}

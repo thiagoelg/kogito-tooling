@@ -31,7 +31,6 @@ import DisablePopup from "./DisablePopup";
 import "../styles.css";
 import ErrorPopover from "./ErrorPopover";
 import { ProcessInstance, ProcessInstanceState } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 import { ProcessInfoModal } from "@kie-tools/runtime-tools-components/dist/components/ProcessInfoModal";
 import { setTitle } from "@kie-tools/runtime-tools-components/dist/utils/Utils";
 import { KogitoSpinner } from "@kie-tools/runtime-tools-components/dist/components/KogitoSpinner";
@@ -68,7 +67,7 @@ export interface ProcessListTableProps {
   isTriggerCloudEventEnabled?: boolean;
 }
 
-const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
+const ProcessListTable: React.FC<ProcessListTableProps> = ({
   isLoading,
   expanded,
   setExpanded,
@@ -85,8 +84,6 @@ const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
   pluralProcessLabel,
   isTriggerCloudEventEnabled,
   driver,
-  ouiaId,
-  ouiaSafe,
 }) => {
   const [rowPairs, setRowPairs] = useState<any>([]);
   const columns: string[] = ["__Toggle", "__Select", "Id", "Status", "Created", "Last update", "__Actions"];
@@ -218,11 +215,7 @@ const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
               )}
             </>,
             <>
-              <a
-                className="process-list__link"
-                onClick={() => handleClick(processInstance)}
-                {...componentOuiaProps(ouiaId, "process-description", ouiaSafe)}
-              >
+              <a className="process-list__link" onClick={() => handleClick(processInstance)}>
                 <strong>
                   <ItemDescriptor itemDescription={getProcessInstanceDescription(processInstance)} />
                 </strong>
@@ -282,7 +275,6 @@ const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
           onSkipClick={onSkipClick}
           onRetryClick={onRetryClick}
           onAbortClick={onAbortClick}
-          ouiaId={parentId}
         />
       );
     }
@@ -358,11 +350,7 @@ const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
         processName={selectedProcessInstance && selectedProcessInstance.processName}
         ouiaId={selectedProcessInstance && "process-" + selectedProcessInstance.id}
       />
-      <TableComposable
-        data-testid="process-list-table"
-        aria-label="Process List Table"
-        {...componentOuiaProps(ouiaId, "process-list-table", ouiaSafe ? ouiaSafe : !isLoading)}
-      >
+      <TableComposable data-testid="process-list-table" aria-label="Process List Table">
         <Thead>
           <Tr ouiaId="process-list-table-header">
             {columns.map((column, columnIndex) => {
@@ -402,7 +390,7 @@ const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
         {!isLoading && !_.isEmpty(rowPairs) ? (
           rowPairs.map((pair, pairIndex) => {
             const parentRow = (
-              <Tr key={`${pair.id}-parent`} {...componentOuiaProps(pair.id, "process-list-row", true)}>
+              <Tr key={`${pair.id}-parent`}>
                 <Td
                   key={`${pair.id}-parent-0`}
                   expand={{
@@ -410,25 +398,16 @@ const ProcessListTable: React.FC<ProcessListTableProps & OUIAProps> = ({
                     isExpanded: expanded[pairIndex],
                     onToggle: () => onToggle(pairIndex, pair),
                   }}
-                  {...componentOuiaProps(columns[0].toLowerCase(), "process-list-cell", true)}
                 />
                 {pair.parent.map((cell, cellIndex) => (
-                  <Td
-                    key={`${pair.id}-parent-${columns[cellIndex + 1]}`}
-                    dataLabel={columns[cellIndex + 1]}
-                    {...componentOuiaProps(columns[cellIndex + 1].toLowerCase(), "process-list-cell", true)}
-                  >
+                  <Td key={`${pair.id}-parent-${columns[cellIndex + 1]}`} dataLabel={columns[cellIndex + 1]}>
                     {cell}
                   </Td>
                 ))}
               </Tr>
             );
             const childRow = (
-              <Tr
-                key={`${pair.id}-child`}
-                isExpanded={expanded[pairIndex] === true}
-                {...componentOuiaProps(pair.id, "process-list-row-expanded", true)}
-              >
+              <Tr key={`${pair.id}-child`} isExpanded={expanded[pairIndex] === true}>
                 <Td key={`${pair.id}-child-0`} />
                 {rowPairs[pairIndex].child.map((cell, cellIndex) => (
                   <Td

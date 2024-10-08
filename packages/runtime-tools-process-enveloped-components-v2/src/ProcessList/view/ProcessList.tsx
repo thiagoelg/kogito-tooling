@@ -32,7 +32,6 @@ import {
   ProcessListSortBy,
   ProcessListState,
 } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
-import { OUIAProps, componentOuiaProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 import { ServerErrors } from "@kie-tools/runtime-tools-components/dist/components/ServerErrors";
 import { LoadMore } from "@kie-tools/runtime-tools-components/dist/components/LoadMore";
 import {
@@ -48,14 +47,12 @@ interface ProcessListProps {
   singularProcessLabel: string;
   pluralProcessLabel: string;
 }
-const ProcessList: React.FC<ProcessListProps & OUIAProps> = ({
+const ProcessList: React.FC<ProcessListProps> = ({
   driver,
   isEnvelopeConnectedToChannel,
   initialState,
   singularProcessLabel,
   pluralProcessLabel,
-  ouiaId,
-  ouiaSafe,
 }) => {
   const defaultStatusFilter = processListDefaultStatusFilter;
 
@@ -206,7 +203,7 @@ const ProcessList: React.FC<ProcessListProps & OUIAProps> = ({
   }
 
   return (
-    <div {...componentOuiaProps(ouiaId, "process-list", ouiaSafe ? ouiaSafe : !isLoading)}>
+    <div>
       <ProcessListToolbar
         applyFilter={applyFilter}
         refresh={doRefresh}

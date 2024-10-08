@@ -164,6 +164,7 @@ digraph G {
   "@kie-tools/runtime-tools-process-enveloped-components" [ color = "blue", fontcolor = "blue", style = "rounded" ];
   "@kie-tools/runtime-tools-process-gateway-api" [ color = "blue", fontcolor = "blue", style = "rounded" ];
   "@kie-tools/runtime-tools-shared-enveloped-components" [ color = "blue", fontcolor = "blue", style = "rounded" ];
+  "@kie-tools/runtime-tools-process-enveloped-components-v2" [ color = "blue", fontcolor = "blue", style = "rounded" ];
   "@kie-tools/runtime-tools-swf-enveloped-components" [ color = "blue", fontcolor = "blue", style = "rounded" ];
   "@kie-tools/runtime-tools-swf-gateway-api" [ color = "blue", fontcolor = "blue", style = "rounded" ];
   "@kie-tools/runtime-tools-swf-webapp-components" [ color = "blue", fontcolor = "blue", style = "rounded" ];
@@ -509,6 +510,8 @@ digraph G {
   "@kie-tools/runtime-tools-process-dev-ui-webapp" -> "@kie-tools/runtime-tools-shared-webapp-components" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-enveloped-components" -> "@kie-tools/runtime-tools-process-gateway-api" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-enveloped-components" -> "@kie-tools/runtime-tools-shared-enveloped-components" [ style = "solid", color = "blue" ];
+  "@kie-tools/runtime-tools-process-enveloped-components-v2" -> "@kie-tools/runtime-tools-process-gateway-api" [ style = "solid", color = "blue" ];
+  "@kie-tools/runtime-tools-process-enveloped-components-v2" -> "@kie-tools/runtime-tools-shared-enveloped-components" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-gateway-api" -> "@kie-tools/runtime-tools-shared-gateway-api" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-webapp-components" -> "@kie-tools/runtime-tools-process-enveloped-components" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-shared-enveloped-components" -> "@kie-tools-core/monaco-editor" [ style = "solid", color = "blue" ];

@@ -53,4 +53,5 @@ export interface ProcessListChannelApi {
     processInstances: ProcessInstance[],
     operationType: OperationType
   ): Promise<BulkProcessInstanceActionResponse>;
+  processList__processSelected(processInstance: ProcessInstance): Promise<void>;
 }

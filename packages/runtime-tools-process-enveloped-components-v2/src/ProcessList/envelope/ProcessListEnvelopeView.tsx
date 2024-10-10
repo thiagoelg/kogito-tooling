@@ -22,12 +22,14 @@ import * as React from "react";
 import { useCallback, useImperativeHandle, useState } from "react";
 import {
   ProcessInstanceFilter,
+  ProcessInstanceState,
   ProcessListChannelApi,
   ProcessListInitArgs,
   ProcessListSortBy,
   ProcessListState,
 } from "../api";
 import "./styles.scss";
+import { OrderBy } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ProcessListEnvelopeViewApi {
@@ -45,8 +47,13 @@ interface Props {
  * Provides an imperative handle to give control of this component to its containing components.
  */
 export const ProcessListEnvelopeView = React.forwardRef<ProcessListEnvelopeViewApi, Props>((props, forwardedRef) => {
-  const [filters, setFilters] = useState<ProcessInstanceFilter>();
-  const [sortBy, setSortBy] = useState<ProcessListSortBy>();
+  const [filters, setFilters] = useState<ProcessInstanceFilter>({
+    status: [ProcessInstanceState.Active],
+    businessKey: [],
+  });
+  const [sortBy, setSortBy] = useState<ProcessListSortBy>({
+    lastUpdate: OrderBy.DESC,
+  });
 
   const setInitialState = useCallback((initArgs: ProcessListInitArgs) => {
     setFilters(initArgs.filters);

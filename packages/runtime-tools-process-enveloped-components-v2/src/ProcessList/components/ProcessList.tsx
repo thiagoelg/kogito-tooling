@@ -22,7 +22,7 @@ import ProcessListTable from "./ProcessListTable";
 import ProcessListToolbar from "./ProcessListToolbar";
 import { ISortBy } from "@patternfly/react-table/dist/js/components/Table";
 import _ from "lodash";
-import { alterOrderByObj, processListDefaultStatusFilter } from "./ProcessListUtils";
+import { alterOrderByObj } from "./ProcessListUtils";
 
 import "../styles.css";
 import {
@@ -38,29 +38,16 @@ import {
   KogitoEmptyState,
   KogitoEmptyStateType,
 } from "@kie-tools/runtime-tools-components/dist/components/KogitoEmptyState";
-import { OrderBy } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
 
 interface ProcessListProps {
   isEnvelopeConnectedToChannel: boolean;
   driver: ProcessListDriver;
-  initialState: ProcessListState;
+  filters: ProcessInstanceFilter;
+  updateFilters: React.SetStateAction<ProcessInstanceFilter>;
+  sortBy: ProcessListSortBy;
+  updateSortBy: React.SetStateAction<ProcessListSortBy>;
 }
-const ProcessList: React.FC<ProcessListProps> = ({ driver, isEnvelopeConnectedToChannel, initialState }) => {
-  const defaultStatusFilter = processListDefaultStatusFilter;
-
-  const defaultFilters: ProcessInstanceFilter =
-    initialState && initialState.filters
-      ? { ...initialState.filters }
-      : {
-          status: defaultStatusFilter,
-          businessKey: [],
-        };
-  const defaultOrderBy: any =
-    initialState && initialState.sortBy
-      ? initialState.sortBy
-      : {
-          lastUpdate: OrderBy.DESC,
-        };
+const ProcessList: React.FC<ProcessListProps> = ({ driver, isEnvelopeConnectedToChannel, filters, sortBy }) => {
   const [defaultPageSize] = useState<number>(10);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isLoadingMore, setIsLoadingMore] = useState<boolean>(false);
@@ -69,35 +56,20 @@ const ProcessList: React.FC<ProcessListProps> = ({ driver, isEnvelopeConnectedTo
   const [pageSize, setPageSize] = useState<number>(defaultPageSize);
   const [processInstances, setProcessInstances] = useState<ProcessInstance[]>([]);
   const [error, setError] = useState<string>();
-  const [filters, setFilters] = useState<ProcessInstanceFilter>(defaultFilters);
-  const [processStates, setProcessStates] = useState<ProcessInstanceState[]>(defaultStatusFilter);
+  const [processStates, setProcessStates] = useState<ProcessInstanceState[]>();
   const [expanded, setExpanded] = React.useState<{ [key: number]: boolean }>({});
-  const [sortBy, setSortBy] = useState<ProcessListSortBy | ISortBy>(defaultOrderBy);
   const [selectedInstances, setSelectedInstances] = useState<ProcessInstance[]>([]);
   const [selectableInstances, setSelectableInstances] = useState<number>(0);
   const [isAllChecked, setIsAllChecked] = useState<boolean>(false);
 
   useEffect(() => {
     if (isEnvelopeConnectedToChannel) {
-      initLoad();
+      setIsLoading(true);
+      driver.initialLoad(filters, sortBy).then(() => {
+        doQuery(0, 10, true);
+      });
     }
   }, [isEnvelopeConnectedToChannel]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    if (initialState && initialState.filters) {
-      setFilters(initialState.filters);
-      setProcessStates(initialState.filters.status);
-      setSortBy(initialState.sortBy);
-    }
-  }, [initialState]);
-
-  const initLoad = async () => {
-    setIsLoading(true);
-    setFilters(defaultFilters);
-    await driver.initialLoad(defaultFilters, defaultOrderBy);
-    doQuery(0, 10, true);
-  };
 
   const countExpandableRows = (instances: ProcessInstance[]): void => {
     instances.forEach((processInstance, index) => {

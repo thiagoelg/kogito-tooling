@@ -90,8 +90,6 @@ interface ProcessListToolbarProps {
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
   driver: ProcessListDriver;
   defaultStatusFilter: ProcessInstanceState[];
-  singularProcessLabel: string;
-  pluralProcessLabel: string;
 }
 
 const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({

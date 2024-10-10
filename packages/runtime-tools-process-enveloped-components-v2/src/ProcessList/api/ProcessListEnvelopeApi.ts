@@ -17,6 +17,7 @@
  * under the License.
  */
 
+import { ProcessDefinition } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
 import { ProcessInstanceFilter, ProcessListSortBy } from "./types";
 
 export interface Association {

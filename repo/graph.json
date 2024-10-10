@@ -170,9 +170,10 @@
       { "id": "@kie-tools/runtime-tools-shared-gateway-api" },
       { "id": "@kie-tools/runtime-tools-consoles-helm-chart" },
       { "id": "@kie-tools/runtime-tools-process-enveloped-components" },
+      { "id": "@kie-tools/runtime-tools-management-console-webapp-v2" },
+      { "id": "@kie-tools/runtime-tools-process-enveloped-components-v2" },
       { "id": "@kie-tools/runtime-tools-process-gateway-api" },
       { "id": "@kie-tools/runtime-tools-shared-enveloped-components" },
-      { "id": "@kie-tools/runtime-tools-process-enveloped-components-v2" },
       { "id": "@kie-tools/runtime-tools-swf-enveloped-components" },
       { "id": "@kie-tools/runtime-tools-swf-gateway-api" },
       { "id": "@kie-tools/runtime-tools-swf-webapp-components" },
@@ -2083,6 +2084,31 @@
         "weight": 1
       },
       {
+        "source": "@kie-tools/runtime-tools-management-console-webapp-v2",
+        "target": "@kie-tools/runtime-tools-process-enveloped-components-v2",
+        "weight": 1
+      },
+      {
+        "source": "@kie-tools/runtime-tools-management-console-webapp-v2",
+        "target": "@kie-tools/runtime-tools-process-webapp-components",
+        "weight": 1
+      },
+      {
+        "source": "@kie-tools/runtime-tools-management-console-webapp-v2",
+        "target": "@kie-tools/runtime-tools-shared-webapp-components",
+        "weight": 1
+      },
+      {
+        "source": "@kie-tools/runtime-tools-process-enveloped-components-v2",
+        "target": "@kie-tools/runtime-tools-process-gateway-api",
+        "weight": 1
+      },
+      {
+        "source": "@kie-tools/runtime-tools-process-enveloped-components-v2",
+        "target": "@kie-tools/runtime-tools-shared-enveloped-components",
+        "weight": 1
+      },
+      {
         "source": "@kie-tools/runtime-tools-process-gateway-api",
         "target": "@kie-tools/runtime-tools-shared-gateway-api",
         "weight": 1
@@ -2105,16 +2131,6 @@
       {
         "source": "@kie-tools/runtime-tools-shared-enveloped-components",
         "target": "@kie-tools-core/webpack-base",
-        "weight": 1
-      },
-      {
-        "source": "@kie-tools/runtime-tools-process-enveloped-components-v2",
-        "target": "@kie-tools/runtime-tools-process-gateway-api",
-        "weight": 1
-      },
-      {
-        "source": "@kie-tools/runtime-tools-process-enveloped-components-v2",
-        "target": "@kie-tools/runtime-tools-shared-enveloped-components",
         "weight": 1
       },
       {
@@ -2703,6 +2719,7 @@
     ["@kie-tools/runtime-tools-components", "packages/runtime-tools-components"],
     ["@kie-tools/runtime-tools-consoles-helm-chart", "packages/runtime-tools-consoles-helm-chart"],
     ["@kie-tools/runtime-tools-management-console-webapp", "packages/runtime-tools-management-console-webapp"],
+    ["@kie-tools/runtime-tools-management-console-webapp-v2", "packages/runtime-tools-management-console-webapp-v2"],
     ["@kie-tools/runtime-tools-process-dev-ui-webapp", "packages/runtime-tools-process-dev-ui-webapp"],
     ["@kie-tools/runtime-tools-process-enveloped-components", "packages/runtime-tools-process-enveloped-components"],
     [

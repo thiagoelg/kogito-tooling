@@ -44,16 +44,8 @@ interface ProcessListProps {
   isEnvelopeConnectedToChannel: boolean;
   driver: ProcessListDriver;
   initialState: ProcessListState;
-  singularProcessLabel: string;
-  pluralProcessLabel: string;
 }
-const ProcessList: React.FC<ProcessListProps> = ({
-  driver,
-  isEnvelopeConnectedToChannel,
-  initialState,
-  singularProcessLabel,
-  pluralProcessLabel,
-}) => {
+const ProcessList: React.FC<ProcessListProps> = ({ driver, isEnvelopeConnectedToChannel, initialState }) => {
   const defaultStatusFilter = processListDefaultStatusFilter;
 
   const defaultFilters: ProcessInstanceFilter =
@@ -219,8 +211,6 @@ const ProcessList: React.FC<ProcessListProps> = ({
         setIsAllChecked={setIsAllChecked}
         driver={driver}
         defaultStatusFilter={defaultStatusFilter}
-        singularProcessLabel={singularProcessLabel}
-        pluralProcessLabel={pluralProcessLabel}
       />
       {filters.status.length > 0 ? (
         <>
@@ -238,8 +228,6 @@ const ProcessList: React.FC<ProcessListProps> = ({
             selectableInstances={selectableInstances}
             setSelectableInstances={setSelectableInstances}
             setIsAllChecked={setIsAllChecked}
-            singularProcessLabel={singularProcessLabel}
-            pluralProcessLabel={pluralProcessLabel}
           />
           {mustShowLoadMore && (
             <LoadMore

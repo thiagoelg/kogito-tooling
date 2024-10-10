@@ -109,8 +109,6 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
   setIsAllChecked,
   driver,
   defaultStatusFilter,
-  singularProcessLabel,
-  pluralProcessLabel,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [businessKeyInput, setBusinessKeyInput] = useState<string>("");
@@ -147,12 +145,12 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
       type: BulkListType.PROCESS_INSTANCE,
       results: operationResults[OperationType.ABORT],
       messages: {
-        successMessage: `Aborted ${pluralProcessLabel?.toLowerCase()}: `,
-        noItemsMessage: `No ${pluralProcessLabel?.toLowerCase()} were aborted`,
+        successMessage: `Aborted processes: `,
+        noItemsMessage: `No processes were aborted`,
         warningMessage: !processStates.includes(ProcessInstanceState.Aborted)
-          ? `Note: The ${singularProcessLabel?.toLowerCase()} status has been updated. The list may appear inconsistent until you refresh any applied filters.`
+          ? `Note: The process status has been updated. The list may appear inconsistent until you refresh any applied filters.`
           : "",
-        ignoredMessage: `These ${pluralProcessLabel?.toLowerCase()} were ignored because they were already completed or aborted.`,
+        ignoredMessage: `These processes were ignored because they were already completed or aborted.`,
       },
       functions: {
         perform: async () => {
@@ -188,9 +186,9 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
       type: BulkListType.PROCESS_INSTANCE,
       results: operationResults[OperationType.SKIP],
       messages: {
-        successMessage: `Skipped ${pluralProcessLabel?.toLowerCase()}: `,
-        noItemsMessage: `No ${pluralProcessLabel?.toLowerCase()} were skipped`,
-        ignoredMessage: `These ${pluralProcessLabel?.toLowerCase()} were ignored because they were not in error state.`,
+        successMessage: `Skipped processes: `,
+        noItemsMessage: `No processes were skipped`,
+        ignoredMessage: `These processes were ignored because they were not in error state.`,
       },
       functions: {
         perform: async () => {
@@ -218,9 +216,9 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
       type: BulkListType.PROCESS_INSTANCE,
       results: operationResults[OperationType.RETRY],
       messages: {
-        successMessage: `Retriggered ${pluralProcessLabel?.toLowerCase()}: `,
-        noItemsMessage: `No ${pluralProcessLabel?.toLowerCase()} were retriggered`,
-        ignoredMessage: `These ${pluralProcessLabel?.toLowerCase()} were ignored because they were not in error state.`,
+        successMessage: `Retriggered processes: `,
+        noItemsMessage: `No processes were retriggered`,
+        ignoredMessage: `These processes were ignored because they were not in error state.`,
       },
       functions: {
         perform: async () => {

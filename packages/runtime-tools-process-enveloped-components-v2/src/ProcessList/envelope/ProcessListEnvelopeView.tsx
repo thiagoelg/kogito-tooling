@@ -20,7 +20,13 @@
 import { MessageBusClientApi } from "@kie-tools-core/envelope-bus/dist/api";
 import * as React from "react";
 import { useCallback, useImperativeHandle, useState } from "react";
-import { ProcessInstanceFilter, ProcessListChannelApi, ProcessListSortBy, ProcessListState } from "../api";
+import {
+  ProcessInstanceFilter,
+  ProcessListChannelApi,
+  ProcessListInitArgs,
+  ProcessListSortBy,
+  ProcessListState,
+} from "../api";
 import "./styles.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -42,9 +48,9 @@ export const ProcessListEnvelopeView = React.forwardRef<ProcessListEnvelopeViewA
   const [filters, setFilters] = useState<ProcessInstanceFilter>();
   const [sortBy, setSortBy] = useState<ProcessListSortBy>();
 
-  const setInitialState = useCallback((state: ProcessListState) => {
-    setFilters(state.filters);
-    setSortBy(state.sortBy);
+  const setInitialState = useCallback((initArgs: ProcessListInitArgs) => {
+    setFilters(initArgs.filters);
+    setSortBy(initArgs.sortBy);
   }, []);
 
   useImperativeHandle(
@@ -55,5 +61,5 @@ export const ProcessListEnvelopeView = React.forwardRef<ProcessListEnvelopeViewA
     [setInitialState]
   );
 
-  props.channelApi.requests.return(<></>);
+  return <></>;
 });

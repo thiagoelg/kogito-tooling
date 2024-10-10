@@ -50,6 +50,6 @@ export class ProcessListEnvelopeApiImpl implements ProcessListEnvelopeApi {
   public async processList__init(association: Association, initArgs: ProcessListInitArgs) {
     this.args.envelopeClient.associate(association.origin, association.envelopeServerId);
     this.view = await this.args.viewDelegate();
-    this.view().setInitialState(initArgs.initialState);
+    this.view().setInitialState(initArgs);
   }
 }

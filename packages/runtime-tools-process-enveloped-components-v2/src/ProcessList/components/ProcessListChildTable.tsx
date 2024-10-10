@@ -49,8 +49,6 @@ export interface ProcessListChildTableProps {
   onRetryClick: (processInstance: ProcessInstance) => Promise<void>;
   onAbortClick: (processInstance: ProcessInstance) => Promise<void>;
   setSelectableInstances: React.Dispatch<React.SetStateAction<number>>;
-  singularProcessLabel: string;
-  pluralProcessLabel: string;
 }
 const ProcessListChildTable: React.FC<ProcessListChildTableProps> = ({
   parentProcessId,
@@ -63,8 +61,6 @@ const ProcessListChildTable: React.FC<ProcessListChildTableProps> = ({
   onRetryClick,
   onAbortClick,
   setSelectableInstances,
-  singularProcessLabel,
-  pluralProcessLabel,
 }) => {
   const [rows, setRows] = useState<(IRow | string[])[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -240,8 +236,8 @@ const ProcessListChildTable: React.FC<ProcessListChildTableProps> = ({
     return (
       <KogitoEmptyState
         type={KogitoEmptyStateType.Info}
-        title={`No child ${singularProcessLabel.toLowerCase()} instances`}
-        body={`This ${singularProcessLabel.toLowerCase()} has no related sub ${pluralProcessLabel.toLowerCase()}`}
+        title={`No child process instances`}
+        body={`This process has no related sub processes`}
       />
     );
   }

@@ -62,8 +62,6 @@ export interface ProcessListTableProps {
   selectableInstances: number;
   setSelectableInstances: React.Dispatch<React.SetStateAction<number>>;
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  singularProcessLabel: string;
-  pluralProcessLabel: string;
   isTriggerCloudEventEnabled?: boolean;
 }
 
@@ -80,8 +78,6 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
   selectableInstances,
   setSelectableInstances,
   setIsAllChecked,
-  singularProcessLabel,
-  pluralProcessLabel,
   isTriggerCloudEventEnabled,
   driver,
 }) => {
@@ -109,16 +105,14 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
       await driver.handleProcessSkip(processInstance);
       onShowMessage(
         "Skip operation",
-        `The ${singularProcessLabel?.toLowerCase()} ${processInstance.processName} was successfully skipped.`,
+        `The process ${processInstance.processName} was successfully skipped.`,
         TitleType.SUCCESS,
         processInstance
       );
     } catch (error) {
       onShowMessage(
         "Skip operation",
-        `The ${singularProcessLabel?.toLowerCase()} ${processInstance.processName} failed to skip. Message: ${
-          error.message
-        }`,
+        `The process ${processInstance.processName} failed to skip. Message: ${error.message}`,
         TitleType.FAILURE,
         processInstance
       );
@@ -132,16 +126,14 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
       await driver.handleProcessRetry(processInstance);
       onShowMessage(
         "Retry operation",
-        `The ${singularProcessLabel?.toLowerCase()} ${processInstance.processName} was successfully re-executed.`,
+        `The process ${processInstance.processName} was successfully re-executed.`,
         TitleType.SUCCESS,
         processInstance
       );
     } catch (error) {
       onShowMessage(
         "Retry operation",
-        `The ${singularProcessLabel?.toLowerCase()} ${processInstance.processName} failed to re-execute. Message: ${
-          error.message
-        }`,
+        `The process ${processInstance.processName} failed to re-execute. Message: ${error.message}`,
         TitleType.FAILURE,
         processInstance
       );
@@ -155,7 +147,7 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
       await driver.handleProcessAbort(processInstance);
       onShowMessage(
         "Abort operation",
-        `The ${singularProcessLabel?.toLowerCase()} ${processInstance.processName} was successfully aborted.`,
+        `The process ${processInstance.processName} was successfully aborted.`,
         TitleType.SUCCESS,
         processInstance
       );
@@ -168,9 +160,7 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
     } catch (error) {
       onShowMessage(
         "Abort operation",
-        `Failed to abort ${singularProcessLabel?.toLowerCase()} ${processInstance.processName}. Message: ${
-          error.message
-        }`,
+        `Failed to abort process ${processInstance.processName}. Message: ${error.message}`,
         TitleType.FAILURE,
         processInstance
       );
@@ -269,8 +259,6 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
           selectedInstances={selectedInstances}
           setSelectedInstances={setSelectedInstances}
           setSelectableInstances={setSelectableInstances}
-          singularProcessLabel={singularProcessLabel}
-          pluralProcessLabel={pluralProcessLabel}
           driver={driver}
           onSkipClick={onSkipClick}
           onRetryClick={onRetryClick}

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import { ProcessListState } from "./types";
+import { ProcessInstanceFilter, ProcessListSortBy } from "./types";
 
 export interface Association {
   origin: string;
@@ -25,9 +25,8 @@ export interface Association {
 }
 
 export interface ProcessListInitArgs {
-  initialState: ProcessListState;
-  singularProcessLabel: string;
-  pluralProcessLabel: string;
+  filters: ProcessInstanceFilter;
+  sortBy: ProcessListSortBy;
 }
 
 /**

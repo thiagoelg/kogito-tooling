@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -17,22 +17,7 @@
  * under the License.
  */
 
-import { ProcessListState } from "./types";
-
-export interface Association {
-  origin: string;
-  envelopeServerId: string;
-}
-
-export interface ProcessListInitArgs {
-  initialState: ProcessListState;
-  singularProcessLabel: string;
-  pluralProcessLabel: string;
-}
-
-/**
- * Methods provided by the Envelope that can be consumed by the Channel.
- */
-export interface ProcessListEnvelopeApi {
-  processList__init(association: Association, initArgs: ProcessListInitArgs): Promise<void>;
-}
+export * from "./ProcessListEnvelope";
+export * from "./ProcessListEnvelopeApiImpl";
+export * from "./ProcessListEnvelopeContext";
+export * from "./ProcessListEnvelopeView";

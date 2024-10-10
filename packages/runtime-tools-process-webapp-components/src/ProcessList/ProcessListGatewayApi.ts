@@ -58,7 +58,7 @@ export interface UnSubscribeHandler {
 }
 export class ProcessListGatewayApiImpl implements ProcessListGatewayApi {
   private readonly listeners: OnOpenProcessListener[] = [];
-  private readonly queries: ProcessListQueries;
+  readonly queries: ProcessListQueries;
   private _ProcessListState: ProcessListState;
 
   constructor(queries: ProcessListQueries) {

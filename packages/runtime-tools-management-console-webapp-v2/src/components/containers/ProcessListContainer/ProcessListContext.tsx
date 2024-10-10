@@ -16,20 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import * as React from "react";
-import { ProcessListState } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
+import React, { useContext, createContext } from "react";
 import { ProcessListChannelApi } from "@kie-tools/runtime-tools-process-enveloped-components-v2/dist/processList/api";
-import { useProcessListChannelApiImpl } from "./ProcessListContext";
-import { EmbeddedProcessList } from "@kie-tools/runtime-tools-process-enveloped-components-v2/dist/processList/embedded";
 
-interface ProcessListContainerProps {
-  initialState: ProcessListState;
-}
+export const ProcessListContext = createContext<ProcessListChannelApi>({} as ProcessListChannelApi);
 
-const ProcessListContainer: React.FC<ProcessListContainerProps> = ({ initialState }) => {
-  const channelApi: ProcessListChannelApi = useProcessListChannelApiImpl();
-
-  return <EmbeddedProcessList targetOrigin={"*"} channelApiImpl={channelApi} />;
-};
-
-export default ProcessListContainer;
+export const useProcessListChannelApiImpl = (): ProcessListChannelApi =>
+  useContext<ProcessListChannelApi>(ProcessListContext);

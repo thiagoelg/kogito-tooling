@@ -24,16 +24,17 @@ import { ProcessListEnvelopeContext } from "./ProcessListEnvelopeContext";
 import { ProcessListEnvelopeApiImpl } from "./ProcessListEnvelopeApiImpl";
 import { ProcessListChannelApi, ProcessListEnvelopeApi } from "../api";
 import { ProcessListEnvelopeView, ProcessListEnvelopeViewApi } from "./ProcessListEnvelopeView";
-import { Envelope } from "@kie-tools-core/envelope";
+import { Envelope, EnvelopeDivConfig } from "@kie-tools-core/envelope";
 
 /**
  * Function that starts an Envelope application.
  *
- * @param args.container: The HTML element in which the Todo List View will render
+ * @param args.container: The HTML element in which the process list View will render
  * @param args.bus: The implementation of a `bus` that knows how to send messages to the Channel.
+ * @param args.config: The config which contains the container type and the envelope id.
  *
  */
-export function init(args: { container: HTMLElement; bus: EnvelopeBus }) {
+export function init(args: { config: EnvelopeDivConfig; container: HTMLDivElement; bus: EnvelopeBus }) {
   /**
    * Creates a new generic Envelope, typed with the right interfaces.
    */
@@ -42,17 +43,21 @@ export function init(args: { container: HTMLElement; bus: EnvelopeBus }) {
     ProcessListChannelApi,
     ProcessListEnvelopeViewApi,
     ProcessListEnvelopeContext
-  >(args.bus);
+  >(args.bus, args.config);
+
+  console.log({ container: args.container.toString(), envelope });
 
   /**
-   * Function that knows how to render a Todo List View.
+   * Function that knows how to render a Process List View.
    * In this case, it's a React application, but any other framework can be used.
    *
    * Returns a Promise<() => ProcessListEnvelopeViewApi> that can be used in ProcessListEnvelopeApiImpl.
    */
   const envelopeViewDelegate = async () => {
     const ref = React.createRef<ProcessListEnvelopeViewApi>();
+    console.log("envelopeViewDelegate");
     return new Promise<() => ProcessListEnvelopeViewApi>((res) => {
+      console.log("Rendering...");
       ReactDOM.render(<ProcessListEnvelopeView ref={ref} channelApi={envelope.channelApi} />, args.container, () =>
         res(() => ref.current!)
       );

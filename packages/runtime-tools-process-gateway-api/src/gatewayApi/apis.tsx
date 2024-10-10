@@ -196,7 +196,7 @@ export const handleProcessSkip = async (processInstance: ProcessInstance, client
   return new Promise<void>((resolve, reject) => {
     client
       .mutate({
-        mutation: GraphQL.AbortProcessInstanceDocument,
+        mutation: GraphQL.SkipProcessInstanceDocument,
         variables: {
           processId: processInstance.id,
         },

@@ -318,7 +318,7 @@ const resolvers = {
           _.values(args["orderBy"]).map((value) => value.toLowerCase())
         );
       }
-      await timeout(2000);
+      await timeout(500);
       if (args["pagination"]) {
         result = paginatedResult(result, args["pagination"].offset, args["pagination"].limit);
       }
@@ -336,7 +336,7 @@ const resolvers = {
           }
         });
         console.log("orderby", args["orderBy"]);
-        await timeout(2000);
+        await timeout(500);
         if (args["orderBy"] && Object.values(args["orderBy"])[0] === "ASC") {
           const orderArg = Object.keys(args["orderBy"])[0];
           result.sort((a, b) => {

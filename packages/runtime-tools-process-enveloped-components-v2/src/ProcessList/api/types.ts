@@ -22,6 +22,7 @@ import {
   Milestone,
   TriggerableNode,
   OrderBy,
+  OperationType,
 } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
 
 export enum ProcessInstanceState {
@@ -88,4 +89,22 @@ export interface ProcessListSortBy {
 export interface ProcessListState {
   filters: ProcessInstanceFilter;
   sortBy: ProcessListSortBy;
+}
+
+export interface ProcessListApiClient {
+  getProcesses(args: {
+    offset: number;
+    limit: number;
+    filter: ProcessInstanceFilter;
+    sortBy: ProcessListSortBy;
+  }): Promise<ProcessInstance[]>;
+  getChildProcesses(rootProcessInstanceId: string): Promise<ProcessInstance[]>;
+  skipProcess(processInstance: ProcessInstance): Promise<void>;
+  retryProcess(processInstance: ProcessInstance): Promise<void>;
+  abortProcess(processInstance: ProcessInstance): Promise<void>;
+  bulkProcessInstanceAction(
+    processInstances: ProcessInstance[],
+    operationType: OperationType
+  ): Promise<BulkProcessInstanceActionResponse>;
+  processInstanceSelected(processInstance: ProcessInstance): Promise<void>;
 }

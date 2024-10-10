@@ -47,8 +47,6 @@ import { InputGroup } from "@patternfly/react-core/dist/js/components/InputGroup
 import { FilterIcon } from "@patternfly/react-icons/dist/js/icons/filter-icon";
 import { SyncIcon } from "@patternfly/react-icons/dist/js/icons/sync-icon";
 import _ from "lodash";
-import { ProcessListDriver } from "../../../api";
-import "../styles.css";
 import { formatForBulkListProcessInstance } from "./ProcessListUtils";
 import {
   ProcessInstance,
@@ -63,6 +61,7 @@ import {
 import { ProcessInfoModal } from "@kie-tools/runtime-tools-components/dist/components/ProcessInfoModal";
 import { setTitle } from "@kie-tools/runtime-tools-components/dist/utils/Utils";
 import { OperationType } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
+import { ProcessListApiClient } from "../api";
 
 enum Category {
   STATUS = "Status",
@@ -88,8 +87,7 @@ interface ProcessListToolbarProps {
   setProcessInstances: React.Dispatch<React.SetStateAction<ProcessInstance[]>>;
   isAllChecked: boolean;
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  driver: ProcessListDriver;
-  defaultStatusFilter: ProcessInstanceState[];
+  apiClient: ProcessListApiClient;
 }
 
 const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
@@ -105,8 +103,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
   setProcessInstances,
   isAllChecked,
   setIsAllChecked,
-  driver,
-  defaultStatusFilter,
+  apiClient,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [businessKeyInput, setBusinessKeyInput] = useState<string>("");
@@ -160,7 +157,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
               return true;
             }
           });
-          await driver.handleProcessMultipleAction(remainingInstances, OperationType.ABORT).then((result) => {
+          await apiClient.bulkProcessInstanceAction(remainingInstances, OperationType.ABORT).then((result) => {
             onShowMessage(
               "Abort operation",
               result.successProcessInstances,
@@ -198,7 +195,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
               return true;
             }
           });
-          await driver.handleProcessMultipleAction(remainingInstances, OperationType.SKIP).then((result) => {
+          await apiClient.bulkProcessInstanceAction(remainingInstances, OperationType.SKIP).then((result) => {
             onShowMessage(
               "Skip operation",
               result.successProcessInstances,
@@ -228,7 +225,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
               return true;
             }
           });
-          await driver.handleProcessMultipleAction(remainingInstances, OperationType.RETRY).then((result) => {
+          await apiClient.bulkProcessInstanceAction(remainingInstances, OperationType.RETRY).then((result) => {
             onShowMessage(
               "Retry operation",
               result.successProcessInstances,
@@ -339,7 +336,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
 
   const resetAllFilters = (): void => {
     const defaultFilters = {
-      status: defaultStatusFilter,
+      status: [ProcessInstanceState.Active],
       businessKey: [],
     };
     setProcessStates(defaultFilters.status);

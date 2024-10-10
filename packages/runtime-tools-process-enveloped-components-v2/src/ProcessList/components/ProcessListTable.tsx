@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { ExpandableRowContent } from "@patternfly/react-table/dist/js/components/Table";
 import { TableComposable, Thead, Tbody, Tr, Th, Td } from "@patternfly/react-table/dist/js/components/TableComposable";
 import _ from "lodash";
@@ -24,11 +24,9 @@ import ProcessListChildTable from "./ProcessListChildTable";
 import { HistoryIcon } from "@patternfly/react-icons/dist/js/icons/history-icon";
 import Moment from "react-moment";
 import { getProcessInstanceDescription, ProcessInstanceIconCreator } from "./ProcessListUtils";
-import { ProcessListDriver } from "../../../api";
 import ProcessListActionsKebab from "./ProcessListActionsKebab";
 import { Checkbox } from "@patternfly/react-core/dist/js/components/Checkbox";
 import DisablePopup from "./DisablePopup";
-import "../styles.css";
 import ErrorPopover from "./ErrorPopover";
 import { ProcessInstance, ProcessInstanceState } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
 import { ProcessInfoModal } from "@kie-tools/runtime-tools-components/dist/components/ProcessInfoModal";
@@ -41,6 +39,7 @@ import {
 import { ItemDescriptor } from "@kie-tools/runtime-tools-components/dist/components/ItemDescriptor";
 import { EndpointLink } from "@kie-tools/runtime-tools-components/dist/components/EndpointLink";
 import { TitleType } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
+import { ProcessListApiClient, ProcessListSortBy } from "../api";
 
 export interface ProcessListTableProps {
   processInstances: ProcessInstance[];
@@ -53,16 +52,15 @@ export interface ProcessListTableProps {
       [key: number]: boolean;
     }>
   >;
-  driver: ProcessListDriver;
+  apiClient: ProcessListApiClient;
   onSort: (event: React.SyntheticEvent<EventTarget>, index: number, direction: "desc" | "asc") => void;
-  sortBy: any;
+  sortBy: ProcessListSortBy;
   setProcessInstances: React.Dispatch<React.SetStateAction<ProcessInstance[]>>;
   selectedInstances: ProcessInstance[];
   setSelectedInstances: React.Dispatch<React.SetStateAction<ProcessInstance[]>>;
   selectableInstances: number;
   setSelectableInstances: React.Dispatch<React.SetStateAction<number>>;
   setIsAllChecked: React.Dispatch<React.SetStateAction<boolean>>;
-  isTriggerCloudEventEnabled?: boolean;
 }
 
 const ProcessListTable: React.FC<ProcessListTableProps> = ({
@@ -78,8 +76,7 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
   selectableInstances,
   setSelectableInstances,
   setIsAllChecked,
-  isTriggerCloudEventEnabled,
-  driver,
+  apiClient,
 }) => {
   const [rowPairs, setRowPairs] = useState<any>([]);
   const columns: string[] = ["__Toggle", "__Select", "Id", "Status", "Created", "Last update", "__Actions"];
@@ -89,89 +86,140 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedProcessInstance, setSelectedProcessInstance] = useState<ProcessInstance>();
 
-  const handleModalToggle = (): void => {
-    setIsModalOpen(!isModalOpen);
-  };
-  const onShowMessage = (title: string, content: string, type: TitleType, processInstance: ProcessInstance): void => {
-    setSelectedProcessInstance(processInstance);
-    setTitleType(type);
-    setModalTitle(title);
-    setModalContent(content);
-    handleModalToggle();
-  };
+  const toggleModal = useCallback(() => {
+    setIsModalOpen((currentIsModalOpen) => !currentIsModalOpen);
+  }, []);
 
-  const onSkipClick = async (processInstance: ProcessInstance): Promise<void> => {
-    try {
-      await driver.handleProcessSkip(processInstance);
-      onShowMessage(
-        "Skip operation",
-        `The process ${processInstance.processName} was successfully skipped.`,
-        TitleType.SUCCESS,
-        processInstance
-      );
-    } catch (error) {
-      onShowMessage(
-        "Skip operation",
-        `The process ${processInstance.processName} failed to skip. Message: ${error.message}`,
-        TitleType.FAILURE,
-        processInstance
-      );
-    } finally {
-      handleModalToggle();
-    }
-  };
+  const onShowMessage = useCallback(
+    (title: string, content: string, type: TitleType, processInstance: ProcessInstance) => {
+      setSelectedProcessInstance(processInstance);
+      setTitleType(type);
+      setModalTitle(title);
+      setModalContent(content);
+      toggleModal();
+    },
+    [toggleModal]
+  );
 
-  const onRetryClick = async (processInstance: ProcessInstance): Promise<void> => {
-    try {
-      await driver.handleProcessRetry(processInstance);
-      onShowMessage(
-        "Retry operation",
-        `The process ${processInstance.processName} was successfully re-executed.`,
-        TitleType.SUCCESS,
-        processInstance
-      );
-    } catch (error) {
-      onShowMessage(
-        "Retry operation",
-        `The process ${processInstance.processName} failed to re-execute. Message: ${error.message}`,
-        TitleType.FAILURE,
-        processInstance
-      );
-    } finally {
-      handleModalToggle();
-    }
-  };
+  const onSkipClick = useCallback(
+    async (processInstance: ProcessInstance): Promise<void> => {
+      try {
+        await apiClient.skipProcess(processInstance);
+        onShowMessage(
+          "Skip operation",
+          `The process ${processInstance.processName} was successfully skipped.`,
+          TitleType.SUCCESS,
+          processInstance
+        );
+      } catch (error) {
+        onShowMessage(
+          "Skip operation",
+          `The process ${processInstance.processName} failed to skip. Message: ${error.message}`,
+          TitleType.FAILURE,
+          processInstance
+        );
+      } finally {
+        toggleModal();
+      }
+    },
+    [apiClient, onShowMessage, toggleModal]
+  );
 
-  const onAbortClick = async (processInstance: ProcessInstance): Promise<void> => {
-    try {
-      await driver.handleProcessAbort(processInstance);
-      onShowMessage(
-        "Abort operation",
-        `The process ${processInstance.processName} was successfully aborted.`,
-        TitleType.SUCCESS,
-        processInstance
-      );
-      processInstances.forEach((instance) => {
-        if (instance.id === processInstance.id) {
-          instance.state = ProcessInstanceState.Aborted;
-        }
+  const onRetryClick = useCallback(
+    async (processInstance: ProcessInstance): Promise<void> => {
+      try {
+        await apiClient.retryProcess(processInstance);
+        onShowMessage(
+          "Retry operation",
+          `The process ${processInstance.processName} was successfully re-executed.`,
+          TitleType.SUCCESS,
+          processInstance
+        );
+      } catch (error) {
+        onShowMessage(
+          "Retry operation",
+          `The process ${processInstance.processName} failed to re-execute. Message: ${error.message}`,
+          TitleType.FAILURE,
+          processInstance
+        );
+      } finally {
+        toggleModal();
+      }
+    },
+    [apiClient, onShowMessage, toggleModal]
+  );
+
+  const onAbortClick = useCallback(
+    async (processInstance: ProcessInstance): Promise<void> => {
+      try {
+        await apiClient.abortProcess(processInstance);
+        onShowMessage(
+          "Abort operation",
+          `The process ${processInstance.processName} was successfully aborted.`,
+          TitleType.SUCCESS,
+          processInstance
+        );
+        setProcessInstances((currentProcessInstances) => {
+          return currentProcessInstances.map((instance) => {
+            if (instance.id === processInstance.id) {
+              return {
+                ...instance,
+                state: ProcessInstanceState.Aborted,
+              };
+            }
+            return instance;
+          });
+        });
+      } catch (error) {
+        onShowMessage(
+          "Abort operation",
+          `Failed to abort process ${processInstance.processName}. Message: ${error.message}`,
+          TitleType.FAILURE,
+          processInstance
+        );
+      } finally {
+        toggleModal();
+      }
+    },
+    [apiClient, onShowMessage, setProcessInstances, toggleModal]
+  );
+
+  const handleClick = useCallback(
+    async (processInstance: ProcessInstance) => {
+      await apiClient.processInstanceSelected(processInstance);
+    },
+    [apiClient]
+  );
+
+  const checkBoxSelect = useCallback(
+    (processInstance: ProcessInstance): void => {
+      setProcessInstances((currentProcessInstances) => {
+        return currentProcessInstances.map((instance) => {
+          if (processInstance.id === instance.id) {
+            if (instance.isSelected) {
+              setSelectedInstances((currentSelectedInstances) => {
+                return currentSelectedInstances.filter((selectedInstance) => selectedInstance.id !== instance.id);
+              });
+              return {
+                ...instance,
+                isSelected: false,
+              };
+            } else {
+              setSelectedInstances((currentSelectedInstances) => {
+                return [...currentSelectedInstances, instance];
+              });
+              return {
+                ...instance,
+                isSelected: true,
+              };
+            }
+          }
+          return instance;
+        });
       });
-      setProcessInstances([...processInstances]);
-    } catch (error) {
-      onShowMessage(
-        "Abort operation",
-        `Failed to abort process ${processInstance.processName}. Message: ${error.message}`,
-        TitleType.FAILURE,
-        processInstance
-      );
-    } finally {
-      handleModalToggle();
-    }
-  };
-
-  const handleClick = (processInstance: ProcessInstance): void => {
-    driver.openProcess(processInstance);
-  };
+    },
+    [setProcessInstances, setSelectedInstances]
+  );
 
   useEffect(() => {
     if (!_.isEmpty(processInstances)) {
@@ -245,7 +293,7 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
     } else {
       setRowPairs([]);
     }
-  }, [processInstances]);
+  }, [checkBoxSelect, handleClick, onAbortClick, onRetryClick, onSkipClick, processInstances]);
 
   const loadChild = (parentId: string, parentIndex: number): JSX.Element | null => {
     if (!expanded[parentIndex]) {
@@ -259,29 +307,13 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
           selectedInstances={selectedInstances}
           setSelectedInstances={setSelectedInstances}
           setSelectableInstances={setSelectableInstances}
-          driver={driver}
+          apiClient={apiClient}
           onSkipClick={onSkipClick}
           onRetryClick={onRetryClick}
           onAbortClick={onAbortClick}
         />
       );
     }
-  };
-
-  const checkBoxSelect = (processInstance: ProcessInstance): void => {
-    const clonedProcessInstances = [...processInstances];
-    clonedProcessInstances.forEach((instance: ProcessInstance) => {
-      if (processInstance.id === instance.id) {
-        if (instance.isSelected) {
-          instance.isSelected = false;
-          setSelectedInstances(selectedInstances.filter((selectedInstance) => selectedInstance.id !== instance.id));
-        } else {
-          instance.isSelected = true;
-          setSelectedInstances([...selectedInstances, instance]);
-        }
-      }
-    });
-    setProcessInstances(clonedProcessInstances);
   };
 
   const onToggle = (pairIndex: number, pair: any): void => {
@@ -332,7 +364,7 @@ const ProcessListTable: React.FC<ProcessListTableProps> = ({
     <React.Fragment>
       <ProcessInfoModal
         isModalOpen={isModalOpen}
-        handleModalToggle={handleModalToggle}
+        handleModalToggle={toggleModal}
         modalTitle={setTitle(titleType, modalTitle)}
         modalContent={modalContent}
         processName={selectedProcessInstance && selectedProcessInstance.processName}

@@ -28,9 +28,10 @@ import {
   UserContext,
 } from "@kie-tools/runtime-tools-components/dist/contexts/KogitoAppContext";
 import { PageLayout } from "@kie-tools/runtime-tools-components/dist/components/PageLayout";
-import { ProcessListContextProvider } from "@kie-tools/runtime-tools-process-webapp-components/dist/ProcessList";
+// import { ProcessListContextProvider } from "@kie-tools/runtime-tools-process-webapp-components/dist/ProcessList";
 import { ProcessDetailsContextProvider } from "@kie-tools/runtime-tools-process-webapp-components/dist/ProcessDetails";
 import { JobsManagementContextProvider } from "@kie-tools/runtime-tools-process-webapp-components/dist/JobsManagement";
+import ProcessListContextProvider from "../../containers/ProcessListContainer/ProcessListContextProvider";
 
 interface IOwnProps {
   apolloClient: ApolloClient<any>;

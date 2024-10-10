@@ -19,19 +19,20 @@
 
 import { MessageBusClientApi } from "@kie-tools-core/envelope-bus/dist/api";
 import * as React from "react";
-import { useCallback, useImperativeHandle, useState } from "react";
+import { useCallback, useImperativeHandle, useState, useMemo } from "react";
 import {
   ProcessInstanceFilter,
   ProcessInstanceState,
+  ProcessListApiClient,
   ProcessListChannelApi,
   ProcessListInitArgs,
   ProcessListSortBy,
   ProcessListState,
 } from "../api";
-import "./styles.scss";
-import { OrderBy } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
+import { OperationType, OrderBy } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
+import { ProcessList } from "../components/ProcessList";
+import { ProcessInstance } from "@kie-tools/runtime-tools-process-gateway-api/dist/types";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface ProcessListEnvelopeViewApi {
   setInitialState: (state: ProcessListState) => void;
 }
@@ -47,7 +48,7 @@ interface Props {
  * Provides an imperative handle to give control of this component to its containing components.
  */
 export const ProcessListEnvelopeView = React.forwardRef<ProcessListEnvelopeViewApi, Props>((props, forwardedRef) => {
-  const [filters, setFilters] = useState<ProcessInstanceFilter>({
+  const [filter, setFilter] = useState<ProcessInstanceFilter>({
     status: [ProcessInstanceState.Active],
     businessKey: [],
   });
@@ -56,7 +57,7 @@ export const ProcessListEnvelopeView = React.forwardRef<ProcessListEnvelopeViewA
   });
 
   const setInitialState = useCallback((initArgs: ProcessListInitArgs) => {
-    setFilters(initArgs.filters);
+    setFilter(initArgs.filters);
     setSortBy(initArgs.sortBy);
   }, []);
 
@@ -68,5 +69,47 @@ export const ProcessListEnvelopeView = React.forwardRef<ProcessListEnvelopeViewA
     [setInitialState]
   );
 
-  return <></>;
+  const apiClient: ProcessListApiClient = useMemo(
+    () => ({
+      getProcesses: (args: {
+        offset: number;
+        limit: number;
+        filter: ProcessInstanceFilter;
+        sortBy: ProcessListSortBy;
+      }) => {
+        return props.channelApi.requests.processList__getProcesses(args);
+      },
+      getChildProcesses: (rootProcessInstanceId: string) => {
+        return props.channelApi.requests.processList__getChildProcesses(rootProcessInstanceId);
+      },
+      skipProcess: (processInstance: ProcessInstance) => {
+        return props.channelApi.requests.processList__skipProcess(processInstance);
+      },
+      retryProcess: (processInstance: ProcessInstance) => {
+        return props.channelApi.requests.processList__retryProcess(processInstance);
+      },
+      abortProcess: (processInstance: ProcessInstance) => {
+        return props.channelApi.requests.processList__abortProcess(processInstance);
+      },
+      bulkProcessInstanceAction: (processInstances: ProcessInstance[], operationType: OperationType) => {
+        return props.channelApi.requests.processList__bulkProcessInstanceAction(processInstances, operationType);
+      },
+      processInstanceSelected: (processInstance: ProcessInstance) => {
+        return props.channelApi.requests.processList__processInstanceSelected(processInstance);
+      },
+    }),
+    [props.channelApi.requests]
+  );
+
+  return (
+    <>
+      <ProcessList
+        filter={filter}
+        updateFilter={setFilter}
+        sortBy={sortBy}
+        updateSortBy={setSortBy}
+        apiClient={apiClient}
+      />
+    </>
+  );
 });

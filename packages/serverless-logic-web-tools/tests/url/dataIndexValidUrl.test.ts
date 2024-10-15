@@ -17,4 +17,15 @@
  * under the License.
  */
 
-/** Empty Entrypoint of this module - No TS/JS code here, it just holds DMN files for testing purposes */
+import { isDataIndexUrlValid } from "../../src/url";
+
+describe("isDataIndexUrlValid", () => {
+  it.each([
+    ["http://example.com", true],
+    ["http://example.com/", true],
+    ["https://example.com/", true],
+    ["ftps://example.com/", false],
+  ])("the data index URL %s validation should be %s", (inputUrl, isValidUrl) => {
+    expect(isDataIndexUrlValid(inputUrl)).toBe(isValidUrl);
+  });
+});

@@ -2100,6 +2100,11 @@
       },
       {
         "source": "@kie-tools/runtime-tools-process-enveloped-components-v2",
+        "target": "@kie-tools-core/react-hooks",
+        "weight": 1
+      },
+      {
+        "source": "@kie-tools/runtime-tools-process-enveloped-components-v2",
         "target": "@kie-tools/runtime-tools-process-gateway-api",
         "weight": 1
       },

@@ -75,8 +75,8 @@ enum BulkSelectionType {
 }
 
 interface ProcessListToolbarProps {
-  filters: ProcessInstanceFilter;
-  setFilters: React.Dispatch<React.SetStateAction<ProcessInstanceFilter>>;
+  filter: ProcessInstanceFilter;
+  updateFilter: React.Dispatch<React.SetStateAction<ProcessInstanceFilter>>;
   applyFilter: (filter: ProcessInstanceFilter) => void;
   refresh: () => void;
   processStates: ProcessInstanceState[];
@@ -91,8 +91,8 @@ interface ProcessListToolbarProps {
 }
 
 const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
-  filters,
-  setFilters,
+  filter,
+  updateFilter,
   applyFilter,
   refresh,
   processStates,
@@ -288,20 +288,20 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
 
   const onDeleteChip = (categoryName: Category, value: string): void => {
     const clonedProcessStates = [...processStates];
-    const clonedBusinessKeyArray = [...(filters.businessKey ?? [])];
+    const clonedBusinessKeyArray = [...(filter.businessKey ?? [])];
     switch (categoryName) {
       case Category.STATUS:
         _.remove(clonedProcessStates, (status: string) => {
           return status === value;
         });
         setProcessStates(clonedProcessStates);
-        setFilters({ ...filters, status: clonedProcessStates });
+        updateFilter({ ...filter, status: clonedProcessStates });
         break;
       case Category.BUSINESS_KEY:
         _.remove(clonedBusinessKeyArray, (businessKey: string) => {
           return businessKey === value;
         });
-        setFilters({ ...filters, businessKey: clonedBusinessKeyArray });
+        updateFilter({ ...filter, businessKey: clonedBusinessKeyArray });
         break;
     }
     applyFilter({
@@ -312,12 +312,12 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
 
   const onApplyFilter = (): void => {
     setBusinessKeyInput("");
-    const clonedBusinessKeyArray = [...(filters.businessKey ?? [])];
+    const clonedBusinessKeyArray = [...(filter.businessKey ?? [])];
     if (businessKeyInput && !clonedBusinessKeyArray.includes(businessKeyInput)) {
       clonedBusinessKeyArray.push(businessKeyInput);
     }
-    setFilters({
-      ...filters,
+    updateFilter({
+      ...filter,
       status: processStates,
       businessKey: clonedBusinessKeyArray,
     });
@@ -340,7 +340,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
       businessKey: [],
     };
     setProcessStates(defaultFilters.status);
-    setFilters(defaultFilters);
+    updateFilter(defaultFilters);
     applyFilter(defaultFilters);
   };
 
@@ -540,7 +540,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
             position={DropdownPosition.left}
             toggle={
               <DropdownToggle
-                isDisabled={filters.status.length === 0}
+                isDisabled={filter.status.length === 0}
                 onToggle={checkboxDropdownToggle}
                 splitButtonItems={[
                   <DropdownToggleCheckbox
@@ -549,7 +549,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
                     aria-label="Select all"
                     isChecked={isAllChecked}
                     onChange={() => handleCheckboxSelectClick(BulkSelectionType.PARENT_CHILD, true)}
-                    isDisabled={filters.status.length === 0}
+                    isDisabled={filter.status.length === 0}
                   />,
                 ]}
               >
@@ -561,7 +561,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
           />
         </ToolbarItem>
         <ToolbarFilter
-          chips={filters.status}
+          chips={filter.status}
           deleteChip={onDeleteChip}
           className="process-list__state-dropdown-list pf-u-mr-sm"
           categoryName="Status"
@@ -581,7 +581,7 @@ const ProcessListToolbar: React.FC<ProcessListToolbarProps> = ({
             {statusMenuItems}
           </Select>
         </ToolbarFilter>
-        <ToolbarFilter chips={filters.businessKey} deleteChip={onDeleteChip} categoryName={Category.BUSINESS_KEY}>
+        <ToolbarFilter chips={filter.businessKey} deleteChip={onDeleteChip} categoryName={Category.BUSINESS_KEY}>
           <InputGroup>
             <TextInput
               name="businessKey"

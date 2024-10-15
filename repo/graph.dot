@@ -514,6 +514,7 @@ digraph G {
   "@kie-tools/runtime-tools-process-dev-ui-webapp" -> "@kie-tools/runtime-tools-shared-webapp-components" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-enveloped-components" -> "@kie-tools/runtime-tools-process-gateway-api" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-enveloped-components" -> "@kie-tools/runtime-tools-shared-enveloped-components" [ style = "solid", color = "blue" ];
+  "@kie-tools/runtime-tools-process-enveloped-components-v2" -> "@kie-tools-core/react-hooks" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-enveloped-components-v2" -> "@kie-tools/runtime-tools-process-gateway-api" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-enveloped-components-v2" -> "@kie-tools/runtime-tools-shared-enveloped-components" [ style = "solid", color = "blue" ];
   "@kie-tools/runtime-tools-process-gateway-api" -> "@kie-tools/runtime-tools-shared-gateway-api" [ style = "solid", color = "blue" ];

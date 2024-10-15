@@ -8581,6 +8581,9 @@ importers:
       '@kie-tools-core/patternfly-base':
         specifier: workspace:*
         version: link:../patternfly-base
+      '@kie-tools-core/react-hooks':
+        specifier: workspace:*
+        version: link:../react-hooks
       '@kie-tools/i18n-common-dictionary':
         specifier: workspace:*
         version: link:../i18n-common-dictionary

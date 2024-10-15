@@ -24,7 +24,6 @@ import { alterOrderByObj } from "./ProcessListUtils";
 
 import "./styles.css";
 import {
-  BulkProcessInstanceActionResponse,
   ProcessInstance,
   ProcessInstanceFilter,
   ProcessInstanceState,
@@ -36,7 +35,6 @@ import {
   KogitoEmptyState,
   KogitoEmptyStateType,
 } from "@kie-tools/runtime-tools-components/dist/components/KogitoEmptyState";
-import { OperationType } from "@kie-tools/runtime-tools-shared-gateway-api/dist/types";
 import { ProcessListApiClient } from "../api";
 
 export interface ProcessListProps {
@@ -78,10 +76,12 @@ export const ProcessList: React.FC<ProcessListProps> = ({ apiClient, filter, upd
     [expanded]
   );
 
-  const doQuery = useCallback(
+  const refresh = useCallback(
     async (args: {
       offset: number;
       limit: number;
+      filter: ProcessInstanceFilter;
+      sortBy: ProcessListSortBy;
       resetProcesses?: boolean;
       resetPagination?: boolean;
       loadMore: boolean;
@@ -89,12 +89,13 @@ export const ProcessList: React.FC<ProcessListProps> = ({ apiClient, filter, upd
       setIsLoadingMore(args.loadMore);
       setSelectableInstances(0);
       setSelectedInstances([]);
+      setIsLoading(true);
       try {
         const response: ProcessInstance[] = await apiClient.getProcesses({
           offset: args.offset,
           limit: args.limit,
-          filter,
-          sortBy,
+          filter: args.filter,
+          sortBy: args.sortBy,
         });
         setLimit(response.length);
         setProcessInstances((currentProcessInstances) => {
@@ -119,7 +120,7 @@ export const ProcessList: React.FC<ProcessListProps> = ({ apiClient, filter, upd
         setIsLoadingMore(false);
       }
     },
-    [apiClient, countExpandableRows, filter, sortBy]
+    [apiClient, countExpandableRows]
   );
 
   useEffect(() => {
@@ -131,59 +132,61 @@ export const ProcessList: React.FC<ProcessListProps> = ({ apiClient, filter, upd
   }, [processInstances, selectableInstances, selectedInstances.length]);
 
   const applyFilter = useCallback(
-    async (filter: ProcessInstanceFilter) => {
-      setIsLoading(true);
+    async (updatedFilter: ProcessInstanceFilter) => {
       setProcessInstances([]);
-      updateFilter(filter);
-      await doQuery({
+      updateFilter(updatedFilter);
+      await refresh({
         offset: 0,
         limit: DEFAULT_PAGE_SIZE,
+        filter: updatedFilter,
+        sortBy,
         resetProcesses: true,
         resetPagination: true,
         loadMore: false,
       });
     },
-    [doQuery, updateFilter]
+    [refresh, sortBy, updateFilter]
   );
 
   const applySorting = useCallback(
     async (event, index: number, direction: "asc" | "desc") => {
-      setIsLoading(true);
       setProcessInstances([]);
       let sortingColumn: string = event.target.innerText;
       sortingColumn = _.camelCase(sortingColumn);
       let sortByObj = _.set({}, sortingColumn, direction.toUpperCase());
       sortByObj = alterOrderByObj(sortByObj);
       updateSortBy(sortByObj);
-      await doQuery({
+      await refresh({
         offset: 0,
         limit: DEFAULT_PAGE_SIZE,
+        filter,
+        sortBy: sortByObj,
         resetProcesses: true,
         resetPagination: true,
         loadMore: false,
       });
     },
-    [doQuery, updateSortBy]
+    [filter, refresh, updateSortBy]
   );
 
   const doRefresh = useCallback(async () => {
-    setIsLoading(true);
     setProcessInstances([]);
-    await doQuery({
+    await refresh({
       offset: 0,
       limit: DEFAULT_PAGE_SIZE,
+      filter,
+      sortBy,
       resetProcesses: true,
       resetPagination: true,
       loadMore: false,
     });
-  }, [doQuery]);
+  }, [filter, refresh, sortBy]);
 
   const doResetFilters = useCallback(async () => {
     const resetFilter = {
       status: [ProcessInstanceState.Active],
       businessKey: [],
     };
-    setIsLoading(true);
     setProcessStates([]);
     await applyFilter(resetFilter);
   }, [applyFilter]);
@@ -202,8 +205,8 @@ export const ProcessList: React.FC<ProcessListProps> = ({ apiClient, filter, upd
       <ProcessListToolbar
         applyFilter={applyFilter}
         refresh={doRefresh}
-        filters={filter}
-        setFilters={updateFilter}
+        filter={filter}
+        updateFilter={updateFilter}
         processStates={processStates}
         setProcessStates={setProcessStates}
         selectedInstances={selectedInstances}
@@ -237,9 +240,11 @@ export const ProcessList: React.FC<ProcessListProps> = ({ apiClient, filter, upd
               setOffset={setOffset}
               getMoreItems={(_offset, _limit) => {
                 setPageSize(_limit);
-                doQuery({
+                refresh({
                   offset: _offset,
                   limit: _limit,
+                  filter,
+                  sortBy,
                   resetProcesses: false,
                   resetPagination: true,
                   loadMore: true,

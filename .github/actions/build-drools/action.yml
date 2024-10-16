@@ -37,6 +37,7 @@ runs:
       with:
         fetch-depth: 0
         path: ${{ inputs.path }}
+        ref: ${{ inputs.ref }}
         repository: apache/incubator-kie-drools
 
     - name: "Build drools"

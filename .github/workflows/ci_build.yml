@@ -89,14 +89,14 @@ jobs:
 
           turbo telemetry disable
 
-          bun ./kie-tools/.github/supporting-files/ci/build-partitioning/build_partitioning.ts \
+          bun ./.github/supporting-files/ci/build-partitioning/build_partitioning.ts \
             --outputPath='/tmp/partitions.json' \
             --forceFull='${{ !github.event.pull_request }}' \
             --baseSha='${{ steps.checkout_pr.outputs.base_sha }}' \
             --headSha='${{steps.checkout_pr.outputs.head_sha }}' \
             --graphJsonPath='./repo/graph.json' \
-            --partition='./kie-tools/.github/supporting-files/ci/partitions/partition0.txt' \
-            --partition='./kie-tools/.github/supporting-files/ci/partitions/partition1.txt'
+            --partition='./.github/supporting-files/ci/partitions/partition0.txt' \
+            --partition='./.github/supporting-files/ci/partitions/partition1.txt'
 
           npm -g uninstall bun turbo
 

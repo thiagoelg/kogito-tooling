@@ -24,7 +24,7 @@ inputs:
   path:
     description: "Path to clone kogito-runtimes"
     required: false
-    default: "../upstream/kogito-runtimes"
+    default: "./kogito-runtimes"
   ref:
     description: "Base ref of the Apache KIE Kogito Runtimes repository"
     required: true

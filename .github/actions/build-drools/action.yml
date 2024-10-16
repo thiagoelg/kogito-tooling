@@ -24,7 +24,7 @@ inputs:
   path:
     description: "Path to clone drools"
     required: false
-    default: "../upstream/drools"
+    default: "./drools"
   ref:
     description: "Base ref of the Apache KIE Drools repository"
     required: true

@@ -24,7 +24,7 @@ inputs:
   path:
     description: "Path to clone kogito-apps"
     required: false
-    default: "../upstream/kogito-apps"
+    default: "./kogito-apps"
   ref:
     description: "Base ref of the Apache KIE Kogito Apps repository"
     required: true

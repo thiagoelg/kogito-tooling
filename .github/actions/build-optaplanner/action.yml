@@ -24,7 +24,7 @@ inputs:
   path:
     description: "Path to clone optaplanner"
     required: false
-    default: "../upstream/optaplanner"
+    default: "./optaplanner"
   ref:
     description: "Base ref of the Apache KIE Optaplanner repository"
     required: true

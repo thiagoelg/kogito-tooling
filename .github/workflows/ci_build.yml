@@ -106,19 +106,37 @@ jobs:
         if: steps.setup_build_mode.outputs.mode != 'none'
         uses: ./.github/actions/setup-env
 
-      - name: "Setup drools ref"
-        id: setup_drools_ref
+      - name: "Setup Kogito ref"
+        id: setup_kogito_ref
         if: steps.setup_build_mode.outputs.mode != 'none'
         shell: bash
         run: |
           pnpm bootstrap:root
-          echo "droolsRef=$(pnpm -F root-env exec build-env versions.kogito | sed 's/-SNAPSHOT//')" >> $GITHUB_OUTPUT
+          echo "kogitoRef=$(pnpm -F root-env exec build-env versions.kogito | sed 's/-SNAPSHOT//')" >> $GITHUB_OUTPUT
 
-      - name: "Build drools"
+      - name: "Build Drools"
         if: steps.setup_build_mode.outputs.mode != 'none'
         uses: ./.github/actions/build-drools
         with:
-          ref: ${{ steps.setup_drools_ref.outputs.droolsRef }}
+          ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
+
+      - name: "Build Optaplanner"
+        if: steps.setup_build_mode.outputs.mode != 'none'
+        uses: ./.github/actions/build-optaplanner
+        with:
+          ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
+
+      - name: "Build Kogito Runtimes"
+        if: steps.setup_build_mode.outputs.mode != 'none'
+        uses: ./.github/actions/build-kogito-runtimes
+        with:
+          ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
+
+      - name: "Build Kogito Apps"
+        if: steps.setup_build_mode.outputs.mode != 'none'
+        uses: ./.github/actions/build-kogito-apps
+        with:
+          ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Bootstrap"
         if: steps.setup_build_mode.outputs.mode != 'none'

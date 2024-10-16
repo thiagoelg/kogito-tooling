@@ -17,30 +17,30 @@
 # under the License.
 #
 
-name: "Build upstream Apache KIE Drools"
+name: "Build upstream Apache KIE Optaplanner"
 description: ""
 
 inputs:
   path:
-    description: "Path to clone drools"
+    description: "Path to clone optaplanner"
     required: false
-    default: "../upstream/drools"
+    default: "../upstream/optaplanner"
   ref:
-    description: "Base ref of the Apache KIE Drools repository"
+    description: "Base ref of the Apache KIE Optaplanner repository"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: "Checkout drools @ ${{ inputs.ref }}"
+    - name: "Checkout optaplanner @ ${{ inputs.ref }}"
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
         path: ${{ inputs.path }}
         ref: ${{ inputs.ref }}
-        repository: apache/incubator-kie-drools
+        repository: apache/incubator-kie-optaplanner
 
-    - name: "Build drools"
+    - name: "Build optaplanner"
       shell: bash
       run: |
         cd ${{ inputs.path }}

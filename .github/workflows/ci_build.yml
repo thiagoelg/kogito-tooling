@@ -55,7 +55,7 @@ jobs:
 
       - name: "Checkout @ Simulated squashed-merge if PR"
         id: checkout_pr
-        uses: ./.github/actions/checkout-pr
+        uses: ./kie-tools/.github/actions/checkout-pr
         with:
           ref: ${{ github.base_ref }}
           path: ./kie-tools
@@ -72,7 +72,7 @@ jobs:
 
       - name: "Setup CI patterns"
         id: ci_patterns
-        uses: ./.github/actions/setup-ci-patterns
+        uses: ./kie-tools/.github/actions/setup-ci-patterns
         with:
           working_dir: ./kie-tools
 
@@ -89,14 +89,14 @@ jobs:
 
           turbo telemetry disable
 
-          bun ./.github/supporting-files/ci/build-partitioning/build_partitioning.ts \
+          bun ./kie-tools/.github/supporting-files/ci/build-partitioning/build_partitioning.ts \
             --outputPath='/tmp/partitions.json' \
             --forceFull='${{ !github.event.pull_request }}' \
             --baseSha='${{ steps.checkout_pr.outputs.base_sha }}' \
             --headSha='${{steps.checkout_pr.outputs.head_sha }}' \
             --graphJsonPath='./repo/graph.json' \
-            --partition='./.github/supporting-files/ci/partitions/partition0.txt' \
-            --partition='./.github/supporting-files/ci/partitions/partition1.txt'
+            --partition='./kie-tools/.github/supporting-files/ci/partitions/partition0.txt' \
+            --partition='./kie-tools/.github/supporting-files/ci/partitions/partition1.txt'
 
           npm -g uninstall bun turbo
 
@@ -111,7 +111,7 @@ jobs:
 
       - name: "Setup environment"
         if: steps.setup_build_mode.outputs.mode != 'none'
-        uses: ./.github/actions/setup-env
+        uses: ./kie-tools/.github/actions/setup-env
         with:
           working_dir: ./kie-tools
 
@@ -126,25 +126,25 @@ jobs:
 
       - name: "Build Drools"
         if: steps.setup_build_mode.outputs.mode != 'none'
-        uses: ./.github/actions/build-drools
+        uses: ./kie-tools/.github/actions/build-drools
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Build Optaplanner"
         if: steps.setup_build_mode.outputs.mode != 'none'
-        uses: ./.github/actions/build-optaplanner
+        uses: ./kie-tools/.github/actions/build-optaplanner
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Build Kogito Runtimes"
         if: steps.setup_build_mode.outputs.mode != 'none'
-        uses: ./.github/actions/build-kogito-runtimes
+        uses: ./kie-tools/.github/actions/build-kogito-runtimes
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Build Kogito Apps"
         if: steps.setup_build_mode.outputs.mode != 'none'
-        uses: ./.github/actions/build-kogito-apps
+        uses: ./kie-tools/.github/actions/build-kogito-apps
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
@@ -152,7 +152,7 @@ jobs:
         if: steps.setup_build_mode.outputs.mode != 'none'
         env:
           PLAYWRIGHT_BASE__installDeps: "true"
-        uses: ./.github/actions/bootstrap
+        uses: ./kie-tools/.github/actions/bootstrap
         with:
           pnpm_filter_string: ${{ steps.setup_build_mode.outputs.bootstrapPnpmFilterString }}
           working_dir: ./kie-tools
@@ -240,7 +240,7 @@ jobs:
 
       - name: "Upload reports and artifacts"
         if: always() && !cancelled() && steps.setup_build_mode.outputs.mode != 'none'
-        uses: ./.github/actions/upload-ci-reports-and-artifacts
+        uses: ./kie-tools/.github/actions/upload-ci-reports-and-artifacts
         with:
           partition_index: ${{ matrix.partition }}
           working_dir: ./kie-tools

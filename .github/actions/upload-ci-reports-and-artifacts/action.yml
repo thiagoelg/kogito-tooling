@@ -34,7 +34,7 @@ runs:
   steps:
     - name: "Setup CI patterns"
       id: ci_patterns
-      uses: ${{ inputs.working_dir }}/.github/actions/setup-ci-patterns
+      uses: ./kie-tools/.github/actions/setup-ci-patterns
       with:
         working_dir: ${{ inputs.working_dir }}
 

@@ -117,7 +117,7 @@ jobs:
 
       - name: "Setup Kogito ref"
         id: setup_kogito_ref
-        if: steps.setup_build_mode.outputs.mode != 'none'
+        if: steps.setup_build_mode.outputs.mode != 'none' && runner.os == 'Linux'
         shell: bash
         run: |
           cd ./kie-tools
@@ -125,25 +125,25 @@ jobs:
           echo "kogitoRef=$(pnpm -F root-env exec build-env versions.kogito | sed 's/-SNAPSHOT//')" >> $GITHUB_OUTPUT
 
       - name: "Build Drools"
-        if: steps.setup_build_mode.outputs.mode != 'none'
+        if: steps.setup_build_mode.outputs.mode != 'none' && runner.os == 'Linux'
         uses: ./kie-tools/.github/actions/build-drools
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Build Optaplanner"
-        if: steps.setup_build_mode.outputs.mode != 'none'
+        if: steps.setup_build_mode.outputs.mode != 'none' && runner.os == 'Linux'
         uses: ./kie-tools/.github/actions/build-optaplanner
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Build Kogito Runtimes"
-        if: steps.setup_build_mode.outputs.mode != 'none'
+        if: steps.setup_build_mode.outputs.mode != 'none' && runner.os == 'Linux'
         uses: ./kie-tools/.github/actions/build-kogito-runtimes
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}
 
       - name: "Build Kogito Apps"
-        if: steps.setup_build_mode.outputs.mode != 'none'
+        if: steps.setup_build_mode.outputs.mode != 'none' && runner.os == 'Linux'
         uses: ./kie-tools/.github/actions/build-kogito-apps
         with:
           ref: ${{ steps.setup_kogito_ref.outputs.kogitoRef }}

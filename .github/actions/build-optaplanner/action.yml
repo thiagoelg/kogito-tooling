@@ -45,3 +45,8 @@ runs:
       run: |
         cd ${{ inputs.path }}
         mvn clean install -DskipTests -B -ntp -T2 -Denforcer.skip -Dformatter.skip -Dcheckstyle.skip
+
+    - name: "Cleanup"
+      shell: bash
+      run: |
+        rm -rf ${{ inputs.path }}

@@ -30,7 +30,7 @@ export interface TaskFormGatewayApi {
 
   doSubmit(userTask: UserTaskInstance, phase: string, payload: any): Promise<any>;
 
-  doSubmitAsAnonymous(userTask: UserTaskInstance, phase: string, payload: any): Promise<any>;
+  doSubmitAsAnonymous(userTask: UserTaskInstance, phase?: string, payload?: any): Promise<any>;
 }
 
 export class TaskFormGatewayApiImpl implements TaskFormGatewayApi {
@@ -77,7 +77,7 @@ export class TaskFormGatewayApiImpl implements TaskFormGatewayApi {
   }
 
   doSubmit(userTask: UserTaskInstance, phase: string, payload: any): Promise<any> {
-    const endpoint = `${userTask.endpoint}?phase=${phase}&${getTaskEndpointSecurityParams(userTask, this.getCurrentUser())}`;
+    const endpoint = `${userTask.endpoint}?phase=${phase ?? ""}&${getTaskEndpointSecurityParams(userTask, this.getCurrentUser())}`;
     return this.submitTaskForm(endpoint, payload);
   }
 

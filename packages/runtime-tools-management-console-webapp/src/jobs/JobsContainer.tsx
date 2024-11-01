@@ -17,32 +17,14 @@
  * under the License.
  */
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import "@patternfly/patternfly/patternfly.css";
-import "@patternfly/patternfly/patternfly-addons.css";
-import "@patternfly/react-core/dist/styles/base.css";
-import { initEnv } from "./env/Env";
-import { ENV_PREFIX } from "./env/EnvConstants";
-import "./styles.css";
-import { ManagementConsole, ManagementConsoleRoutes } from "./managementConsole";
-import { EnvJson } from "./env/EnvJson";
+import { OUIAProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
+import { EmbeddedJobsManagement } from "@kie-tools/runtime-tools-process-enveloped-components/dist/jobsManagement";
+import {
+  JobsManagementGatewayApi,
+  useJobsManagementGatewayApi,
+} from "@kie-tools/runtime-tools-process-webapp-components/dist/JobsManagement";
 
-declare global {
-  interface Window {
-    [key: string]: any;
-  }
-}
-
-initEnv().then((env) => {
-  if (env) {
-    Object.keys(env).forEach((key) => {
-      window[key.replace(`${ENV_PREFIX}_`, "")] = env[key as keyof EnvJson];
-    });
-  }
-  ReactDOM.render(
-    <ManagementConsole>
-      <ManagementConsoleRoutes />
-    </ManagementConsole>,
-    document.getElementById("root")
-  );
-});
+export const JobsContainer: React.FC<OUIAProps> = () => {
+  const gatewayApi: JobsManagementGatewayApi = useJobsManagementGatewayApi();
+  return <EmbeddedJobsManagement driver={gatewayApi} targetOrigin={window.location.origin} />;
+};

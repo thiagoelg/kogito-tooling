@@ -22,7 +22,7 @@
   "shell": {
     "init_hook": [
       ". $VENV_DIR/bin/activate",
-      "[[ $OSTYPE == 'darwin'* ]] && export PATH=$(echo $PATH | tr ':' '\n' | grep -vi 'xcode\\|clang\\|cctools' | paste -sd ':' -)"
+      "[[ $OSTYPE == 'darwin'* ]] && export PATH=$(echo $PATH | tr ':' '\n' | grep -vi 'clang\\|cctools' | paste -sd ':' -)"
     ],
     "scripts": {
       "versions": [

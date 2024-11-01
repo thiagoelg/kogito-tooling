@@ -31,14 +31,14 @@ import { Bullseye } from "@patternfly/react-core/dist/js/layouts/Bullseye";
 import { ExclamationCircleIcon } from "@patternfly/react-icons/dist/js/icons/exclamation-circle-icon";
 import { Redirect, StaticContext, RouteComponentProps } from "react-router";
 import { componentOuiaProps, OUIAProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools/OuiaUtils";
-import * as H from "history";
+import { LocationState } from "history";
 
 interface IOwnProps {
   defaultPath: string;
   defaultButton: string;
 }
 
-export type LocationProps = H.LocationState & { prev?: string };
+export type LocationProps = LocationState & { prev?: string };
 
 export interface PageNotFoundProps
   extends IOwnProps,

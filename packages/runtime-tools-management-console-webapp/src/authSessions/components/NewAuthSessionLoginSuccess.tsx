@@ -18,7 +18,7 @@
  */
 
 import React, { useEffect } from "react";
-import { useAuthSessionsDispatch } from "../AuthSessionsContext";
+import { useAuthSessions, useAuthSessionsDispatch } from "../AuthSessionsContext";
 import { RouteComponentProps } from "react-router";
 import * as client from "openid-client";
 import { v4 as uuid } from "uuid";
@@ -30,8 +30,13 @@ import {
 
 export const NewAuthSessionLoginSuccess: React.FC<RouteComponentProps> = ({ ...props }) => {
   const { add, setCurrentAuthSessionId } = useAuthSessionsDispatch();
+  const { isAuthSessionsReady } = useAuthSessions();
 
   useEffect(() => {
+    console.log({ isAuthSessionsReady });
+    if (!isAuthSessionsReady) {
+      return;
+    }
     const callback = async () => {
       const { runtimesUrl, clientId, code_verifier, nonce, serverMetadata, name } = JSON.parse(
         window.localStorage.getItem(AUTH_SESSION_TEMP_OPENID_AUTH_DATA_STORAGE_KEY)!
@@ -84,7 +89,7 @@ export const NewAuthSessionLoginSuccess: React.FC<RouteComponentProps> = ({ ...p
     callback().then(() => {
       props.history.push("/");
     });
-  }, [add, props.history, setCurrentAuthSessionId]);
+  }, [add, props.history, setCurrentAuthSessionId, isAuthSessionsReady]);
 
   return (
     <>

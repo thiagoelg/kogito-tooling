@@ -41,6 +41,7 @@ export type AuthSessionsContextType = {
   authSessionStatus: Map<string, AuthSessionStatus>;
   isNewAuthSessionModalOpen: boolean;
   currentAuthSessionId?: string;
+  isAuthSessionsReady: boolean;
 };
 
 export type AuthSessionsDispatchContextType = {
@@ -71,12 +72,14 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
   );
   const [isNewAuthSessionModalOpen, setIsNewAuthSessionModalOpen] = useState(false);
   const [currentAuthSessionId, setCurrentAuthSessionId] = useState<string>();
+  const [isAuthSessionsReady, setIsAuthSessionsReady] = useState<boolean>(false);
 
   const getAuthSessionsFromFile = useCallback(async () => {
     const fs = authSessionFsCache.getOrCreateFs(AUTH_SESSIONS_FS_NAME_WITH_VERSION);
     if (await authSessionFsService.exists(fs, AUTH_SESSIONS_FILE_PATH)) {
       const content = await (await authSessionFsService.getFile(fs, AUTH_SESSIONS_FILE_PATH))?.getFileContents();
       const parsedAuthSessions = JSON.parse(decoder.decode(content), mapDeSerializer);
+      console.log({ parsedAuthSessions });
       return parsedAuthSessions;
     }
     return [];
@@ -101,15 +104,18 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
       authSessionBroadcastChannel.postMessage("UPDATE_AUTH_SESSIONS");
 
       // This updates this tab
-      refresh();
+      await refresh();
     },
     [refresh]
   );
 
   const add = useCallback(
     async (authSession: AuthSession) => {
+      console.log({ newAuthSession: authSession, currentAuthSessions: authSessions });
       const n = new Map(authSessions?.entries() ?? []);
+      console.log({ n: JSON.stringify(n) });
       n?.set(authSession.id, authSession);
+      console.log({ updatedN: JSON.stringify(n) });
       await persistAuthSessions(n);
     },
     [authSessions, persistAuthSessions]
@@ -140,12 +146,14 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
           }
           await persistAuthSessions(migratedAuthSessions);
           await deleteOlderAuthSessionsStorage();
-          console.log(migratedAuthSessions);
+          console.log({ migratedAuthSessions });
           if (migratedAuthSessions.size > 0) {
             setCurrentAuthSessionId(migratedAuthSessions.entries().next().value.id);
           }
         };
-        run();
+        run().then(() => {
+          setIsAuthSessionsReady(true);
+        });
       },
       [persistAuthSessions]
     )
@@ -157,8 +165,8 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
         const newAuthSessionStatus: [string, AuthSessionStatus][] = await Promise.all(
           [...(authSessions?.values() ?? [])].map(async (authSession) => {
             try {
-              const fetchUser = () => {}; // TODO: Implement re-auth
-              await fetchUser();
+              // const fetchUser = () => {}; // TODO: Implement re-auth
+              // await fetchUser();
               return [authSession.id, AuthSessionStatus.VALID];
             } catch (e) {
               return [authSession.id, AuthSessionStatus.INVALID];
@@ -190,8 +198,8 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
   }, [add, remove, recalculateAuthSessionStatus]);
 
   const value = useMemo(() => {
-    return { authSessions, authSessionStatus, isNewAuthSessionModalOpen, currentAuthSessionId };
-  }, [authSessionStatus, authSessions, isNewAuthSessionModalOpen, currentAuthSessionId]);
+    return { authSessions, authSessionStatus, isNewAuthSessionModalOpen, currentAuthSessionId, isAuthSessionsReady };
+  }, [authSessionStatus, authSessions, isNewAuthSessionModalOpen, currentAuthSessionId, isAuthSessionsReady]);
 
   return (
     <>

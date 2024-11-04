@@ -16,6 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+.kie-tools--masthead-hoverable:hover,
+.kie-tools--masthead-hoverable > .pf-c-select__toggle:hover {
+  background-color: rgb(235, 235, 235);
+}
+
+.kogito-management-console__auth-session-select .pf-c-select__menu {
+  right: 0;
+}
+
 .kogito-management-console__card-size {
   height: 100%;
   position: relative;

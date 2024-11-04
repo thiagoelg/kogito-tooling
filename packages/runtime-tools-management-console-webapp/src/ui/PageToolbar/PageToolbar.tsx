@@ -22,6 +22,7 @@ import accessibleStyles from "@patternfly/react-styles/css/utilities/Accessibili
 import { css } from "@patternfly/react-styles";
 import { componentOuiaProps, OUIAProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
 import { AuthSessionSelect } from "../../authSessions/components/AuthSessionSelect";
+import { SelectPosition } from "@patternfly/react-core/dist/js/components/Select";
 
 export const PageToolbar: React.FunctionComponent<OUIAProps> = ({ ouiaId, ouiaSafe }) => {
   return (
@@ -29,7 +30,7 @@ export const PageToolbar: React.FunctionComponent<OUIAProps> = ({ ouiaId, ouiaSa
       <Toolbar {...componentOuiaProps(ouiaId, "page-toolbar", ouiaSafe)}>
         <ToolbarGroup alignment={{ default: "alignRight" }}>
           <ToolbarItem className={css(accessibleStyles.screenReader, accessibleStyles.visibleOnMd)}>
-            <AuthSessionSelect title={`Connect to a runtimes...`} isPlain={true} />
+            <AuthSessionSelect isPlain={true} position={SelectPosition.right} />
           </ToolbarItem>
         </ToolbarGroup>
       </Toolbar>

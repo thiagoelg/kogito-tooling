@@ -26,21 +26,18 @@ import {
   SelectProps,
   SelectVariant,
 } from "@patternfly/react-core/dist/js/components/Select";
-import { useAuthSessionsDispatch, useAuthSessions } from "../AuthSessionsContext";
+import { useAuthSessionsDispatch, useAuthSessions, useCurrentAuthSession } from "../AuthSessionsContext";
 import { useEffect, useMemo, useState } from "react";
 import { ValidatedOptions } from "@patternfly/react-core/dist/js/helpers";
 import { Button, ButtonVariant } from "@patternfly/react-core/dist/js/components/Button";
 import PlusIcon from "@patternfly/react-icons/dist/js/icons/plus-icon";
-import { Divider } from "@patternfly/react-core/dist/js/components/Divider";
 import ExclamationCircleIcon from "@patternfly/react-icons/dist/js/icons/exclamation-circle-icon";
 import { Flex, FlexItem } from "@patternfly/react-core/dist/js/layouts/Flex";
 import { Tooltip } from "@patternfly/react-core/dist/js/components/Tooltip";
-import { Text, TextContent, TextVariants } from "@patternfly/react-core/dist/js/components/Text";
-import { AuthSession, AuthSessionStatus } from "../AuthSessionApi";
+import { AuthSessionStatus } from "../AuthSessionApi";
 
 export function AuthSessionSelect(props: {
   isPlain: boolean;
-  title: string;
   position?: SelectPosition;
   menuAppendTo?: SelectProps["menuAppendTo"];
 }) {
@@ -48,13 +45,7 @@ export function AuthSessionSelect(props: {
   const [showMore, setShowMore] = useState(false);
   const { authSessions, authSessionStatus, currentAuthSessionId } = useAuthSessions();
   const { setIsNewAuthSessionModalOpen, setCurrentAuthSessionId } = useAuthSessionsDispatch();
-
-  const selectedAuthSessionId = useMemo(() => {
-    if (!currentAuthSessionId) {
-      return "Select authentication"; // no authSession selected
-    }
-    return currentAuthSessionId;
-  }, [currentAuthSessionId]);
+  const currentAuthSession = useCurrentAuthSession();
 
   const validated = useMemo(() => {
     if (!currentAuthSessionId) {
@@ -84,7 +75,7 @@ export function AuthSessionSelect(props: {
       position={props.position}
       validated={validated}
       variant={SelectVariant.single}
-      selections={selectedAuthSessionId}
+      selections={currentAuthSession?.id ?? "Select authentication"}
       isOpen={isAuthSessionSelectorOpen}
       onToggle={setAuthSessionSelectorOpen}
       isPlain={validated === ValidatedOptions.default ? props.isPlain : false}
@@ -93,7 +84,7 @@ export function AuthSessionSelect(props: {
         setCurrentAuthSessionId(value as string);
         setAuthSessionSelectorOpen(false);
       }}
-      className={props.isPlain ? "kie-tools--masthead-hoverable" : ""}
+      className={`kogito-management-console__auth-session-select ${props.isPlain ? "kie-tools--masthead-hoverable" : ""}`}
       menuAppendTo={props.menuAppendTo ?? "parent"}
       maxHeight={"400px"}
       style={{ minWidth: "400px" }}
@@ -112,33 +103,25 @@ export function AuthSessionSelect(props: {
         </>
       }
     >
-      <div key={"title"}>
-        <TextContent style={{ fontStyle: "italic", padding: "8px", opacity: "0.8" }}>
-          <Text component={TextVariants.small}>{props.title}</Text>
-        </TextContent>
-      </div>
-      <Divider />
-      <SelectGroup>
-        {unfilteredItems.map((item) => (
-          <SelectOption
-            key={item.authSession.id}
-            value={item.authSession.id}
-            description={<i>{item.authSession.name}</i>}
-          >
-            <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
-              <FlexItem>
-                &nbsp;&nbsp;
-                {item.authSession.name}
+      {unfilteredItems.map((item) => (
+        <SelectOption
+          key={item.authSession.id}
+          value={item.authSession.id}
+          description={<i>{item.authSession.name}</i>}
+        >
+          <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
+            <FlexItem>
+              &nbsp;&nbsp;
+              {item.authSession.name}
+            </FlexItem>
+            {authSessionStatus.get(item.authSession.id) === AuthSessionStatus.INVALID && (
+              <FlexItem style={{ zIndex: 99999 }}>
+                <InvalidAuthSessionIcon />
               </FlexItem>
-              {authSessionStatus.get(item.authSession.id) === AuthSessionStatus.INVALID && (
-                <FlexItem style={{ zIndex: 99999 }}>
-                  <InvalidAuthSessionIcon />
-                </FlexItem>
-              )}
-            </Flex>
-          </SelectOption>
-        ))}
-      </SelectGroup>
+            )}
+          </Flex>
+        </SelectOption>
+      ))}
     </Select>
   );
 }

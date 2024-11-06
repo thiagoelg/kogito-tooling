@@ -148,7 +148,7 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
           await deleteOlderAuthSessionsStorage();
           console.log({ migratedAuthSessions });
           if (migratedAuthSessions.size > 0) {
-            setCurrentAuthSessionId(migratedAuthSessions.entries().next().value.id);
+            setCurrentAuthSessionId(migratedAuthSessions.entries().next().value[0]);
           }
         };
         run().then(() => {
@@ -195,7 +195,7 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
       setIsNewAuthSessionModalOpen,
       setCurrentAuthSessionId,
     };
-  }, [add, remove, recalculateAuthSessionStatus]);
+  }, [add, recalculateAuthSessionStatus, remove]);
 
   const value = useMemo(() => {
     return { authSessions, authSessionStatus, isNewAuthSessionModalOpen, currentAuthSessionId, isAuthSessionsReady };
@@ -203,7 +203,7 @@ export function AuthSessionsContextProvider(props: PropsWithChildren<{}>) {
 
   return (
     <>
-      {value && (
+      {value && isAuthSessionsReady && (
         <AuthSessionsContext.Provider value={value}>
           <AuthSessionsDispatchContext.Provider value={dispatch}>
             {props.children}

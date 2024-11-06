@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import React, { FC, ReactElement, createContext, useEffect, useState } from "react";
+import React, { FC, ReactElement, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useCurrentAuthSession } from "../authSessions/AuthSessionsContext";
 import { ProcessListContextProvider } from "@kie-tools/runtime-tools-process-webapp-components/dist/ProcessList";
 import { ProcessDetailsContextProvider } from "@kie-tools/runtime-tools-process-webapp-components/dist/ProcessDetails";
@@ -32,7 +32,6 @@ import {
   KogitoAppContextProvider,
   UserContext,
 } from "@kie-tools/runtime-tools-components/dist/contexts/KogitoAppContext";
-import { ManagementConsoleEmptyState } from "./ManagementConsoleEmptyState";
 
 function createApolloClient(args: { runtimesUrl: string; token: string }) {
   const httpLink = new HttpLink({
@@ -57,7 +56,16 @@ function createApolloClient(args: { runtimesUrl: string; token: string }) {
   return client;
 }
 
-export const ManagementConsoleContext = createContext({});
+export type ManagementConsoleContextType = {
+  apolloClient?: ApolloClient<NormalizedCacheObject>;
+  userContext?: UserContext;
+};
+
+export const ManagementConsoleContext = createContext({} as ManagementConsoleContextType);
+
+export function useManagementConsole() {
+  return useContext(ManagementConsoleContext);
+}
 
 export interface ManagementConsoleContextProviderProps {
   children: ReactElement;
@@ -68,7 +76,7 @@ export const ManagementConsoleContextProvider: FC<ManagementConsoleContextProvid
   const [userContext, setUserContext] = useState<UserContext>();
   const currentAuthSession = useCurrentAuthSession();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log(currentAuthSession);
     if (!currentAuthSession) {
       setApolloClient(undefined);
@@ -91,8 +99,10 @@ export const ManagementConsoleContextProvider: FC<ManagementConsoleContextProvid
     }
   }, [currentAuthSession]);
 
+  console.log({ apolloClient, userContext });
+
   return (
-    <ManagementConsoleContext.Provider value={{}}>
+    <ManagementConsoleContext.Provider value={{ apolloClient, userContext }}>
       {!apolloClient || !userContext ? (
         <>{children}</>
       ) : (

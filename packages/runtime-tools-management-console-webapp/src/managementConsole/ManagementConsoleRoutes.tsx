@@ -27,33 +27,47 @@ import { TaskDetailsPage, TasksPage } from "../tasks";
 import { RouteComponentProps, StaticContext } from "react-router";
 import { useCurrentAuthSession } from "../authSessions/AuthSessionsContext";
 import { ManagementConsoleEmptyState } from "./ManagementConsoleEmptyState";
+import { AuthSession } from "../authSessions/AuthSessionApi";
+import { useManagementConsole } from "./ManagementConsoleContext";
 
-export const ManagementConsoleRoutes: FC = () => {
-  const currentAuthSession = useCurrentAuthSession();
+export const ManagementConsoleUnauthenticatedRoutes: FC<{ currentAuthSession?: AuthSession }> = (props) => {
   return (
-    <Switch>
-      {currentAuthSession && (
-        <>
-          <Route exact path="/" render={() => <Redirect to="/ProcessInstances" />} />
-          <Route exact path="/ProcessInstances" component={ProcessListPage} />
-          <Route exact path="/Jobs" component={JobsPage} />
-          <Route exact path="/Process/:instanceID" component={ProcessDetailsPage} />
-          <Route exact path="/Tasks" component={TasksPage} />
-          <Route exact path="/TaskDetails/:taskId" render={(routeProps) => <TaskDetailsPage {...routeProps} />} />
-        </>
-      )}
-      <Route path="/NoData" render={(_props) => <NoData {..._props} defaultPath="/" defaultButton="Go home" />} />
+    <>
       <Route path="/Login" render={(routeProps) => <NewAuthSessionLoginSuccess {...routeProps} />} />
       <Route
         path="*"
         render={(_props: RouteComponentProps<{}, StaticContext, LocationProps>) =>
-          !currentAuthSession ? (
+          !props.currentAuthSession ? (
             <ManagementConsoleEmptyState />
           ) : (
             <PageNotFound {..._props} defaultPath="/" defaultButton="Page not found!" />
           )
         }
       />
+    </>
+  );
+};
+
+export const ManagementConsoleAuthenticatedRoutes: FC<{ currentAuthSession?: AuthSession }> = (props) => {
+  return (
+    <>
+      <Route exact path="/" render={() => <Redirect to="/ProcessInstances" />} />
+      <Route exact path="/ProcessInstances" component={ProcessListPage} />
+      <Route exact path="/Jobs" component={JobsPage} />
+      <Route exact path="/Process/:instanceID" component={ProcessDetailsPage} />
+      <Route exact path="/Tasks" component={TasksPage} />
+      <Route exact path="/TaskDetails/:taskId" render={(routeProps) => <TaskDetailsPage {...routeProps} />} />
+    </>
+  );
+};
+
+export const ManagementConsoleRoutes: FC = () => {
+  const currentAuthSession = useCurrentAuthSession();
+  const { apolloClient, userContext } = useManagementConsole();
+  return (
+    <Switch>
+      {apolloClient && userContext && <ManagementConsoleAuthenticatedRoutes currentAuthSession={currentAuthSession} />}
+      <ManagementConsoleUnauthenticatedRoutes currentAuthSession={currentAuthSession} />
     </Switch>
   );
 };

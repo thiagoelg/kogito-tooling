@@ -24,7 +24,7 @@ import "@patternfly/react-core/dist/styles/base.css";
 import { initEnv } from "./env/Env";
 import { ENV_PREFIX } from "./env/EnvConstants";
 import "./styles.css";
-import { ManagementConsole, ManagementConsoleRoutes } from "./managementConsole";
+import { App } from "./managementConsole";
 import { EnvJson } from "./env/EnvJson";
 
 declare global {
@@ -39,10 +39,5 @@ initEnv().then((env) => {
       window[key.replace(`${ENV_PREFIX}_`, "")] = env[key as keyof EnvJson];
     });
   }
-  ReactDOM.render(
-    <ManagementConsole>
-      <ManagementConsoleRoutes />
-    </ManagementConsole>,
-    document.getElementById("root")
-  );
+  ReactDOM.render(<App />, document.getElementById("root"));
 });

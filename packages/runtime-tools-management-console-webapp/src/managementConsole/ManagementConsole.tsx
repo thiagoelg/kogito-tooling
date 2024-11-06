@@ -25,42 +25,36 @@ import PageLayout from "../ui/PageLayout/PageLayout";
 import { AuthSessionsContextProvider } from "../authSessions/AuthSessionsContext";
 import { ManagementConsoleNav } from "./ManagementConsoleNav";
 import { ManagementConsoleContextProvider } from "./ManagementConsoleContext";
-import { StaticContext } from "react-router";
-import { LocationProps } from "@kie-tools/runtime-tools-shared-webapp-components/dist/PageNotFound";
+import { useHistory, useLocation } from "react-router";
+import { ManagementConsoleRoutes } from "./ManagementConsoleRoutes";
 
-interface IOwnProps {
-  children: React.ReactElement;
-}
+export const App: React.FC = () => {
+  return (
+    <Router>
+      <ManagementConsole />
+    </Router>
+  );
+};
 
-export const ManagementConsole: React.FC<IOwnProps> = ({ children }) => {
-  const renderPage = useCallback(
-    (routeProps: RouteComponentProps<{}, StaticContext, LocationProps>) => {
-      return (
+export const ManagementConsole: React.FC = () => {
+  const history = useHistory();
+  const location = useLocation();
+
+  return (
+    <AuthSessionsContextProvider>
+      <ManagementConsoleContextProvider>
         <PageLayout
           BrandSrc={managementConsoleLogo}
           pageNavOpen={true}
           BrandAltText={"Management Console Logo"}
-          BrandClick={() => routeProps.history.push("/")}
+          BrandClick={() => history.push("/")}
           withHeader={true}
-          PageNav={<ManagementConsoleNav pathname={routeProps.location.pathname} />}
+          PageNav={<ManagementConsoleNav pathname={location.pathname} />}
           ouiaId="management-console"
         >
-          {children}
+          <ManagementConsoleRoutes />
         </PageLayout>
-      );
-    },
-    [children]
-  );
-
-  return (
-    <Router>
-      <AuthSessionsContextProvider>
-        <ManagementConsoleContextProvider>
-          <Switch>
-            <Route path="/" render={renderPage} />
-          </Switch>
-        </ManagementConsoleContextProvider>
-      </AuthSessionsContextProvider>
-    </Router>
+      </ManagementConsoleContextProvider>
+    </AuthSessionsContextProvider>
   );
 };

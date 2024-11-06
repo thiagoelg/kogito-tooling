@@ -50,13 +50,6 @@ module.exports = async (webpackEnv) => {
         },
         progress: true,
       },
-      proxy: {
-        "/svg": {
-          target: "http://localhost:4000",
-          secure: false,
-          changeOrigin: true,
-        },
-      },
     },
     plugins: [
       new HtmlWebpackPlugin({

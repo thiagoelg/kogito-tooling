@@ -29,6 +29,7 @@ const BANNED_PROXY_HEADERS = [
   "host",
   CorsProxyHeaderKeys.TARGET_URL,
   CorsProxyHeaderKeys.INSECURELY_DISABLE_TLS_CERTIFICATE_VALIDATION,
+  CorsProxyHeaderKeys.INTERCEPT_REDIRECTS,
 ];
 
 export class ExpressCorsProxy implements CorsProxy<Request, Response> {
@@ -80,11 +81,12 @@ export class ExpressCorsProxy implements CorsProxy<Request, Response> {
       const proxyResponse = await fetch(info.proxyUrl, {
         method: req.method,
         headers: outHeaders,
-        redirect: "manual",
+        redirect: req.headers[CorsProxyHeaderKeys.INTERCEPT_REDIRECTS] === "true" ? "follow" : "manual",
         body: req.method !== "GET" && req.method !== "HEAD" ? req : undefined,
         agent: this.getProxyAgent(info),
       });
       this.logger.debug("Proxy Response status: ", proxyResponse.status);
+      this.logger.debug("Proxy Response redirect url: ", proxyResponse.url);
 
       // Setting up the headers to the original response...
       res.header("Access-Control-Allow-Origin", this.args.origin);
@@ -110,7 +112,13 @@ export class ExpressCorsProxy implements CorsProxy<Request, Response> {
 
       this.logger.debug("New Response Headers: ", res.getHeaders());
 
-      res.status(proxyResponse.status);
+      if (req.headers[CorsProxyHeaderKeys.INTERCEPT_REDIRECTS] === "true" && proxyResponse.url) {
+        res.setHeader("Access-Control-Expose-Headers", "Intercepted-Redirect-Url");
+        res.setHeader("Intercepted-Redirect-Url", proxyResponse.url);
+        res.status(200);
+      } else {
+        res.status(proxyResponse.status);
+      }
 
       this.logger.debug("Writting Response...");
       if (proxyResponse.body) {

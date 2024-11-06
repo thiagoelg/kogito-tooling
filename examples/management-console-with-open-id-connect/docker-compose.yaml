@@ -6,6 +6,17 @@ services:
     environment:
       JSON_CONFIG: ${JSON_CONFIG}
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    ports:
+      - 9071:8080
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+    volumes:
+      - ./keycloak-realm:/opt/keycloak/data/import
+    command: start-dev --import-realm
+
   # managment-console:
   #   container_name: management-console
   #   image: docker.io/apache/incubator-kie-kogito-management-console:main

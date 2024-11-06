@@ -76,7 +76,7 @@ export const ManagementConsoleContextProvider: FC<ManagementConsoleContextProvid
     } else {
       setApolloClient(
         createApolloClient({
-          runtimesUrl: currentAuthSession.runtimesUrl,
+          runtimesUrl: `${currentAuthSession.runtimesUrl}/graphql`,
           token: currentAuthSession.tokens.access_token,
         })
       );

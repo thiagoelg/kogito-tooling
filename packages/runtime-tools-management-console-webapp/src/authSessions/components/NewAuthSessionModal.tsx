@@ -48,59 +48,102 @@ export function NewAuthSessionModal() {
     if (!runtimesUrl || !name) {
       return;
     }
-    const config: client.Configuration = await client.discovery(new URL(runtimesUrl), clientId, undefined, undefined, {
-      execute: [client.allowInsecureRequests],
-    });
 
-    const code_challenge_method = "S256";
-    /**
-     * The following (code_verifier and potentially nonce) MUST be generated for
-     * every redirect to the authorization_endpoint. You must store the
-     * code_verifier and nonce in the end-user session such that it can be recovered
-     * as the user gets redirected from the authorization server back to your
-     * application.
-     */
-    const code_verifier = client.randomPKCECodeVerifier();
-    const code_challenge = await client.calculatePKCECodeChallenge(code_verifier);
-    const redirect_uri = `${window.location.origin}/Login`;
-    let nonce: string | undefined = undefined;
+    try {
+      const response = await fetch(`http://localhost:8081`, {
+        method: "GET",
+        headers: { "target-url": runtimesUrl, "intercept-redirects": "true" },
+      });
 
-    // redirect user to as.authorization_endpoint
-    const parameters: Record<string, string> = {
-      redirect_uri,
-      scope: "openid email",
-      code_challenge,
-      code_challenge_method,
-    };
+      if (!response.headers.has("intercepted-redirect-url")) {
+        throw new Error("No OpenID auth redirect!");
+      }
 
-    /**
-     * We cannot be sure the AS supports PKCE so we're going to use nonce too. Use
-     * of PKCE is backwards compatible even if the AS doesn't support it which is
-     * why we're using it regardless.
-     */
-    if (!config.serverMetadata().supportsPKCE()) {
-      nonce = client.randomNonce();
-      parameters.nonce = nonce;
+      // Find .well-known/openid-configuration
+      const openIdRedirectUrl = new URL(response.headers.get("intercepted-redirect-url")!);
+      const openIdRedirectUrlOrigin = openIdRedirectUrl.origin;
+      const openIdRedirectUrlSubPaths = openIdRedirectUrl.pathname.split("/");
+      const openIdRedirectUrlSearchParams = openIdRedirectUrl.searchParams;
+      const openIdWellKnownPath = ".well-known/openid-configuration";
+      console.log({ openIdRedirectUrlOrigin, openIdRedirectUrlSubPaths, openIdRedirectUrlSearchParams });
+
+      const pathSections: string[] = [];
+      let openIdConfigResponse: Response | undefined = undefined;
+      for (const subPath of openIdRedirectUrlSubPaths) {
+        try {
+          if (subPath.length) {
+            pathSections.push(subPath);
+          }
+          openIdConfigResponse = await fetch(
+            `${openIdRedirectUrlOrigin}/${pathSections.join("/")}/${openIdWellKnownPath}`
+          );
+          break;
+        } catch (openIdUrlError) {
+          console.log(openIdUrlError);
+        }
+      }
+      console.log({ openIdConfigResponse, pathSections });
+      if (!openIdConfigResponse || openIdConfigResponse.status !== 200) {
+        throw new Error(`Unable to find valid ${openIdWellKnownPath} path for the connected Identity Provider.`);
+      }
+
+      const openIdUrl = new URL(`${openIdRedirectUrlOrigin}/${pathSections.join("/")}`);
+      const config: client.Configuration = await client.discovery(openIdUrl, clientId, undefined, undefined, {
+        execute: [client.allowInsecureRequests],
+      });
+
+      const code_challenge_method = "S256";
+      /**
+       * The following (code_verifier and potentially nonce) MUST be generated for
+       * every redirect to the authorization_endpoint. You must store the
+       * code_verifier and nonce in the end-user session such that it can be recovered
+       * as the user gets redirected from the authorization server back to your
+       * application.
+       */
+      const code_verifier = client.randomPKCECodeVerifier();
+      const code_challenge = await client.calculatePKCECodeChallenge(code_verifier);
+      const redirect_uri = `${window.location.origin}/Login`;
+      let nonce: string | undefined = undefined;
+
+      // redirect user to as.authorization_endpoint
+      const parameters: Record<string, string> = {
+        redirect_uri,
+        scope: "openid email",
+        code_challenge,
+        code_challenge_method,
+      };
+
+      /**
+       * We cannot be sure the AS supports PKCE so we're going to use nonce too. Use
+       * of PKCE is backwards compatible even if the AS doesn't support it which is
+       * why we're using it regardless.
+       */
+      if (!config.serverMetadata().supportsPKCE()) {
+        nonce = client.randomNonce();
+        parameters.nonce = nonce;
+      }
+
+      const redirectTo = client.buildAuthorizationUrl(config, parameters);
+
+      const tempOpenIdAuthData: TemporaryAuthSessionData = {
+        runtimesUrl,
+        clientId,
+        name,
+        code_challenge_method,
+        code_verifier,
+        code_challenge,
+        redirect_uri,
+        nonce,
+        serverMetadata: config.serverMetadata(),
+      };
+
+      window.localStorage.setItem(AUTH_SESSION_TEMP_OPENID_AUTH_DATA_STORAGE_KEY, JSON.stringify(tempOpenIdAuthData));
+
+      console.log("redirecting to", redirectTo.href);
+      window.location.href = redirectTo.href;
+    } catch (e) {
+      console.log(e);
     }
-
-    const redirectTo = client.buildAuthorizationUrl(config, parameters);
-
-    const tempOpenIdAuthData: TemporaryAuthSessionData = {
-      runtimesUrl,
-      clientId,
-      name,
-      code_challenge_method,
-      code_verifier,
-      code_challenge,
-      redirect_uri,
-      nonce,
-      serverMetadata: config.serverMetadata(),
-    };
-
-    window.localStorage.setItem(AUTH_SESSION_TEMP_OPENID_AUTH_DATA_STORAGE_KEY, JSON.stringify(tempOpenIdAuthData));
-
-    console.log("redirecting to", redirectTo.href);
-    window.location.href = redirectTo.href;
   }, [clientId, runtimesUrl, name]);
 
   return (

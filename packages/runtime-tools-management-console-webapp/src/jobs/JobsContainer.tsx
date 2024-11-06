@@ -16,10 +16,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * This is a convenience class that the Envelope view can use.
- * Since the Jobs Management View is very simple, it's empty.
- */
+import * as React from "react";
+import { OUIAProps } from "@kie-tools/runtime-tools-components/dist/ouiaTools";
+import { EmbeddedJobsManagement } from "@kie-tools/runtime-tools-process-enveloped-components/dist/jobsManagement";
+import {
+  JobsManagementGatewayApi,
+  useJobsManagementGatewayApi,
+} from "@kie-tools/runtime-tools-process-webapp-components/dist/JobsManagement";
 
-// eslint-disable-next-line  @typescript-eslint/no-empty-interface
-export interface JobsManagementEnvelopeContext {}
+export const JobsContainer: React.FC<OUIAProps> = () => {
+  const gatewayApi: JobsManagementGatewayApi = useJobsManagementGatewayApi();
+  return <EmbeddedJobsManagement driver={gatewayApi} targetOrigin={window.location.origin} />;
+};

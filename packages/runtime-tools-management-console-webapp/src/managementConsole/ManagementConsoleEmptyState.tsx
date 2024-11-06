@@ -16,10 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * This is a convenience class that the Envelope view can use.
- * Since the Jobs Management View is very simple, it's empty.
- */
 
-// eslint-disable-next-line  @typescript-eslint/no-empty-interface
-export interface JobsManagementEnvelopeContext {}
+import React from "react";
+import { Button } from "@patternfly/react-core/dist/js/components/Button";
+import { useAuthSessionsDispatch } from "../authSessions/AuthSessionsContext";
+
+export const ManagementConsoleEmptyState = () => {
+  const { setIsNewAuthSessionModalOpen } = useAuthSessionsDispatch();
+
+  return (
+    <div>
+      <h2>No runtimes available.</h2>
+
+      <Button onClick={() => setIsNewAuthSessionModalOpen(true)}>+ Connect to a runtimes...</Button>
+    </div>
+  );
+};

@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "@kie-tools-examples/management-console-with-open-id-connect",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/apache/incubator-kie-tools",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apache/incubator-kie-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/apache/incubator-kie-tools/issues"
+  },
+  "scripts": {
+    "build": "",
+    "build:dev": "run-script-if --bool \"$(build-env examples.build)\" --then \"pnpm build\"",
+    "build:prod": "run-script-if --bool \"$(build-env examples.build)\" --then \"pnpm build\"",
+    "start": "JSON_CONFIG=$(cat OAuthConfig.json) docker compose up"
+  },
+  "dependencies": {
+    "@kie-tools/kogito-management-console": "workspace:*"
+  },
+  "devDependencies": {
+    "@kie-tools/root-env": "workspace:*",
+    "@kie-tools/runtime-tools-management-console-webapp": "workspace:*",
+    "rimraf": "^3.0.2"
+  }
+}

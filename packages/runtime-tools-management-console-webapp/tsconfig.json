@@ -4,9 +4,7 @@
     "declaration": false,
     "declarationMap": false,
     "esModuleInterop": true,
-    "jsx": "react-jsx",
-    "noImplicitAny": false,
-    "strictNullChecks": false
+    "jsx": "react-jsx"
   },
   "preserveSymlinks": true
 }

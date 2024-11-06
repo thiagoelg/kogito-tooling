@@ -20,6 +20,7 @@
 export enum CorsProxyHeaderKeys {
   TARGET_URL = "target-url",
   INSECURELY_DISABLE_TLS_CERTIFICATE_VALIDATION = "insecurely-disable-tls-certificate-validation",
+  INTERCEPT_REDIRECTS = "intercept-redirects",
 }
 
 export type CorsConfig = {

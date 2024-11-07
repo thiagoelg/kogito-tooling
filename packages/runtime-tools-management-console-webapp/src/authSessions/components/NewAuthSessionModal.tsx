@@ -32,7 +32,7 @@ import * as client from "openid-client";
 export function NewAuthSessionModal() {
   const [runtimesUrl, setRuntimesUrl] = useState<string>();
   const [name, setName] = useState<string>();
-  const [clientId, setClientId] = useState<string>("kogito-management-console");
+  const [clientId, setClientId] = useState<string>("kogito-management-console-frontend");
 
   const { isNewAuthSessionModalOpen } = useAuthSessions();
   const { setIsNewAuthSessionModalOpen } = useAuthSessionsDispatch();
@@ -50,45 +50,46 @@ export function NewAuthSessionModal() {
     }
 
     try {
-      const response = await fetch(`http://localhost:8081`, {
-        method: "GET",
-        headers: { "target-url": runtimesUrl, "intercept-redirects": "true" },
-      });
+      // const response = await fetch(`http://localhost:8081`, {
+      //   method: "GET",
+      //   headers: { "target-url": runtimesUrl, "intercept-redirects": "true" },
+      // });
 
-      if (!response.headers.has("intercepted-redirect-url")) {
-        throw new Error("No OpenID auth redirect!");
-      }
+      // if (!response.headers.has("intercepted-redirect-url")) {
+      //   throw new Error("No OpenID auth redirect!");
+      // }
 
-      // Find .well-known/openid-configuration
-      const openIdRedirectUrl = new URL(response.headers.get("intercepted-redirect-url")!);
-      const openIdRedirectUrlOrigin = openIdRedirectUrl.origin;
-      const openIdRedirectUrlSubPaths = openIdRedirectUrl.pathname.split("/");
-      const openIdRedirectUrlSearchParams = openIdRedirectUrl.searchParams;
-      const openIdWellKnownPath = ".well-known/openid-configuration";
-      console.log({ openIdRedirectUrlOrigin, openIdRedirectUrlSubPaths, openIdRedirectUrlSearchParams });
+      // // Find .well-known/openid-configuration
+      // const openIdRedirectUrl = new URL(response.headers.get("intercepted-redirect-url")!);
+      // const openIdRedirectUrlOrigin = openIdRedirectUrl.origin;
+      // const openIdRedirectUrlSubPaths = openIdRedirectUrl.pathname.split("/");
+      // const openIdRedirectUrlSearchParams = openIdRedirectUrl.searchParams;
+      // const openIdWellKnownPath = ".well-known/openid-configuration";
+      // console.log({ openIdRedirectUrlOrigin, openIdRedirectUrlSubPaths, openIdRedirectUrlSearchParams });
 
-      const pathSections: string[] = [];
-      let openIdConfigResponse: Response | undefined = undefined;
-      for (const subPath of openIdRedirectUrlSubPaths) {
-        try {
-          if (subPath.length) {
-            pathSections.push(subPath);
-          }
-          openIdConfigResponse = await fetch(
-            `${openIdRedirectUrlOrigin}/${pathSections.join("/")}/${openIdWellKnownPath}`
-          );
-          break;
-        } catch (openIdUrlError) {
-          console.log(openIdUrlError);
-        }
-      }
-      console.log({ openIdConfigResponse, pathSections });
-      if (!openIdConfigResponse || openIdConfigResponse.status !== 200) {
-        throw new Error(`Unable to find valid ${openIdWellKnownPath} path for the connected Identity Provider.`);
-      }
+      // const pathSections: string[] = [];
+      // let openIdConfigResponse: Response | undefined = undefined;
+      // for (const subPath of openIdRedirectUrlSubPaths) {
+      //   try {
+      //     if (subPath.length) {
+      //       pathSections.push(subPath);
+      //     }
+      //     openIdConfigResponse = await fetch(
+      //       `${openIdRedirectUrlOrigin}/${pathSections.join("/")}/${openIdWellKnownPath}`
+      //     );
+      //     break;
+      //   } catch (openIdUrlError) {
+      //     console.log(openIdUrlError);
+      //   }
+      // }
+      // console.log({ openIdConfigResponse, pathSections });
+      // if (!openIdConfigResponse || openIdConfigResponse.status !== 200) {
+      //   throw new Error(`Unable to find valid ${openIdWellKnownPath} path for the connected Identity Provider.`);
+      // }
 
-      const openIdUrl = new URL(`${openIdRedirectUrlOrigin}/${pathSections.join("/")}`);
-      const config: client.Configuration = await client.discovery(openIdUrl, clientId, undefined, undefined, {
+      const openIdUrl = (await (await fetch(`${runtimesUrl}/oidc/info`)).json()).oidcUrl;
+
+      const config: client.Configuration = await client.discovery(new URL(openIdUrl), clientId, undefined, undefined, {
         execute: [client.allowInsecureRequests],
       });
 

@@ -17,9 +17,9 @@
  * under the License.
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuthSessions, useAuthSessionsDispatch } from "../AuthSessionsContext";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import * as client from "openid-client";
 import { v4 as uuid } from "uuid";
 import {
@@ -31,13 +31,18 @@ import {
 export const NewAuthSessionLoginSuccess: React.FC<RouteComponentProps> = ({ ...props }) => {
   const { add, setCurrentAuthSessionId } = useAuthSessionsDispatch();
   const { isAuthSessionsReady } = useAuthSessions();
+  const history = useHistory();
+
+  // Since Code Grants can only be used once we want to make sure that the
+  // addAuthSession function in the useEffect is only called once.
+  const isGettingTokens = useRef(false);
 
   useEffect(() => {
-    console.log({ isAuthSessionsReady });
-    if (!isAuthSessionsReady) {
+    if (!isAuthSessionsReady || isGettingTokens.current) {
       return;
     }
-    const callback = async () => {
+    const addAuthSession = async () => {
+      isGettingTokens.current = true;
       const { runtimesUrl, clientId, code_verifier, nonce, serverMetadata, name } = JSON.parse(
         window.localStorage.getItem(AUTH_SESSION_TEMP_OPENID_AUTH_DATA_STORAGE_KEY)!
       ) as TemporaryAuthSessionData;
@@ -49,18 +54,23 @@ export const NewAuthSessionLoginSuccess: React.FC<RouteComponentProps> = ({ ...p
 
       // Authorization Code Grant
       const currentUrl: URL = new URL(window.location.href);
+      console.log("GETTING TOKENS!");
       const tokens = await client.authorizationCodeGrant(config, currentUrl, {
         pkceCodeVerifier: code_verifier,
         expectedNonce: nonce,
         idTokenExpected: true,
       });
 
+      console.log("GOT TOKENS!");
+
       const { access_token } = tokens;
       const claims = tokens.claims()!;
       const { sub } = claims;
 
       // UserInfo Request
+      console.log("GETTING USER INFO!");
       const userInfo = await client.fetchUserInfo(config, access_token, sub);
+      console.log("GOT USER INFO!");
 
       console.log("UserInfo Response", userInfo);
       console.log("Tokens", tokens);
@@ -86,10 +96,10 @@ export const NewAuthSessionLoginSuccess: React.FC<RouteComponentProps> = ({ ...p
       window.localStorage.removeItem(AUTH_SESSION_TEMP_OPENID_AUTH_DATA_STORAGE_KEY);
     };
 
-    callback().then(() => {
-      props.history.push("/");
+    addAuthSession().then(() => {
+      history.push("/");
     });
-  }, [add, props.history, setCurrentAuthSessionId, isAuthSessionsReady]);
+  }, [add, history, setCurrentAuthSessionId, isAuthSessionsReady]);
 
   return (
     <>

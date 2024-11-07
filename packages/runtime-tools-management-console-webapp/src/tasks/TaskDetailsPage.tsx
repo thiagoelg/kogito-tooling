@@ -108,7 +108,7 @@ export const TaskDetailsPage: React.FC<RouteComponentProps<TaskDetailsPageProps>
         label: "Go to Tasks",
         onClick: () => {
           setNotification(undefined);
-          goToInbox();
+          goToTasks();
         },
       },
       close: () => {
@@ -117,7 +117,7 @@ export const TaskDetailsPage: React.FC<RouteComponentProps<TaskDetailsPageProps>
     });
   };
 
-  const goToInbox = () => {
+  const goToTasks = () => {
     taskInboxGatewayApi.clearOpenTask();
     props.history.push("/Tasks");
   };
@@ -161,8 +161,8 @@ export const TaskDetailsPage: React.FC<RouteComponentProps<TaskDetailsPageProps>
           <GridItem span={12} className={"kogito-management-console__full-size"}>
             <Card className={"kogito-management-console__full-size"}>
               <ServerErrors error={error} variant="large">
-                <Button variant="primary" onClick={() => goToInbox()}>
-                  Go to Inbox
+                <Button variant="primary" onClick={() => goToTasks()}>
+                  Go to Tasks
                 </Button>
               </ServerErrors>
             </Card>
@@ -232,7 +232,7 @@ export const TaskDetailsPage: React.FC<RouteComponentProps<TaskDetailsPageProps>
                 taskInboxGatewayApi.clearOpenTask();
               }}
             >
-              Task Inbox
+              Tasks
             </Link>
           </BreadcrumbItem>
           <BreadcrumbItem>{userTask.referenceName}</BreadcrumbItem>

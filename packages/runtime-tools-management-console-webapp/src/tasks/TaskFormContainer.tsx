@@ -46,7 +46,7 @@ export const TaskFormContainer: React.FC<TaskFormContainerProps & OUIAProps> = (
       driver={{
         doSubmit(phase?: string, payload?: any): Promise<any> {
           return gatewayApi
-            .doSubmitAsAnonymous(userTask, phase, payload)
+            .doSubmitAsAnonymous(userTask, phase ?? "", payload)
             .then((result) => onSubmitSuccess(phase ?? ""))
             .catch((error) => {
               const message = error.response ? error.response.data : error.message;

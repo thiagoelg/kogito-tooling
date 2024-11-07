@@ -30,7 +30,7 @@ import { TasksContainer } from "./TasksContainer";
 
 export const TasksPage: React.FC<OUIAProps> = (ouiaId, ouiaSafe) => {
   useEffect(() => {
-    return ouiaPageTypeAndObjectId("task-inbox-page");
+    return ouiaPageTypeAndObjectId("tasks-page");
   });
 
   return (

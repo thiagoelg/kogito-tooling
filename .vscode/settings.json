@@ -5,5 +5,12 @@
   "files.associations": {
     "*.yaml.helm": "helm"
   },
-  "prettier.configPath": "prettier.config.mjs"
+  "prettier.configPath": "prettier.config.mjs",
+  "terminal.integrated.profiles.osx": {
+    "devboxCompatibleShell": {
+      "path": "/bin/zsh",
+      "args": []
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "devboxCompatibleShell"
 }

@@ -41,7 +41,7 @@ export function NewAuthSessionModal() {
     setIsNewAuthSessionModalOpen(false);
     setRuntimesUrl("");
     setName("");
-    setClientId("kogito-management-console");
+    setClientId("kogito-management-console-frontend");
   }, [setIsNewAuthSessionModalOpen]);
 
   const onConnect = useCallback(async () => {

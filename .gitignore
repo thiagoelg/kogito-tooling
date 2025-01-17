@@ -341,7 +341,6 @@ packages/python-venv/venv
 
 # turbo
 .turbo
-turbo.json
 
 # IntelliJ projects should be on _intellij-projects folder, never on specific packages.
 packages/*/.idea

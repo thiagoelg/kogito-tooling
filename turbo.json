@@ -2,7 +2,23 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build:dev": {
-      "dependsOn": ["^build:dev"]
+      "dependsOn": ["^build:dev"],
+      "outputs": [
+        "dist/**",
+        "dist-dev/**",
+        "dist-dev-webapp/**",
+        "dist-tests/**",
+        "dist-tests-e2e/**",
+        "dist-storybook/**",
+        "coverage/**",
+        "out/**",
+        "build/**",
+        ".flattened-pom.xml",
+        "**/.flatanned-pom.xml",
+        "target/**",
+        "**/target/**",
+        ".mvn"
+      ]
     },
     "build:prod": {
       "dependsOn": ["^build:prod"],
@@ -23,5 +39,21 @@
         ".mvn"
       ]
     }
-  }
+  },
+  "globalPassThroughEnv": [
+    "NIX_*",
+    "DEVBOX_*",
+    "_DEVBOX_*",
+    "PNPM_*",
+    "PLAYWRIGHT_*",
+    "GO*",
+    "VIRTUAL_ENV*",
+    "PATH",
+    "HOMEBREW_*",
+    "DIRENV_*",
+    "HOST_PATH",
+    "JAVA_*",
+    "NODE_*",
+    "VENV_*"
+  ]
 }
